@@ -25,3 +25,15 @@ class NFT:
 
     def get_owner(self, token_id: int) -> str:
         return self.contract.functions.ownerOf(token_id).call()
+        
+    def get_tokens(self, wallet_address: str) -> int:
+        """
+        Get the balance of ERC-721 tokens for a specific wallet address.
+
+        Parameters:
+        wallet_address (str): The address of the wallet to check the balance for.
+
+        Returns:
+        int: The balance of tokens.
+        """
+        return self.contract.functions.balanceOf(wallet_address).call()
