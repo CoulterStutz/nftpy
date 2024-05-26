@@ -23,6 +23,3 @@ class NFT:
 
     def get_owner(self, token_id: int) -> str:
         return self.contract.functions.ownerOf(token_id).call()
-        
-    def get_tokens(self, wallet_address: str) -> int:
-        return self.contract.functions.balanceOf(wallet_address).call()
