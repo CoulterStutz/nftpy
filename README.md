@@ -1,6 +1,6 @@
 # NFTPy
 
-### A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
+A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
 
 ## Features
 
