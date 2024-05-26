@@ -2,22 +2,22 @@ from enum import Enum
 from web3 import Web3
 
 class EVM(Enum):
-    ETH = 0
-    BSC = 1          # Binance Smart Chain
-    POLYGON = 2      # Polygon (formerly Matic)
-    AVALANCHE = 3    # Avalanche C-Chain
-    FANTOM = 4       # Fantom Opera
-    ARBITRUM = 5     # Arbitrum One
-    OPTIMISM = 6     # Optimism
-    MOONBEAM = 7     # Moonbeam
-    KLAYTN = 8       # Klaytn
-    CELO = 9         # Celo
-    HECO = 10        # Huobi ECO Chain
-    CRONOS = 11      # Cronos
-    METIS = 12       # Metis Andromeda
-    BOBA = 13        # Boba Network
-    RSK = 14         # Rootstock (RSK)
-    XDAI = 15        # Gnosis Chain (formerly xDai)
+    ETH = 1            # Ethereum Mainnet
+    BSC = 56           # Binance Smart Chain
+    POLYGON = 137      # Polygon (formerly Matic)
+    AVALANCHE = 43114  # Avalanche C-Chain
+    FANTOM = 250       # Fantom Opera
+    ARBITRUM = 42161   # Arbitrum One
+    OPTIMISM = 10      # Optimism
+    MOONBEAM = 1284    # Moonbeam
+    KLAYTN = 8217      # Klaytn
+    CELO = 42220       # Celo
+    HECO = 128         # Huobi ECO Chain
+    CRONOS = 25        # Cronos
+    METIS = 1088       # Metis Andromeda
+    BOBA = 288         # Boba Network
+    RSK = 30           # Rootstock (RSK)
+    XDAI = 100         # Gnosis Chain (formerly xDai)
 
 
 network_urls = {
@@ -40,7 +40,7 @@ network_urls = {
 }
 
 class NFT:
-    def __init__(self, contract_address, network:EVM=EVM.ETH, rpc_url:str=None):
+    def __init__(self, contract_address:str, network:EVM=EVM.ETH, rpc_url:str=None):
         self.contract_address = contract_address
         self.network = network
         if rpc_url is None:
