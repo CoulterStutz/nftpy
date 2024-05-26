@@ -1,0 +1,176 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Poetry specific
+poetry.lock
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.mypy_cache/
+.dmypy.json
+.dmypy/
+
+# PyCharm specific
+.idea/
+.idea/*
+!*.iml
+!*.xml
+!*.properties
+
+# Django specific
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask specific
+instance/
+.webassets-cache
+
+# Scrapy specific
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyInstaller
+*.spec
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# VS Code
+.vscode/
+.vscode/*
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Pylint
+pylint.log
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+env.bak/
+venv.bak/
+# Poetry
+poetry.lock
+.pdm.toml
+pdm.lock
+
+# MyPy
+.mypy_cache/
+
+# Pyre
+.pyre/
+
+# Pipenv
+Pipfile.lock
+
+# Coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# pyright
+pyrightconfig.json
+
+# pytest
+.cache/
+pytestdebug.log
+
+# Test and build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Encrypted keys
+*.key
+
+# mkdocs documentation
+/site
+
+# Codecov
+/codecov.yml
+
+# SSH directory
+.ssh/
+
+# Editor directories and files
+.project
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# PyCharm
+# Only exclude the .idea folder itself and not the files under it.
+.idea/
+.idea/**
+!.idea/*.iml
+!.idea/*.xml
+!.idea/*.properties
+!.idea/*.name
+!.idea/.gitignore
+!.idea/modules.xml
+!.idea/vcs.xml
+!.idea/workspace.xml
+
+# PyCharm settings
+# Refer to https://intellij-support.jetbrains.com/hc/en-us/articles/206544839.
+# Change it according to your requirements.
+.idea/**/inspectionProfiles/*
+.idea/**/scopes/*
+.idea/**/dictionaries/*
+.idea/**/tasks/*
+.idea/**/libraries/*
+.idea/**/dataSources/*
+.idea/**/dataSources.xml
+.idea/**/dynamic.xml
+.idea/**/datasources.xml
+.idea/**/datasources/
+.idea/**/datasources*.xml
+.idea/**/dataSources.xml
+.idea/**/dataSources/
+.idea/**/sqlDataSources.xml
+.idea/**/dataSources.xml
+
+# Linting
+.pylint.d
+
+# Pyright
+pyrightconfig.json
