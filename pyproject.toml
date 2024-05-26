@@ -7,7 +7,6 @@ readme = "README.md"
 license = "MIT"
 homepage = "https://github.com/coulterstutz/nftpy"
 repository = "https://github.com/coulterstutz/nftpy"
-documentation = "https://coulterstutz.github.io/nftpy"
 
 [tool.poetry.dependencies]
 python = "^3.12"
