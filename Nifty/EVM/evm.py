@@ -1,3 +1,4 @@
+import json
 from enum import Enum
 from web3 import Web3
 
@@ -52,3 +53,6 @@ class NFT:
         else:
             self.web3 = Web3(Web3.HTTPProvider(rpc_url))
         self.contract = self.web3.contract(self.contract_address, abi=abi)
+
+    def get_balance(self, wallet_address:str) -> int:
+        return self.contract.functions.balanceOf(wallet_address).call()
