@@ -54,6 +54,54 @@ class OpenSea:
         else:
             response.raise_for_status()
 
+    def list_nfts_by_account(self, chain, address, cursor=None, limit=50):
+        url = f"https://api.opensea.io/api/v2/chain/{chain}/account/{address}/nfts"
+        headers = {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
+        params = {
+            "cursor": cursor,
+            "limit": limit
+        }
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+    def list_nfts_by_collection(self, chain, collection_slug, cursor=None, limit=50):
+        url = f"https://api.opensea.io/api/v2/chain/{chain}/collection/{collection_slug}/nfts"
+        headers = {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
+        params = {
+            "cursor": cursor,
+            "limit": limit
+        }
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+    def list_nfts_by_contract(self, chain, contract_address, cursor=None, limit=50):
+        url = f"https://api.opensea.io/api/v2/chain/{chain}/contract/{contract_address}/nfts"
+        headers = {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
+        params = {
+            "cursor": cursor,
+            "limit": limit
+        }
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
     def get_events_by_nft(self, chain, address, identifier, event_type=None, only_opensea=False, auction_type=None, occurred_before=None, occurred_after=None, cursor=None, limit=50):
         url = f"https://api.opensea.io/api/v2/events/chain/{chain}/contract/{address}/nfts/{identifier}"
         headers = {
