@@ -30,7 +30,7 @@ NFTPy includes a built-in interface for interacting with OpenSea via an API key.
 - **list_nfts_by_collection**: List NFTs in a specific collection.
 - **list_nfts_by_contract**: List NFTs under a specific contract.
 
-### Coming Features
+## Coming Features
 - Full Solana Integration
 - Full Tron Integration
 - Full Tezos Integration
