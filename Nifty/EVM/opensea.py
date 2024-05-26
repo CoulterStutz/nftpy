@@ -6,6 +6,18 @@ class OpenSea:
         self.collection_slug = collection_slug
         self.base_url = "https://api.opensea.io/api/v1"
 
+    def get_collection(self):
+        url = f"https://api.opensea.io/api/v2/collections/{self.collection_slug}"
+        headers = {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
     def get_collection_stats(self):
         url = f"{self.base_url}/collection/{self.collection_slug}/stats"
         headers = {
