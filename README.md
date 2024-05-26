@@ -1,5 +1,4 @@
 # NFTPy
-
 [![PyPi](https://img.shields.io/badge/PyPi-1.0.0-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
 [![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
 
@@ -8,6 +7,8 @@ A Python package designed to facilitate the integration and adoption of NFT (ERC
 ## Features
 
 #### EVM Interaction with NFT Tokens
+![Ethereum](https://img.shields.io/badge/Ethereum%20Based%20Networks-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white)
+
 NFTPy enables interaction with the Ethereum Virtual Machine (EVM) through RPC to retrieve contract details and token holders. It provides a direct communication pathway between the client and the blockchain. Currently, transactional methods are not supported but will be implemented in future updates. The following methods are available:
 
 - **get_balance**: Retrieve the balance of NFTs for a given address.
@@ -16,6 +17,8 @@ NFTPy enables interaction with the Ethereum Virtual Machine (EVM) through RPC to
 - **get_tokens**: List the token IDs and amounts owned by an address.
 
 #### Built-in OpenSea Interface
+![OpenSea Support](https://img.shields.io/badge/OpenSea-%232081E2.svg?style=for-the-badge&logo=opensea&logoColor=white)
+
 NFTPy includes a built-in interface for interacting with OpenSea via an API key. This allows for in-package queries to OpenSea, enabling access to pricing information and other OpenSea-specific data. The OpenSea interface can be configured to focus on a single collection or query multiple collections. The available methods include:
 
 - **get_collection**: Fetch details of a specific collection.
