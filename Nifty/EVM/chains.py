@@ -97,6 +97,36 @@ class EVM(Enum):
         "rpc_url": "https://rpc.xdaichain.com/",
         "explorer_url": "https://blockscout.com/xdai/mainnet"
     }
+    HARMONY = {
+        "chain_id": 1666600000,
+        "name": "Harmony",
+        "rpc_url": "https://api.harmony.one",
+        "explorer_url": "https://explorer.harmony.one"
+    }
+    AURORA = {
+        "chain_id": 1313161554,
+        "name": "Aurora",
+        "rpc_url": "https://mainnet.aurora.dev",
+        "explorer_url": "https://aurorascan.dev"
+    }
+    FUSE = {
+        "chain_id": 122,
+        "name": "Fuse",
+        "rpc_url": "https://rpc.fuse.io",
+        "explorer_url": "https://explorer.fuse.io"
+    }
+    OKEX = {
+        "chain_id": 66,
+        "name": "OKExChain",
+        "rpc_url": "https://exchainrpc.okex.org",
+        "explorer_url": "https://www.oklink.com/okexchain"
+    }
+    PALM = {
+        "chain_id": 11297108109,
+        "name": "Palm",
+        "rpc_url": "https://palm-mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+        "explorer_url": "https://explorer.palm.io"
+    }
 
     @property
     def chain_id(self):
