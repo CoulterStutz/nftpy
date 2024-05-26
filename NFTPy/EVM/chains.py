@@ -1,6 +1,6 @@
 from enum import Enum
 
-class EVM(Enum):
+class Chains(Enum):
     ETH = {
         "chain_id": 1,
         "name": "Ethereum Mainnet",

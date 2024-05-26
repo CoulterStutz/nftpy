@@ -1,13 +1,14 @@
 import json
+from .chains import Chains
 from enum import Enum
 from web3 import Web3
 
 class ABI(Enum):
-    ERC721 = json.load(open('EVM/erc721.json'))
-    ERC1155 = json.load(open('EVM/erc1155.json'))
+    ERC721 = json.load(open('erc721.json'))
+    ERC1155 = json.load(open('erc1155.json'))
 
 class NFT:
-    def __init__(self, contract_address: str, network: EVM = EVM.ETH, rpc_url: str = None, abi: ABI = ABI.ERC721):
+    def __init__(self, contract_address: str, network:Chains = Chains.ETH, rpc_url: str = None, abi: ABI = ABI.ERC721):
         self.contract_address = contract_address
         self.network = network
         self.abi = abi.value
