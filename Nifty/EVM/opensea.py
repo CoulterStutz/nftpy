@@ -18,7 +18,28 @@ class OpenSea:
         else:
             response.raise_for_status()
 
-    def list_events_by_collection(self, event_type=None, occurred_before=None, occurred_after=None, cursor=None, limit=None):
+    def get_events_by_nft(self, chain, address, identifier, event_type=None, only_opensea=False, auction_type=None, occurred_before=None, occurred_after=None, cursor=None, limit=50):
+        url = f"https://api.opensea.io/api/v2/events/chain/{chain}/contract/{address}/nfts/{identifier}"
+        headers = {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
+        params = {
+            "event_type": event_type,
+            "only_opensea": str(only_opensea).lower(),
+            "auction_type": auction_type,
+            "occurred_before": occurred_before,
+            "occurred_after": occurred_after,
+            "cursor": cursor,
+            "limit": limit
+        }
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+    def get_events_by_collection(self, event_type=None, occurred_before=None, occurred_after=None, cursor=None, limit=None):
         url = f"{self.base_url}/events"
         headers = {
             "Accept": "application/json",
