@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "nftpy"
+version = "0.1.0"
+description = "A NFT specific Python library for easy NFT integration in Python"
+authors = ["CoulterStutz <coultercash@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+web3 = "^6.2.0"  # For Ethereum and EVM-compatible blockchains
+tronpy = "^0.2.5"  # For Tron blockchain
+solana = "^0.19.0"  # For Solana blockchain
+requests = "^2.28.1"  # General HTTP requests library for API interactions
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
