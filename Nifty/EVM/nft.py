@@ -1,7 +1,6 @@
 import json
 from enum import Enum
 from web3 import Web3
-from chains import EVM
 
 class ABI(Enum):
     ERC721 = json.load(open('EVM/erc721.json'))
@@ -20,3 +19,9 @@ class NFT:
 
     def get_balance(self, wallet_address: str) -> int:
         return self.contract.functions.balanceOf(wallet_address).call()
+
+    def get_token_uri(self, token_id: int) -> str:
+        return self.contract.functions.tokenURI(token_id).call()
+
+    def get_owner(self, token_id: int) -> str:
+        return self.contract.functions.ownerOf(token_id).call()
