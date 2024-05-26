@@ -19,6 +19,9 @@ class EVM(Enum):
     RSK = 30           # Rootstock (RSK)
     XDAI = 100         # Gnosis Chain (formerly xDai)
 
+class ABI(Enum):
+    ERC721 = json.load(open('EVM/erc721.json'))
+    ERC1155 = json.load(open('EVM/erc1155.json'))
 
 network_urls = {
     EVM.ETH: "https://eth.llamarpc.com",
@@ -40,11 +43,12 @@ network_urls = {
 }
 
 class NFT:
-    def __init__(self, contract_address:str, network:EVM=EVM.ETH, rpc_url:str=None, abi:str=None):
+    def __init__(self, contract_address:str, network:EVM=EVM.ETH, rpc_url:str=None, abi:ABI=ABI.ERC721):
         self.contract_address = contract_address
         self.network = network
+        self.abi = abi
         if rpc_url is None:
             self.web3 = Web3(Web3.HTTPProvider(network_urls[network]))
         else:
             self.web3 = Web3(Web3.HTTPProvider(rpc_url))
-
+        self.contract = self.web3.contract(self.contract_address, abi=abi)
