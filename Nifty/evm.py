@@ -21,7 +21,7 @@ class EVM(Enum):
 
 
 network_urls = {
-    EVM.ETH: "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+    EVM.ETH: "https://eth.llamarpc.com",
     EVM.BSC: "https://bsc-dataseed.binance.org/",
     EVM.POLYGON: "https://polygon-rpc.com/",
     EVM.AVALANCHE: "https://api.avax.network/ext/bc/C/rpc",
@@ -40,7 +40,7 @@ network_urls = {
 }
 
 class NFT:
-    def __init__(self, contract_address:str, network:EVM=EVM.ETH, rpc_url:str=None):
+    def __init__(self, contract_address:str, network:EVM=EVM.ETH, rpc_url:str=None, abi:str=None):
         self.contract_address = contract_address
         self.network = network
         if rpc_url is None:
