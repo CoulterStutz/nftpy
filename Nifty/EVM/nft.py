@@ -8,15 +8,15 @@ class ABI(Enum):
     ERC1155 = json.load(open('EVM/erc1155.json'))
 
 class NFT:
-    def __init__(self, contract_address:str, network:EVM=EVM.ETH, rpc_url:str=None, abi:ABI=ABI.ERC721):
+    def __init__(self, contract_address: str, network: EVM = EVM.ETH, rpc_url: str = None, abi: ABI = ABI.ERC721):
         self.contract_address = contract_address
         self.network = network
-        self.abi = abi
+        self.abi = abi.value
         if rpc_url is None:
-            self.web3 = Web3(Web3.HTTPProvider(network_urls[network]))
+            self.web3 = Web3(Web3.HTTPProvider(self.network.rpc_url))
         else:
             self.web3 = Web3(Web3.HTTPProvider(rpc_url))
-        self.contract = self.web3.contract(self.contract_address, abi=abi)
+        self.contract = self.web3.eth.contract(address=self.contract_address, abi=self.abi)
 
-    def get_balance(self, wallet_address:str) -> int:
+    def get_balance(self, wallet_address: str) -> int:
         return self.contract.functions.balanceOf(wallet_address).call()
