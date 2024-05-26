@@ -4,12 +4,16 @@ version = "1.0.0"
 description = "A NFT specific Python library for easy NFT integration in Python"
 authors = ["CoulterStutz <coultercash@gmail.com>"]
 readme = "README.md"
+license = "MIT"
+homepage = "https://github.com/coulterstutz/nftpy"
+repository = "https://github.com/coulterstutz/nftpy"
+documentation = "https://coulterstutz.github.io/nftpy"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-web3 = "^6.2.0"  # For Ethereum and EVM-compatible blockchains
-requests = "^2.28.1"  # General HTTP requests library for API interactions
+web3 = "^6.2.0"
+requests = "^2.28.1"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
