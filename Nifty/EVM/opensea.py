@@ -18,6 +18,30 @@ class OpenSea:
         else:
             response.raise_for_status()
 
+    def get_contract(self, chain, address):
+        url = f"https://api.opensea.io/api/v2/chain/{chain}/contract/{address}"
+        headers = {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+    def get_nft(self, chain, address, token_id):
+        url = f"https://api.opensea.io/api/v2/chain/{chain}/contract/{address}/nfts/{token_id}"
+        headers = {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
     def get_collection_stats(self):
         url = f"{self.base_url}/collection/{self.collection_slug}/stats"
         headers = {
