@@ -1,7 +1,7 @@
 from .opensea import OpenSea
-from .EVM import EVM, chains
+from .EVM import EVM
 
-__all__ = ["EVM", "chains", "OpenSea"]
+__all__ = ["EVM", "OpenSea"]
 __version__ = '1.0.0'
 __author__ = 'Coulter C. Stutz'
 __email__ = 'coulterstutz@gmail.com'
