@@ -78,6 +78,22 @@ class OpenSea:
         else:
             response.raise_for_status()
 
+    def get_all_listings_on_collection(self, chain, collection_slug, cursor=None, limit=50):
+        url = f"https://api.opensea.io/api/v2/chain/{chain}/collection/{collection_slug}/listings"
+        headers = {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
+        params = {
+            "cursor": cursor,
+            "limit": limit
+        }
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
     def list_nfts_by_account(self, chain, address, cursor=None, limit=50):
         url = f"https://api.opensea.io/api/v2/chain/{chain}/account/{address}/nfts"
         headers = {
