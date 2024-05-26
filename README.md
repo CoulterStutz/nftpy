@@ -1,5 +1,7 @@
 # NFTPy
 
+[![PyPi](https://img.shields.io/badge/PyPi-026ab5?style=flat&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
+
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
 
 ## Features
