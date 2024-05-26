@@ -97,36 +97,38 @@ class EVM(Enum):
         "rpc_url": "https://rpc.xdaichain.com/",
         "explorer_url": "https://blockscout.com/xdai/mainnet"
     }
-    HARMONY = {
-        "chain_id": 1666600000,
-        "name": "Harmony",
-        "rpc_url": "https://api.harmony.one",
-        "explorer_url": "https://explorer.harmony.one"
+    MUMBAI = {
+        "chain_id": 80001,
+        "name": "Mumbai",
+        "rpc_url": "https://rpc-mumbai.maticvigil.com",
+        "explorer_url": "https://mumbai.polygonscan.com"
     }
-    AURORA = {
-        "chain_id": 1313161554,
-        "name": "Aurora",
-        "rpc_url": "https://mainnet.aurora.dev",
-        "explorer_url": "https://aurorascan.dev"
+    GOERLI = {
+        "chain_id": 5,
+        "name": "Goerli",
+        "rpc_url": "https://rpc.goerli.mudit.blog",
+        "explorer_url": "https://goerli.etherscan.io"
     }
-    FUSE = {
-        "chain_id": 122,
-        "name": "Fuse",
-        "rpc_url": "https://rpc.fuse.io",
-        "explorer_url": "https://explorer.fuse.io"
+    BASE = {
+        "chain_id": 8453,
+        "name": "Base",
+        "rpc_url": "https://mainnet.base.org",
+        "explorer_url": "https://basescan.org"
     }
-    OKEX = {
-        "chain_id": 66,
-        "name": "OKExChain",
-        "rpc_url": "https://exchainrpc.okex.org",
-        "explorer_url": "https://www.oklink.com/okexchain"
+    BNB = {
+        "chain_id": 97,
+        "name": "BNB",
+        "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        "explorer_url": "https://testnet.bscscan.com"
     }
-    PALM = {
-        "chain_id": 11297108109,
-        "name": "Palm",
-        "rpc_url": "https://palm-mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
-        "explorer_url": "https://explorer.palm.io"
+    SCROLL_ALPHA = {
+        "chain_id": 534353,
+        "name": "Scroll Alpha",
+        "rpc_url": "https://alpha-rpc.scroll.io/l2",
+        "explorer_url": "https://blockscout.scroll.io"
     }
+
+    # ADD CUSTOM CHAINS HERE
 
     @property
     def chain_id(self):
