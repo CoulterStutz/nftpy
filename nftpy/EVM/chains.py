@@ -85,7 +85,7 @@ class Chains(Enum):
         "rpc_url": "https://mainnet.base.org",
         "explorer_url": "https://basescan.org"
     }
-    
+
     @property
     def chain_id(self):
         return self.value["chain_id"]
