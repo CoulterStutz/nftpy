@@ -55,12 +55,6 @@ class Chains(Enum):
         "rpc_url": "https://forno.celo.org",
         "explorer_url": "https://explorer.celo.org"
     }
-    HECO = {
-        "chain_id": 128,
-        "name": "Huobi ECO Chain",
-        "rpc_url": "https://http-mainnet.hecochain.com",
-        "explorer_url": "https://hecoinfo.com"
-    }
     CRONOS = {
         "chain_id": 25,
         "name": "Cronos",
