@@ -4,8 +4,8 @@ class NFTException(Exception):
 
 class InvalidRPCURL(NFTException):
     """Raised when an invalid RPC URL is provided."""
-    def __init__(self):
-        self.message = "Invalid RPC URL provided."
+    def __init__(self, url):
+        self.message = f"Invalid RPC URL provided! {url}"
         super().__init__(self.message)
 
 class ContractFunctionFailed(NFTException):
