@@ -49,12 +49,6 @@ class Chains(Enum):
         "rpc_url": "https://rpc.api.moonbeam.network",
         "explorer_url": "https://moonscan.io"
     }
-    KLAYTN = {
-        "chain_id": 8217,
-        "name": "Klaytn",
-        "rpc_url": "https://1rpc.io/klay",
-        "explorer_url": "https://scope.klaytn.com"
-    }
     CELO = {
         "chain_id": 42220,
         "name": "Celo",
