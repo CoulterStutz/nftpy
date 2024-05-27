@@ -26,14 +26,18 @@ NFTPy enables interaction with the Ethereum Virtual Machine (EVM) through RPC to
 
 NFTPy includes a built-in interface for interacting with OpenSea via an API key. This allows for in-package queries to OpenSea, enabling access to pricing information and other OpenSea-specific data. The OpenSea interface can be configured to focus on a single collection or query multiple collections. The available methods include:
 
+- **get_collection_stats**: Obtain statistics for a collection.
+- **list_events_by_nft**: List events related to a specific NFT.
 - **get_collection**: Fetch details of a specific collection.
 - **get_contract**: Retrieve details of a specific contract.
 - **get_nft**: Get details of a specific NFT.
-- **get_collection_stats**: Obtain statistics for a collection.
-- **list_events_by_nft**: List events related to a specific NFT.
 - **list_nfts_by_account**: List NFTs owned by a specific account.
 - **list_nfts_by_collection**: List NFTs in a specific collection.
 - **list_nfts_by_contract**: List NFTs under a specific contract.
+- **get_payment_token**: Get details of a specific payment token.
+- **get_traits**: Get traits of a specific collection.
+- **get_all_listings_on_collection**: Get all listings of a specific collection.
+
 
 # Example Usage
 ### Interacting on-chain with a collection | NFTPy.EVM.NFT
