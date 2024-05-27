@@ -43,10 +43,51 @@ class NFTWallet:
             connections.append((None, conn))
         return connections
 
-    def get_balance(self) -> dict:
+    def get_balance(self, chain: Chains = None) -> dict:
         balances = {}
-        for chain, conn in self._connections:
-            symbol = chain.name if chain else "Balance"
-            balance = conn.eth.get_balance(self._address)
-            balances[symbol] = Web3.fromWei(balance, 'ether')
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.isConnected():
+                balance = conn.eth.get_balance(self._address)
+                balances[chain.name] = Web3.fromWei(balance, 'ether')
+            else:
+                raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+        else:
+            for chain, conn in self._connections:
+                symbol = chain.name if chain else "Balance"
+                balance = conn.eth.get_balance(self._address)
+                balances[symbol] = Web3.fromWei(balance, 'ether')
         return balances
+
+    def get_transaction_history(self, limit: int = 10, chain: Chains = None) -> dict:
+        history = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.isConnected():
+                transactions = conn.eth.get_transaction_by_address(self._address, limit)
+                history[chain.name] = transactions
+            else:
+                raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+        else:
+            for chain, conn in self._connections:
+                if conn.isConnected():
+                    transactions = conn.eth.get_transaction_by_address(self._address, limit)
+                    history[chain.name] = transactions
+                else:
+                    raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+        return history
+
+    def get_gas_price(self, chain: Chains = None) -> dict:
+        gas_prices = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.isConnected():
+                gas_price = conn.eth.gas_price
+                gas_prices[chain.name] = gas_price
+            else:
+                raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+        else:
+            for chain, conn in self._connections:
+                gas_price = conn.eth.gas_price
+                gas_prices[chain.name] = gas_price
+        return gas_prices
