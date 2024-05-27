@@ -4,6 +4,8 @@ from .chains import Chains
 from .abi import ABI
 from enum import Enum
 from web3 import Web3
+from ..errors import *
+
 
 class NFT:
     def __init__(self, contract_address: str, network: Chains = Chains.ETH, rpc_url: str = None, abi: ABI = ABI.ERC721):
@@ -35,7 +37,10 @@ class NFT:
         Returns:
             int: The balance of tokens.
         """
-        return self.contract.functions.balanceOf(wallet_address).call()
+        try:
+            return self.contract.functions.balanceOf(wallet_address).call()
+        except Exception as e:
+            raise ContractFunctionFailed('balanceOf') from e
 
     def get_token_uri(self, token_id: int) -> str:
         """
@@ -47,7 +52,10 @@ class NFT:
         Returns:
             str: The URI of the token.
         """
-        return self.contract.functions.tokenURI(token_id).call()
+        try:
+            return self.contract.functions.tokenURI(token_id).call()
+        except Exception as e:
+            raise ContractFunctionFailed('tokenURI') from e
 
     def get_owner(self, token_id: int) -> str:
         """
@@ -59,7 +67,10 @@ class NFT:
         Returns:
             str: The address of the owner.
         """
-        return self.contract.functions.ownerOf(token_id).call()
+        try:
+            return self.contract.functions.ownerOf(token_id).call()
+        except Exception as e:
+            raise ContractFunctionFailed('ownerOf') from e
 
     def get_approved(self, token_id: int) -> str:
         """
@@ -71,7 +82,10 @@ class NFT:
         Returns:
             str: The address that is approved for the token.
         """
-        return self.contract.functions.getApproved(token_id).call()
+        try:
+            return self.contract.functions.getApproved(token_id).call()
+        except Exception as e:
+            raise ContractFunctionFailed('getApproved') from e
 
     def is_approved_for_all(self, owner_address: str, operator_address: str) -> bool:
         """
@@ -84,7 +98,10 @@ class NFT:
         Returns:
             bool: True if the operator is approved for all tokens, False otherwise.
         """
-        return self.contract.functions.isApprovedForAll(owner_address, operator_address).call()
+        try:
+            return self.contract.functions.isApprovedForAll(owner_address, operator_address).call()
+        except Exception as e:
+            raise ContractFunctionFailed('isApprovedForAll') from e
 
     def get_token_metadata(self, token_id: int) -> dict:
         """
@@ -97,9 +114,12 @@ class NFT:
         Returns:
             dict: The metadata of the token.
         """
-        token_uri = self.get_token_uri(token_id)
-        response = requests.get(token_uri)
-        return response.json()
+        try:
+            token_uri = self.get_token_uri(token_id)
+            response = requests.get(token_uri)
+            return response.json()
+        except Exception as e:
+            raise ContractFunctionFailed('get_token_metadata') from e
 
     def get_tokens_balance(self, wallet_address: str, token_ids: list) -> dict:
         """
@@ -112,8 +132,11 @@ class NFT:
         Returns:
             dict: A dictionary where the key is the token ID and the value is the balance.
         """
-        balances = self.contract.functions.balanceOfBatch([wallet_address] * len(token_ids), token_ids).call()
-        return {token_id: balance for token_id, balance in zip(token_ids, balances)}
+        try:
+            balances = self.contract.functions.balanceOfBatch([wallet_address] * len(token_ids), token_ids).call()
+            return {token_id: balance for token_id, balance in zip(token_ids, balances)}
+        except Exception as e:
+            raise ContractFunctionFailed('balanceOfBatch') from e
 
     def is_approved_for_all_erc1155(self, owner_address: str, operator_address: str) -> bool:
         """
@@ -126,7 +149,10 @@ class NFT:
         Returns:
             bool: True if the operator is approved for all tokens, False otherwise.
         """
-        return self.contract.functions.isApprovedForAll(owner_address, operator_address).call()
+        try:
+            return self.contract.functions.isApprovedForAll(owner_address, operator_address).call()
+        except Exception as e:
+            raise ContractFunctionFailed('isApprovedForAll') from e
 
     def get_token_balance(self, wallet_address: str, token_id: int) -> int:
         """
@@ -139,4 +165,7 @@ class NFT:
         Returns:
             int: The balance of the token.
         """
-        return self.contract.functions.balanceOf(wallet_address, token_id).call()
+        try:
+            return self.contract.functions.balanceOf(wallet_address, token_id).call()
+        except Exception as e:
+            raise ContractFunctionFailed('balanceOf') from e

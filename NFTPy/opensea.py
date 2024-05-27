@@ -1,5 +1,6 @@
 import requests
 from enum import Enum
+from errors import APIRequestFailed, MissingChain, MissingSlug
 
 class OpenSeaChain(Enum):
     ETHEREUM = "ethereum"
@@ -14,7 +15,7 @@ class OpenSeaChain(Enum):
     SCROLL_ALPHA = "scroll_alpha"
 
 class OpenSea:
-    def __init__(self, api_key: str, chain: Chain = None, collection_slug: str = None):
+    def __init__(self, api_key: str, chain: OpenSeaChain = None, collection_slug: str = None):
         self.api_key = api_key
         self.chain = chain
         self.collection_slug = collection_slug
@@ -23,7 +24,7 @@ class OpenSea:
     def get_collection_stats(self, collection_slug: str = None):
         collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
-            raise ValueError("Collection slug must be provided.")
+            raise MissingSlug()
         url = f"{self.base_url}/collection/{collection_slug}/stats"
         headers = {
             "Accept": "application/json",
@@ -33,12 +34,12 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
-    def list_events_by_nft(self, address: str, token_id: str, chain: Chain = None, event_type: str = None, only_opensea: bool = False, auction_type: str = None, occurred_before: str = None, occurred_after: str = None, cursor: str = None, limit: int = 50):
+    def list_events_by_nft(self, address: str, token_id: str, chain: OpenSeaChain = None, event_type: str = None, only_opensea: bool = False, auction_type: str = None, occurred_before: str = None, occurred_after: str = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
         if chain is None:
-            raise ValueError("Chain must be provided.")
+            raise MissingChain()
         url = f"{self.base_url}/events/chain/{chain.value}/contract/{address}/nfts/{token_id}"
         headers = {
             "Accept": "application/json",
@@ -57,12 +58,12 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
     def get_collection(self, collection_slug: str = None):
         collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
-            raise ValueError("Collection slug must be provided.")
+            raise MissingSlug()
         url = f"{self.base_url}/collection/{collection_slug}"
         headers = {
             "Accept": "application/json",
@@ -72,12 +73,12 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
-    def get_contract(self, address: str, chain: Chain = None):
+    def get_contract(self, address: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
         if chain is None:
-            raise ValueError("Chain must be provided.")
+            raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/contract/{address}"
         headers = {
             "Accept": "application/json",
@@ -87,12 +88,12 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
-    def get_nft(self, address: str, token_id: str, chain: Chain = None):
+    def get_nft(self, address: str, token_id: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
         if chain is None:
-            raise ValueError("Chain must be provided.")
+            raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/contract/{address}/nfts/{token_id}"
         headers = {
             "Accept": "application/json",
@@ -102,12 +103,12 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
-    def list_nfts_by_account(self, address: str, chain: Chain = None, cursor: str = None, limit: int = 50):
+    def list_nfts_by_account(self, address: str, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
         if chain is None:
-            raise ValueError("Chain must be provided.")
+            raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/account/{address}/nfts"
         headers = {
             "Accept": "application/json",
@@ -121,15 +122,15 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
-    def list_nfts_by_collection(self, collection_slug: str = None, chain: Chain = None, cursor: str = None, limit: int = 50):
+    def list_nfts_by_collection(self, collection_slug: str = None, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         collection_slug = collection_slug or self.collection_slug
         chain = chain or self.chain
         if collection_slug is None:
-            raise ValueError("Collection slug must be provided.")
+            raise MissingSlug()
         if chain is None:
-            raise ValueError("Chain must be provided.")
+            raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/collection/{collection_slug}/nfts"
         headers = {
             "Accept": "application/json",
@@ -143,12 +144,12 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
-    def list_nfts_by_contract(self, contract_address: str, chain: Chain = None, cursor: str = None, limit: int = 50):
+    def list_nfts_by_contract(self, contract_address: str, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
         if chain is None:
-            raise ValueError("Chain must be provided.")
+            raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/contract/{contract_address}/nfts"
         headers = {
             "Accept": "application/json",
@@ -162,12 +163,12 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
-    def get_payment_token(self, address: str, chain: Chain = None):
+    def get_payment_token(self, address: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
         if chain is None:
-            raise ValueError("Chain must be provided.")
+            raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/payment_token/{address}"
         headers = {
             "Accept": "application/json",
@@ -177,12 +178,12 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
     def get_traits(self, collection_slug: str = None):
         collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
-            raise ValueError("Collection slug must be provided.")
+            raise MissingSlug()
         url = f"{self.base_url}/collection/{collection_slug}/traits"
         headers = {
             "Accept": "application/json",
@@ -192,15 +193,15 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
 
-    def get_all_listings_on_collection(self, collection_slug: str = None, chain: Chain = None, cursor: str = None, limit: int = 50):
+    def get_all_listings_on_collection(self, collection_slug: str = None, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         collection_slug = collection_slug or self.collection_slug
         chain = chain or self.chain
         if collection_slug is None:
-            raise ValueError("Collection slug must be provided.")
+            raise MissingSlug()
         if chain is None:
-            raise ValueError("Chain must be provided.")
+            raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/collection/{collection_slug}/listings"
         headers = {
             "Accept": "application/json",
@@ -214,4 +215,4 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            response.raise_for_status()
+            raise APIRequestFailed(response.status_code)
