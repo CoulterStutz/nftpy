@@ -85,21 +85,7 @@ class Chains(Enum):
         "rpc_url": "https://mainnet.base.org",
         "explorer_url": "https://basescan.org"
     }
-    BNB = {
-        "chain_id": 97,
-        "name": "BNB",
-        "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
-        "explorer_url": "https://testnet.bscscan.com"
-    }
-    SCROLL_ALPHA = {
-        "chain_id": 534353,
-        "name": "Scroll Alpha",
-        "rpc_url": "https://alpha-rpc.scroll.io/l2",
-        "explorer_url": "https://blockscout.scroll.io"
-    }
-
-    # ADD CUSTOM CHAINS HERE
-
+    
     @property
     def chain_id(self):
         return self.value["chain_id"]
