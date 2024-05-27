@@ -52,7 +52,7 @@ class Chains(Enum):
     KLAYTN = {
         "chain_id": 8217,
         "name": "Klaytn",
-        "rpc_url": "https://public-node-api.klaytnapi.com/v1/cypress",
+        "rpc_url": "https://1rpc.io/klay",
         "explorer_url": "https://scope.klaytn.com"
     }
     CELO = {
