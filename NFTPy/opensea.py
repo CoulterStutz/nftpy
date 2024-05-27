@@ -1,7 +1,7 @@
 import requests
 from enum import Enum
 
-class Chain(Enum):
+class OpenSeaChain(Enum):
     ETHEREUM = "ethereum"
     POLYGON = "polygon"
     KLAYTN = "klaytn"

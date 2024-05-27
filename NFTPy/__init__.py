@@ -1,4 +1,4 @@
-from .opensea import OpenSea
+from .opensea import OpenSea, OpenSeaChain
 from .EVM import NFT
 
 __all__ = ["EVM", "OpenSea"]
