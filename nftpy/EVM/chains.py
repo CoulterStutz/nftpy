@@ -79,18 +79,6 @@ class Chains(Enum):
         "rpc_url": "https://public-node.rsk.co",
         "explorer_url": "https://explorer.rsk.co"
     }
-    MUMBAI = {
-        "chain_id": 80001,
-        "name": "Mumbai",
-        "rpc_url": "https://rpc-mumbai.maticvigil.com",
-        "explorer_url": "https://mumbai.polygonscan.com"
-    }
-    GOERLI = {
-        "chain_id": 5,
-        "name": "Goerli",
-        "rpc_url": "https://rpc.goerli.mudit.blog",
-        "explorer_url": "https://goerli.etherscan.io"
-    }
     BASE = {
         "chain_id": 8453,
         "name": "Base",
