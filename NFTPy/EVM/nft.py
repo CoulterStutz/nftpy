@@ -86,7 +86,7 @@ class NFT:
         """
         return self.contract.functions.isApprovedForAll(owner_address, operator_address).call()
 
-    def get_metadata(self, token_id: int) -> dict:
+    def get_token_metadata(self, token_id: int) -> dict:
         """
         Get the metadata for a specific ERC721 token.
         This assumes the tokenURI returns a URL that points to a JSON metadata file.
