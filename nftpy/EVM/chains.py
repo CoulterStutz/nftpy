@@ -79,12 +79,6 @@ class Chains(Enum):
         "rpc_url": "https://public-node.rsk.co",
         "explorer_url": "https://explorer.rsk.co"
     }
-    XDAI = {
-        "chain_id": 100,
-        "name": "Gnosis Chain (formerly xDai)",
-        "rpc_url": "https://rpc.xdaichain.com/",
-        "explorer_url": "https://blockscout.com/xdai/mainnet"
-    }
     MUMBAI = {
         "chain_id": 80001,
         "name": "Mumbai",
