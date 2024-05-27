@@ -1,6 +1,6 @@
 import requests
 from enum import Enum
-from errors import APIRequestFailed, MissingChain, MissingSlug
+from .errors import APIRequestFailed, MissingChain, MissingSlug
 
 class OpenSeaChain(Enum):
     ETHEREUM = "ethereum"
