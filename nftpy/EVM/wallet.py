@@ -5,37 +5,48 @@ from ..errors import *
 
 
 class NFTWallet:
-    def __init__(self, private_key, chain:Chains=None, rpc_url:str=None):
+    def __init__(self, private_key, chains: list[Chains] = None, rpc_url: str = None):
         self._private_key = private_key
-        self.chain = chain
+        self.chains = chains or []
         self._rpc_url = rpc_url
-        self._connections = []
+        self._address = self._get_address_from_private_key()
+        self._connections = self._connect_to_chains()
 
-        self._connect_to_chains()
+    def _get_address_from_private_key(self):
+        account = Web3().eth.account.privateKeyToAccount(self._private_key)
+        return account.address
 
     def _connect_to_chains(self):
-        if self.chain == None and self._rpc_url == None:
-            for x in Chains:
-                conn = Web3(Web3.HTTPProvider(x.rpc_url))
-                if not conn.is_connected():
-                    raise InvalidRPCURL(url=x.rpc_url, chain=x.name)
-                else:
-                    self._connections.append(conn)
-        elif self.chain != None and self._rpc_url == None:
-            conn = Web3(Web3.HTTPProvider(self.chain.rpc_url))
-            if not conn.is_connected():
-                raise InvalidRPCURL(url=self.chain.rpc_url, chain=self.chain.name)
-            else:
-                self._connections.append(conn)
-        elif self.chain != None and self._rpc_url != None:
+        connections = []
+        if not self.chains and not self._rpc_url:
+            for chain in Chains:
+                conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+                if not conn.isConnected():
+                    raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+                connections.append((chain, conn))
+        elif self.chains and not self._rpc_url:
+            for chain in self.chains:
+                conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+                if not conn.isConnected():
+                    raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+                connections.append((chain, conn))
+        elif self.chains and self._rpc_url:
+            for chain in self.chains:
+                conn = Web3(Web3.HTTPProvider(self._rpc_url))
+                if not conn.isConnected():
+                    raise InvalidRPCURL(url=self._rpc_url, chain=chain.name)
+                connections.append((chain, conn))
+        elif not self.chains and self._rpc_url:
             conn = Web3(Web3.HTTPProvider(self._rpc_url))
-            if not conn.is_connected():
-                raise InvalidRPCURL(url=self._rpc_url, chain=self.chain.name)
-            else:
-                self._connections.append(conn)
-        elif self.chain == None and self._rpc_url != None:
-            conn = Web3(Web3.HTTPProvider(self._rpc_url))
-            if not conn.is_connected():
+            if not conn.isConnected():
                 raise InvalidRPCURL(url=self._rpc_url)
-            else:
-                self._connections.append(conn)
+            connections.append((None, conn))
+        return connections
+
+    def get_balance(self) -> dict:
+        balances = {}
+        for chain, conn in self._connections:
+            symbol = chain.name if chain else "Balance"
+            balance = conn.eth.get_balance(self._address)
+            balances[symbol] = Web3.fromWei(balance, 'ether')
+        return balances
