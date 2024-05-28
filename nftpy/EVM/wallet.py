@@ -87,7 +87,6 @@ class NFTWallet:
             raise InvalidRPCURL(chain.rpc_url, chain.name)
 
         contract = conn.eth.contract(address=contract_address, abi=abi.value)
-        gas_price = Web3.to_wei(gas_price_gwei, 'gwei')
 
         nonce = conn.eth.get_transaction_count(self._address)
         tx = {
@@ -95,10 +94,10 @@ class NFTWallet:
             'to': contract_address,
             'value': 0,
             'gas': gas_limit,
-            'gasPrice': gas_price,
-            'data': contract.functions.transferFrom(self._address, to, amount).build_transaction({
+            'gasPrice': Web3.to_wei(gas_price_gwei, 'gwei'),
+            'data': contract.functions.safeTransferFrom(self._address, to, amount, b'').build_transaction({
                 'gas': gas_limit,
-                'gasPrice': gas_price
+                'gasPrice': Web3.to_wei(gas_price_gwei, 'gwei')
             })['data'],
         }
 
