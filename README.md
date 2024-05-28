@@ -119,42 +119,51 @@ print(f'Is Approved For All (ERC1155): {is_approved_erc1155}')
 ```
 
 ### Interacting with a Wallet | NFTPy.NFTWallet
-#### Sending a Transaction with Private Key
+
 Creating an instance of `NFTWallet` requires either a private key for full access or just an address for read-only access. You can also specify multiple chains to connect to different networks simultaneously.
 
 ```python
 from nftpy import *
 
 # Initialize the wallet with a private key and specify chains
-wallet = NFTWallet(private_key="your_private_key", chains=[Chains.ETH_SEPOLIA])
+wallet = NFTWallet(private_key="0x9015a0eb4c1ceab5f5544ac6e0a75eabb37d7dec26f1dfcb09adb43632330736", chains=[Chains.ETH_SEPOLIA])
 
 # Get the balance of the wallet in Ether
 print(wallet.get_balance()) 
-# Output: {"Balances": {'Sepolia Testnet': Decimal('1.234567890123456789')}}
+# Output: {"Balances": {'Sepolia Testnet': Decimal('0.8341469847291797')}}
 
 # Get the balance of the wallet in Wei
 print(wallet.get_balance_wei()) 
-# Output: {"Balances": {'Sepolia Testnet': 1234567890123456789}}
+# Output: {"Balances": {'Sepolia Testnet': 834146984729179700}}
 
 # Get the current gas price in Wei
 print(wallet.get_gas_price_wei()) 
-# Output: {'Sepolia Testnet': 30000000000}
+# Output: {'Sepolia Testnet': 20000000000}
 
 # Get the current gas price in Gwei
 print(wallet.get_gas_price_gwei()) 
-# Output: {'Sepolia Testnet': Decimal('30')}
+# Output: {'Sepolia Testnet': Decimal('20')}
 
 # Transfer an NFT to another wallet
-to_wallet = "0xb1234567890abcdef1234567890abcdef1234567"
-contract = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef"
+to_wallet = "0xa693190103733280E23055BE70C838d9b6708b9a"
+contract = "0x725Ea5eEA79F1515e34A921b83D4307b325cC8b9"
 gas_price = wallet.get_gas_price_gwei()["Sepolia Testnet"]
-gas_limit = 70000   # Disclaimer! Gas Limit set for Sepolia, WILL fail on other networks
+gas_limit = 65000   # Disclaimer! Gas Limit set for Sepolia, WILL fail on other networks
 
 # Transfer the NFT and get the transaction hash and explorer URL
 print(wallet.transfer_nft(to=to_wallet, contract_address=contract, amount=1, gas_limit=gas_limit,
                           gas_price_gwei=gas_price, abi=ABI.OPENSEA_ERC1155, token_id=1))
-# Output: {'transaction_hash': '0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef', 'explorer_url': 'https://sepolia.etherscan.io/tx/0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef'}
+# Output: {'transaction_hash': '0x18a076a4a30c1cc014b1620aa907db06a04e8a709bda47e9beed2233a23f532f', 'explorer_url': 'https://sepolia.etherscan.io/tx/0x18a076a4a30c1cc014b1620aa907db06a04e8a709bda47e9beed2233a23f532f'}
 ```
+#### Waiting For The Transaction To Process
+After we get the transaction hash, we can have the program delay until the transaction processes on the blockchain.
+```python
+# Wait until the transaction is processed
+transaction_hash = "0xcd74c93bbf42cae24f329c45da995bde7e1c89ea848855d04db516c6460eda02"
+print(wallet.wait_until_transaction_processes(transaction_hash, chain=Chains.ETH_SEPOLIA))
+# Output: True | When the transaction fully processes on the blockchain
+```
+
 #### Read-Only Wallets
 When using a read-only address (i.e., only providing an address and not a private key), you can still interact with the blockchain to query information, but you will not be able to perform transactions. This is useful for monitoring wallets and retrieving data without the need for sensitive credentials.
 ```python
