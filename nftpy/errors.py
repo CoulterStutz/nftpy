@@ -2,7 +2,7 @@ class NFTException(Exception):
     """Base class for exceptions in NFT class."""
     pass
 
-class InvalidRPCURL(NFTException):
+class InvalidRPCURLError(NFTException):
     """Raised when an invalid RPC URL is provided."""
     def __init__(self, url, chain=None):
         if chain is None:
@@ -11,7 +11,7 @@ class InvalidRPCURL(NFTException):
             self.message = f"Invalid RPC URL provided for {chain}! {url}"
         super().__init__(self.message)
 
-class ContractFunctionFailed(NFTException):
+class ContractFunctionFailedError(NFTException):
     """Raised when a contract function call fails."""
     def __init__(self, function_name):
         self.message = f"Contract function '{function_name}' call failed."
