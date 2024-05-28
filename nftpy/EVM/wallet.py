@@ -73,7 +73,7 @@ class NFTWallet:
             for chain, conn in self._connections:
                 gas_price = conn.eth.gas_price
                 gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
-        return {"Gas Prices (Gwei)": gas_prices}
+        return gas_prices
 
     def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price_gwei: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
         if not self._private_key:
