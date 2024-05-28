@@ -58,7 +58,7 @@ class NFTWallet:
                 symbol = chain.name if chain else "Balance"
                 balance = conn.eth.get_balance(self._address)
                 balances[symbol] = Web3.from_wei(balance, 'ether')
-        return balances
+        return {"Balances": balances}
 
     def get_gas_price(self, chain: Chains = None) -> dict:
         gas_prices = {}
@@ -66,16 +66,16 @@ class NFTWallet:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 gas_price = conn.eth.gas_price
-                gas_prices[chain.name] = gas_price
+                gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 gas_price = conn.eth.gas_price
-                gas_prices[chain.name] = gas_price
-        return gas_prices
+                gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
+        return {"Gas Prices (Gwei)": gas_prices}
 
-    def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
+    def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price_gwei: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
         if not self._private_key:
             raise WalletReadOnlyError()
         if chain is None and not self.chains:
@@ -87,6 +87,7 @@ class NFTWallet:
             raise InvalidRPCURL(chain.rpc_url, chain.name)
 
         contract = conn.eth.contract(address=contract_address, abi=abi.value)
+        gas_price = Web3.to_wei(gas_price_gwei, 'gwei')
 
         nonce = conn.eth.get_transaction_count(self._address)
         tx = {
