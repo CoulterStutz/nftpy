@@ -58,7 +58,7 @@ class MissingChainError(OpenSeaException):
         self.message = "Chain must be provided."
         super().__init__(self.message)
 
-class APIRequestFailed(OpenSeaException):
+class APIRequestFailedError(OpenSeaException):
     """Raised when an API request fails."""
     def __init__(self, status_code):
         self.message = f"API request failed with status code {status_code}."

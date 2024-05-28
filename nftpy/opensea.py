@@ -1,6 +1,6 @@
 import requests
 from enum import Enum
-from .errors import APIRequestFailed, MissingChainError, MissingSlugError
+from .errors import APIRequestFailedError, MissingChainError, MissingSlugError
 
 class OpenSeaChain(Enum):
     ETHEREUM = "ethereum"
@@ -34,7 +34,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def list_events_by_nft(self, address: str, token_id: str, chain: OpenSeaChain = None, event_type: str = None, only_opensea: bool = False, auction_type: str = None, occurred_before: str = None, occurred_after: str = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
@@ -58,7 +58,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def get_collection(self, collection_slug: str = None):
         collection_slug = collection_slug or self.collection_slug
@@ -73,7 +73,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def get_contract(self, address: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
@@ -88,7 +88,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def get_nft(self, address: str, token_id: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
@@ -103,7 +103,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def list_nfts_by_account(self, address: str, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
@@ -122,7 +122,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def list_nfts_by_collection(self, collection_slug: str = None, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         collection_slug = collection_slug or self.collection_slug
@@ -144,7 +144,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def list_nfts_by_contract(self, contract_address: str, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
@@ -163,7 +163,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def get_payment_token(self, address: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
@@ -178,7 +178,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def get_traits(self, collection_slug: str = None):
         collection_slug = collection_slug or self.collection_slug
@@ -193,7 +193,7 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
 
     def get_all_listings_on_collection(self, collection_slug: str = None, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         collection_slug = collection_slug or self.collection_slug
@@ -215,4 +215,4 @@ class OpenSea:
         if response.status_code == 200:
             return response.json()
         else:
-            raise APIRequestFailed(response.status_code)
+            raise APIRequestFailedError(response.status_code)
