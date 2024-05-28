@@ -3,7 +3,6 @@ from .abi import ABI
 from .chains import Chains
 from ..errors import *
 
-
 class NFTWallet:
     def __init__(self, private_key: str = None, address: str = None, chains: list[Chains] = None, rpc_url: str = None):
         if not private_key and not address:
@@ -15,7 +14,7 @@ class NFTWallet:
         self._connections = self._connect_to_chains()
 
     def _get_address_from_private_key(self):
-        account = Web3().eth.account.privateKeyToAccount(self._private_key)
+        account = Web3().eth.account.from_key(self._private_key)
         return account.address
 
     def _connect_to_chains(self):
@@ -89,14 +88,14 @@ class NFTWallet:
 
         contract = conn.eth.contract(address=contract_address, abi=abi.value)
 
-        nonce = conn.eth.getTransactionCount(self._address)
+        nonce = conn.eth.get_transaction_count(self._address)
         tx = {
             'nonce': nonce,
             'to': contract_address,
             'value': 0,
             'gas': gas_limit,
             'gasPrice': gas_price,
-            'data': contract.functions.transferFrom(self._address, to, amount).buildTransaction({
+            'data': contract.functions.transferFrom(self._address, to, amount).build_transaction({
                 'gas': gas_limit,
                 'gasPrice': gas_price
             })['data'],
