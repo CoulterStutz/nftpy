@@ -7,7 +7,7 @@ from ..errors import *
 class NFTWallet:
     def __init__(self, private_key: str = None, address: str = None, chains: list[Chains] = None, rpc_url: str = None):
         if not private_key and not address:
-            raise MissingCredentialsError()
+            raise NoCredentialsProvidedError()
         self._private_key = private_key
         self._address = address or self._get_address_from_private_key()
         self.chains = chains or []
