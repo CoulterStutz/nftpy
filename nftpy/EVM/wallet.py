@@ -180,7 +180,10 @@ class NFTWallet:
             else:
                 raise e
 
-    def wait_until_transaction_processes(self, tx_hash: str, chain: Chains) -> bool:
+    def wait_until_transaction_processes(self, tx_hash, chain: Chains) -> bool:
+        if isinstance(tx_hash, str):
+            tx_hash = Web3.toBytes(hexstr=tx_hash)
+
         conn = Web3(Web3.HTTPProvider(chain.rpc_url))
         if not conn.is_connected():
             raise InvalidRPCURL(chain.rpc_url, chain.name)
