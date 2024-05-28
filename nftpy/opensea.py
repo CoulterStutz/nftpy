@@ -1,6 +1,6 @@
 import requests
 from enum import Enum
-from .errors import APIRequestFailed, MissingChain, MissingSlug
+from .errors import APIRequestFailed, MissingChain, MissingSlugError
 
 class OpenSeaChain(Enum):
     ETHEREUM = "ethereum"
@@ -24,7 +24,7 @@ class OpenSea:
     def get_collection_stats(self, collection_slug: str = None):
         collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
-            raise MissingSlug()
+            raise MissingSlugError()
         url = f"{self.base_url}/collection/{collection_slug}/stats"
         headers = {
             "Accept": "application/json",
@@ -63,7 +63,7 @@ class OpenSea:
     def get_collection(self, collection_slug: str = None):
         collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
-            raise MissingSlug()
+            raise MissingSlugError()
         url = f"{self.base_url}/collection/{collection_slug}"
         headers = {
             "Accept": "application/json",
@@ -128,7 +128,7 @@ class OpenSea:
         collection_slug = collection_slug or self.collection_slug
         chain = chain or self.chain
         if collection_slug is None:
-            raise MissingSlug()
+            raise MissingSlugError()
         if chain is None:
             raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/collection/{collection_slug}/nfts"
@@ -183,7 +183,7 @@ class OpenSea:
     def get_traits(self, collection_slug: str = None):
         collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
-            raise MissingSlug()
+            raise MissingSlugError()
         url = f"{self.base_url}/collection/{collection_slug}/traits"
         headers = {
             "Accept": "application/json",
@@ -199,7 +199,7 @@ class OpenSea:
         collection_slug = collection_slug or self.collection_slug
         chain = chain or self.chain
         if collection_slug is None:
-            raise MissingSlug()
+            raise MissingSlugError()
         if chain is None:
             raise MissingChain()
         url = f"{self.base_url}/chain/{chain.value}/collection/{collection_slug}/listings"

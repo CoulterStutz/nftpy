@@ -46,7 +46,7 @@ class OpenSeaException(Exception):
     """Base class for exceptions in OpenSea class."""
     pass
 
-class MissingSlug(OpenSeaException):
+class MissingSlugError(OpenSeaException):
     """Raised when a collection slug is required but not provided."""
     def __init__(self):
         self.message = "Collection slug must be provided."
