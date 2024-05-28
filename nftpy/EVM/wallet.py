@@ -3,7 +3,6 @@ from .abi import ABI
 from .chains import Chains
 from ..errors import *
 
-
 class NFTWallet:
     def __init__(self, private_key: str = None, address: str = None, chains: list[Chains] = None, rpc_url: str = None):
         if not private_key and not address:
@@ -46,20 +45,20 @@ class NFTWallet:
         return connections
 
     def get_balance(self, chain: Chains = None) -> dict:
-        balances = {"Balances": {}}
+        balances = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 balance = conn.eth.get_balance(self._address)
-                balances["Balances"][chain.name] = Web3.from_wei(balance, 'ether')
+                balances[chain.name] = Web3.from_wei(balance, 'ether')
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 symbol = chain.name if chain else "Balance"
                 balance = conn.eth.get_balance(self._address)
-                balances["Balances"][symbol] = Web3.from_wei(balance, 'ether')
-        return balances
+                balances[symbol] = Web3.from_wei(balance, 'ether')
+        return {"Balances": balances}
 
     def get_gas_price(self, chain: Chains = None) -> dict:
         gas_prices = {}
@@ -100,6 +99,7 @@ class NFTWallet:
                 'gas': gas_limit,
                 'gasPrice': Web3.to_wei(gas_price_gwei, 'gwei')
             })['data'],
+            'chainId': chain.chain_id
         }
 
         signed_tx = conn.eth.account.sign_transaction(tx, private_key=self._private_key)
