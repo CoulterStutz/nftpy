@@ -29,12 +29,12 @@ class TransactionBalanceError(NFTException):
         self.message = "Transaction failed due to insufficient balance."
         super().__init__(self.message)
 
-    class WalletReadOnlyError(NFTException):
-        """Raised when a transaction fails due to insufficient balance."""
+class WalletReadOnlyError(NFTException):
+    """Raised when a transaction fails due to insufficient balance."""
 
-        def __init__(self):
-            self.message = "Transaction failed due to insufficient balance."
-            super().__init__(self.message)
+    def __init__(self):
+        self.message = "Transaction failed due to insufficient balance."
+        super().__init__(self.message)
 
 class NoCredentialsProvidedError(NFTException):
     """Raised when neither private_key nor address is provided."""
