@@ -2,7 +2,7 @@ class NFTException(Exception):
     """Base class for exceptions in NFT class."""
     pass
 
-class InvalidRPCURLError(NFTException):
+class InvalidRPCURL(NFTException):
     """Raised when an invalid RPC URL is provided."""
     def __init__(self, url, chain=None):
         if chain is None:

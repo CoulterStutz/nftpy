@@ -5,11 +5,13 @@ from ..errors import *
 
 
 class NFTWallet:
-    def __init__(self, private_key, chains: list[Chains] = None, rpc_url: str = None):
+    def __init__(self, private_key: str = None, address: str = None, chains: list[Chains] = None, rpc_url: str = None):
+        if not private_key and not address:
+            raise MissingCredentialsError()
         self._private_key = private_key
+        self._address = address or self._get_address_from_private_key()
         self.chains = chains or []
         self._rpc_url = rpc_url
-        self._address = self._get_address_from_private_key()
         self._connections = self._connect_to_chains()
 
     def _get_address_from_private_key(self):
@@ -21,25 +23,25 @@ class NFTWallet:
         if not self.chains and not self._rpc_url:
             for chain in Chains:
                 conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-                if not conn.isConnected():
-                    raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+                if not conn.is_connected():
+                    raise InvalidRPCURL(chain.rpc_url, chain.name)
                 connections.append((chain, conn))
         elif self.chains and not self._rpc_url:
             for chain in self.chains:
                 conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-                if not conn.isConnected():
-                    raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+                if not conn.is_connected():
+                    raise InvalidRPCURL(chain.rpc_url, chain.name)
                 connections.append((chain, conn))
         elif self.chains and self._rpc_url:
             for chain in self.chains:
                 conn = Web3(Web3.HTTPProvider(self._rpc_url))
-                if not conn.isConnected():
-                    raise InvalidRPCURL(url=self._rpc_url, chain=chain.name)
+                if not conn.is_connected():
+                    raise InvalidRPCURL(self._rpc_url, chain.name)
                 connections.append((chain, conn))
         elif not self.chains and self._rpc_url:
             conn = Web3(Web3.HTTPProvider(self._rpc_url))
-            if not conn.isConnected():
-                raise InvalidRPCURL(url=self._rpc_url)
+            if not conn.is_connected():
+                raise InvalidRPCURL(self._rpc_url)
             connections.append((None, conn))
         return connections
 
@@ -47,11 +49,11 @@ class NFTWallet:
         balances = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-            if conn.isConnected():
+            if conn.is_connected():
                 balance = conn.eth.get_balance(self._address)
                 balances[chain.name] = Web3.fromWei(balance, 'ether')
             else:
-                raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 symbol = chain.name if chain else "Balance"
@@ -63,29 +65,29 @@ class NFTWallet:
         history = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-            if conn.isConnected():
+            if conn.is_connected():
                 transactions = conn.eth.get_transaction_by_address(self._address, limit)
                 history[chain.name] = transactions
             else:
-                raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
-                if conn.isConnected():
+                if conn.is_connected():
                     transactions = conn.eth.get_transaction_by_address(self._address, limit)
                     history[chain.name] = transactions
                 else:
-                    raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+                    raise InvalidRPCURL(chain.rpc_url, chain.name)
         return history
 
     def get_gas_price(self, chain: Chains = None) -> dict:
         gas_prices = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-            if conn.isConnected():
+            if conn.is_connected():
                 gas_price = conn.eth.gas_price
                 gas_prices[chain.name] = gas_price
             else:
-                raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 gas_price = conn.eth.gas_price
@@ -93,24 +95,26 @@ class NFTWallet:
         return gas_prices
 
     def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
-        if chain is None and self.chain is None:
-            raise InvalidRPCURL(url="None", chain="None")
-        chain = chain or self.chain
+        if not self._private_key:
+            raise PermissionError("Private key is required for transactions.")
+        if chain is None and not self.chains:
+            raise InvalidRPCURL("None", "None")
+        chain = chain or self.chains[0]
 
         conn = Web3(Web3.HTTPProvider(chain.rpc_url))
         if not conn.is_connected():
-            raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+            raise InvalidRPCURL(chain.rpc_url, chain.name)
 
         contract = conn.eth.contract(address=contract_address, abi=abi.value)
 
-        nonce = conn.eth.getTransactionCount(self.address)
+        nonce = conn.eth.getTransactionCount(self._address)
         tx = {
             'nonce': nonce,
             'to': contract_address,
             'value': 0,
             'gas': gas_limit,
             'gasPrice': gas_price,
-            'data': contract.functions.transferFrom(self.address, to, amount).buildTransaction({
+            'data': contract.functions.transferFrom(self._address, to, amount).buildTransaction({
                 'gas': gas_limit,
                 'gasPrice': gas_price
             })['data'],
