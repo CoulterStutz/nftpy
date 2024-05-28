@@ -55,7 +55,7 @@ class MissingSlugError(OpenSeaException):
 class MissingChainError(OpenSeaException):
     """Raised when a chain is required but not provided."""
     def __init__(self):
-        self.message = "Chain must be provided."
+        self.message = "Chain or RPC URL must be provided."
         super().__init__(self.message)
 
 class APIRequestFailedError(OpenSeaException):
