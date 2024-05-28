@@ -31,6 +31,10 @@ NFTPy includes comprehensive features for interacting with Ethereum wallets, inc
 - **get_gas_price_gwei**: Fetch the current gas price in Gwei.
 - **transfer_nft**: Transfer an NFT from the wallet to another address.
 - **wait_until_transaction_processes**: Delays the program until the transaction has fully processed in the blockchain
+- **get_transaction_count**: Get the number of transactions sent from the wallet.
+- **estimate_gas**: Estimate the gas required for a transaction.
+- **is_synced**: Check if the blockchain is synced.
+- **get_latest_block**: Get the latest block on the blockchain.
 
 #### Built-in OpenSea Interface
 ![OpenSea Support](https://img.shields.io/badge/OpenSea-%232081E2.svg?style=for-the-badge&logo=opensea&logoColor=white)
