@@ -44,6 +44,22 @@ class NFTWallet:
             connections.append((None, conn))
         return connections
 
+    def get_balance_wei(self, chain: Chains = None) -> dict:
+        balances = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                balance = conn.eth.get_balance(self._address)
+                balances[chain.name] = balance
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                symbol = chain.name if chain else "Balance"
+                balance = conn.eth.get_balance(self._address)
+                balances[symbol] = balance
+        return balances
+
     def get_balance(self, chain: Chains = None) -> dict:
         balances = {}
         if chain:
