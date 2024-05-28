@@ -51,33 +51,15 @@ class NFTWallet:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 balance = conn.eth.get_balance(self._address)
-                balances[chain.name] = Web3.fromWei(balance, 'ether')
+                balances[chain.name] = Web3.from_wei(balance, 'ether')
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 symbol = chain.name if chain else "Balance"
                 balance = conn.eth.get_balance(self._address)
-                balances[symbol] = Web3.fromWei(balance, 'ether')
+                balances[symbol] = Web3.from_wei(balance, 'ether')
         return balances
-
-    def get_transaction_history(self, limit: int = 10, chain: Chains = None) -> dict:
-        history = {}
-        if chain:
-            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-            if conn.is_connected():
-                transactions = conn.eth.get_transaction_by_address(self._address, limit)
-                history[chain.name] = transactions
-            else:
-                raise InvalidRPCURL(chain.rpc_url, chain.name)
-        else:
-            for chain, conn in self._connections:
-                if conn.is_connected():
-                    transactions = conn.eth.get_transaction_by_address(self._address, limit)
-                    history[chain.name] = transactions
-                else:
-                    raise InvalidRPCURL(chain.rpc_url, chain.name)
-        return history
 
     def get_gas_price(self, chain: Chains = None) -> dict:
         gas_prices = {}
@@ -96,9 +78,9 @@ class NFTWallet:
 
     def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
         if not self._private_key:
-            raise PermissionError("Private key is required for transactions.")
+            raise WalletReadOnlyError()
         if chain is None and not self.chains:
-            raise InvalidRPCURL("None", "None")
+            raise MissingChainError()
         chain = chain or self.chains[0]
 
         conn = Web3(Web3.HTTPProvider(chain.rpc_url))
