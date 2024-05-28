@@ -8,6 +8,15 @@ from .chains import Chains
 from ..errors import *
 
 class NFTWallet:
+    """
+    A class to interact with NFTs on various EVM Based networks from a wallet.
+
+    Args:
+        private_key (str, optional): The private key of the wallet for full access.
+        address (str, optional): The address of the wallet for read-only access.
+        chains (list[Chains], optional): A list of blockchain networks to connect to.
+        rpc_url (str, optional): Custom RPC URL to connect to.
+    """
     def __init__(self, private_key: str = None, address: str = None, chains: list[Chains] = None, rpc_url: str = None):
         if not private_key and not address:
             raise NoCredentialsProvidedError()
@@ -49,6 +58,15 @@ class NFTWallet:
         return connections
 
     def get_balance_wei(self, chain: Chains = None) -> dict:
+        """
+        Get the balance of the wallet in Wei.
+
+        Args:
+            chain (Chains, optional): The specific chain to get the balance from if not defined in wallet
+
+        Returns:
+            dict: A dictionary with the chain name as key and the balance as value.
+        """
         balances = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
@@ -65,6 +83,15 @@ class NFTWallet:
         return balances
 
     def get_balance(self, chain: Chains = None) -> dict:
+        """
+        Get the balance of the wallet in Ether.
+
+        Args:
+            chain (Chains, optional): The specific chain to get the balance from if not defined in wallet
+
+        Returns:
+            dict: A dictionary with the chain name as key and the balance as value.
+        """
         balances = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
@@ -81,6 +108,15 @@ class NFTWallet:
         return {"Balances": balances}
 
     def get_gas_price_wei(self, chain: Chains = None) -> dict:
+        """
+        Get the current gas price in Wei.
+
+        Args:
+            chain (Chains, optional): The specific chain to get the gas price from.
+
+        Returns:
+            dict: A dictionary with the chain name as key and the gas price as value.
+        """
         gas_prices = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
@@ -96,6 +132,16 @@ class NFTWallet:
         return gas_prices
 
     def get_gas_price_gwei(self, chain: Chains = None) -> dict:
+        """
+        Get the current gas price in Gwei.
+
+        Args:
+            chain (Chains, optional): The specific chain to get the gas price from.
+
+        Returns:
+            dict: A dictionary with the chain name as key and the gas price as value.
+        """
+
         gas_prices = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
@@ -113,6 +159,24 @@ class NFTWallet:
     def transfer_nft(self, to: str, contract_address: str, amount: int, gas_limit: int, gas_price_gwei: int = None,
                      gas_price_wei: int = None, abi: ABI = None, abi_str: str = None,
                      chain: Chains = None, token_id: int = None) -> dict:
+        """
+        Transfer an NFT to another wallet.
+
+        Args:
+            to (str): The recipient wallet address.
+            contract_address (str): The contract address of the NFT.
+            amount (int): The amount of NFTs to transfer.
+            gas_limit (int): The gas limit for the transaction.
+            gas_price_gwei (int, optional): The gas price in Gwei.
+            gas_price_wei (int, optional): The gas price in Wei.
+            abi (ABI, optional): The ABI from the ABI class.
+            abi_str (str, optional): The ABI as a string.
+            chain (Chains, optional): The specific chain to perform the transfer on.
+            token_id (int, optional): The token ID of the NFT to transfer.
+
+        Returns:
+            dict: A dictionary with the transaction hash and explorer URL.
+        """
         if not self._private_key:
             raise WalletReadOnlyError()
         if chain is None and not self.chains:
@@ -167,6 +231,16 @@ class NFTWallet:
                 raise e
 
     def wait_until_transaction_processes(self, tx_hash, chain: Chains) -> bool:
+        """
+        Wait until a transaction is processed.
+
+        Args:
+            tx_hash (str or bytes): The transaction hash.
+            chain (Chains): The specific chain to check the transaction on.
+
+        Returns:
+            bool: True if the transaction is processed, False otherwise.
+        """
         if isinstance(tx_hash, str):
             tx_hash = Web3.to_bytes(hexstr=tx_hash)
 
@@ -182,3 +256,102 @@ class NFTWallet:
             except TransactionNotFound:
                 pass
             time.sleep(1)
+
+    def get_transaction_count(self, chain: Chains = None) -> dict:
+        """
+        Get the number of transactions sent from the address.
+
+        Args:
+            chain (Chains, optional): The specific chain to get the transaction count from.
+
+        Returns:
+            dict: A dictionary with the chain name as key and the transaction count as value.
+        """
+        counts = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                count = conn.eth.get_transaction_count(self._address)
+                counts[chain.name] = count
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                count = conn.eth.get_transaction_count(self._address)
+                counts[chain.name] = count
+        return counts
+
+    def estimate_gas(self, to: str, value: int, data: bytes = b'', chain: Chains = None) -> dict:
+        """
+        Estimate the gas required for a transaction.
+
+        Args:
+            to (str): The recipient address.
+            value (int): The value to send in Wei.
+            data (bytes, optional): The data to include in the transaction.
+            chain (Chains, optional): The specific chain to estimate the gas on.
+
+        Returns:
+            dict: A dictionary with the chain name as key and the gas estimate as value.
+        """
+        estimates = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                estimate = conn.eth.estimate_gas({'to': to, 'value': value, 'data': data})
+                estimates[chain.name] = estimate
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                estimate = conn.eth.estimate_gas({'to': to, 'value': value, 'data': data})
+                estimates[chain.name] = estimate
+        return estimates
+
+    def is_synced(self, chain: Chains = None) -> dict:
+        """
+        Check if the blockchain is synced for RPC debugging!
+
+        Args:
+            chain (Chains, optional): The specific chain to check the sync status on.
+
+        Returns:
+            dict: A dictionary with the chain name as key and the sync status as value.
+        """
+        sync_status = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                synced = not conn.eth.syncing
+                sync_status[chain.name] = synced
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                synced = not conn.eth.syncing
+                sync_status[chain.name] = synced
+        return sync_status
+
+    def get_latest_block(self, chain: Chains = None) -> dict:
+        """
+        Get the latest block details.
+
+        Args:
+            chain (Chains, optional): The specific chain to get the latest block from.
+
+        Returns:
+            dict: A dictionary with the chain name as key and the latest block details as value.
+        """
+        blocks = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                block = conn.eth.get_block('latest')
+                blocks[chain.name] = block
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                block = conn.eth.get_block('latest')
+                blocks[chain.name] = block
+        return blocks
