@@ -91,3 +91,43 @@ class NFTWallet:
                 gas_price = conn.eth.gas_price
                 gas_prices[chain.name] = gas_price
         return gas_prices
+
+    def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
+        if chain is None and self.chain is None:
+            raise InvalidRPCURL(url="None", chain="None")
+        chain = chain or self.chain
+
+        conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+        if not conn.is_connected():
+            raise InvalidRPCURL(url=chain.rpc_url, chain=chain.name)
+
+        contract = conn.eth.contract(address=contract_address, abi=abi.value)
+
+        nonce = conn.eth.getTransactionCount(self.address)
+        tx = {
+            'nonce': nonce,
+            'to': contract_address,
+            'value': 0,
+            'gas': gas_limit,
+            'gasPrice': gas_price,
+            'data': contract.functions.transferFrom(self.address, to, amount).buildTransaction({
+                'gas': gas_limit,
+                'gasPrice': gas_price
+            })['data'],
+        }
+
+        signed_tx = conn.eth.account.sign_transaction(tx, private_key=self._private_key)
+
+        try:
+            tx_hash = conn.eth.send_raw_transaction(signed_tx.rawTransaction)
+            return {
+                'transaction_hash': tx_hash.hex(),
+                'explorer_url': f"{chain.explorer_url}/tx/{tx_hash.hex()}"
+            }
+        except ValueError as e:
+            if 'gas' in str(e):
+                raise TransactionGasError()
+            elif 'balance' in str(e):
+                raise TransactionBalanceError()
+            else:
+                raise e
