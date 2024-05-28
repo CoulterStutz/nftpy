@@ -197,3 +197,19 @@ class NFTWallet:
                 count = conn.eth.get_transaction_count(self._address)
                 counts[chain.name] = count
         return counts
+
+    def estimate_gas(self, to: str, value: int, data: bytes = b'', chain: Chains = None) -> dict:
+        estimates = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                estimate = conn.eth.estimate_gas({'to': to, 'value': value, 'data': data})
+                estimates[chain.name] = estimate
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                estimate = conn.eth.estimate_gas({'to': to, 'value': value, 'data': data})
+                estimates[chain.name] = estimate
+        return estimates
+
