@@ -85,6 +85,12 @@ class Chains(Enum):
         "rpc_url": "https://mainnet.base.org",
         "explorer_url": "https://basescan.org"
     }
+    ETH_SEPOLIA = {
+        "chain_id": 11155111,
+        "name": "Sepolia Testnet",
+        "rpc_url": "https://rpc.sepolia.org",
+        "explorer_url": "https://sepolia.etherscan.io"
+    }
 
     @property
     def chain_id(self):
