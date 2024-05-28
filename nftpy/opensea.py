@@ -1,6 +1,6 @@
 import requests
 from enum import Enum
-from .errors import APIRequestFailed, MissingChain, MissingSlugError
+from .errors import APIRequestFailed, MissingChainError, MissingSlugError
 
 class OpenSeaChain(Enum):
     ETHEREUM = "ethereum"
@@ -39,7 +39,7 @@ class OpenSea:
     def list_events_by_nft(self, address: str, token_id: str, chain: OpenSeaChain = None, event_type: str = None, only_opensea: bool = False, auction_type: str = None, occurred_before: str = None, occurred_after: str = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
         if chain is None:
-            raise MissingChain()
+            raise MissingChainError()
         url = f"{self.base_url}/events/chain/{chain.value}/contract/{address}/nfts/{token_id}"
         headers = {
             "Accept": "application/json",
@@ -78,7 +78,7 @@ class OpenSea:
     def get_contract(self, address: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
         if chain is None:
-            raise MissingChain()
+            raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/contract/{address}"
         headers = {
             "Accept": "application/json",
@@ -93,7 +93,7 @@ class OpenSea:
     def get_nft(self, address: str, token_id: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
         if chain is None:
-            raise MissingChain()
+            raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/contract/{address}/nfts/{token_id}"
         headers = {
             "Accept": "application/json",
@@ -108,7 +108,7 @@ class OpenSea:
     def list_nfts_by_account(self, address: str, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
         if chain is None:
-            raise MissingChain()
+            raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/account/{address}/nfts"
         headers = {
             "Accept": "application/json",
@@ -130,7 +130,7 @@ class OpenSea:
         if collection_slug is None:
             raise MissingSlugError()
         if chain is None:
-            raise MissingChain()
+            raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/collection/{collection_slug}/nfts"
         headers = {
             "Accept": "application/json",
@@ -149,7 +149,7 @@ class OpenSea:
     def list_nfts_by_contract(self, contract_address: str, chain: OpenSeaChain = None, cursor: str = None, limit: int = 50):
         chain = chain or self.chain
         if chain is None:
-            raise MissingChain()
+            raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/contract/{contract_address}/nfts"
         headers = {
             "Accept": "application/json",
@@ -168,7 +168,7 @@ class OpenSea:
     def get_payment_token(self, address: str, chain: OpenSeaChain = None):
         chain = chain or self.chain
         if chain is None:
-            raise MissingChain()
+            raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/payment_token/{address}"
         headers = {
             "Accept": "application/json",
@@ -201,7 +201,7 @@ class OpenSea:
         if collection_slug is None:
             raise MissingSlugError()
         if chain is None:
-            raise MissingChain()
+            raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/collection/{collection_slug}/listings"
         headers = {
             "Accept": "application/json",

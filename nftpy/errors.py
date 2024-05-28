@@ -52,7 +52,7 @@ class MissingSlugError(OpenSeaException):
         self.message = "Collection slug must be provided."
         super().__init__(self.message)
 
-class MissingChain(OpenSeaException):
+class MissingChainError(OpenSeaException):
     """Raised when a chain is required but not provided."""
     def __init__(self):
         self.message = "Chain must be provided."
