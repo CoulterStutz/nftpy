@@ -106,8 +106,8 @@ class NFTWallet:
                 gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
         return gas_prices
 
-    def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price_gwei: int = None,
-                     gas_price_wei: int = None, gas_limit: int, abi: ABI = None, abi_str: str = None,
+    def transfer_nft(self, to: str, contract_address: str, amount: int, gas_limit: int, gas_price_gwei: int = None,
+                     gas_price_wei: int = None, abi: ABI = None, abi_str: str = None,
                      chain: Chains = None, token_id: int = None) -> dict:
         if not self._private_key:
             raise WalletReadOnlyError()
