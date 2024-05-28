@@ -1,4 +1,8 @@
+import time
+
 from web3 import Web3
+from web3.exceptions import TransactionNotFound
+
 from .abi import ABI
 from .chains import Chains
 from ..errors import *
@@ -133,7 +137,7 @@ class NFTWallet:
 
         contract = conn.eth.contract(address=contract_address, abi=contract_abi)
 
-        nonce = conn.eth.getTransactionCount(self._address)
+        nonce = conn.eth.get_transaction_count(self._address)
         tx = {
             'nonce': nonce,
             'to': contract_address,
@@ -162,18 +166,19 @@ class NFTWallet:
             else:
                 raise e
 
-        signed_tx = conn.eth.account.sign_transaction(tx, private_key=self._private_key)
+    def wait_until_transaction_processes(self, tx_hash, chain: Chains) -> bool:
+        if isinstance(tx_hash, str):
+            tx_hash = Web3.to_bytes(hexstr=tx_hash)
 
-        try:
-            tx_hash = conn.eth.send_raw_transaction(signed_tx.rawTransaction)
-            return {
-                'transaction_hash': tx_hash.hex(),
-                'explorer_url': f"{chain.explorer_url}/tx/{tx_hash.hex()}"
-            }
-        except ValueError as e:
-            if 'gas' in str(e):
-                raise TransactionGasError()
-            elif 'balance' in str(e):
-                raise TransactionBalanceError()
-            else:
-                raise e
+        conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+        if not conn.is_connected():
+            raise InvalidRPCURL(chain.rpc_url, chain.name)
+
+        while True:
+            try:
+                receipt = conn.eth.get_transaction_receipt(tx_hash)
+                if receipt is not None and receipt.status == 1:
+                    return True
+            except TransactionNotFound:
+                pass
+            time.sleep(1)
