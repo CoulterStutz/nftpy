@@ -21,6 +21,16 @@ NFTPy enables interaction with the Ethereum Virtual Machine (EVM) through RPC to
 - **get_tokens_balance**: Gets the balance of a specific list of tokens.
 - **is_approved_for_all_erc1155**: Check if an address is approved for all tokens owned by another address (ERC1155).
 
+#### EVM Wallet Interaction
+NFTPy includes comprehensive features for interacting with Ethereum wallets, including querying balances, fetching gas prices, and transferring NFTs. The wallet interface supports both read-only and transactional operations.
+
+**Wallet Features:**
+- **get_balance**: Retrieve the balance of NFTs for a given address in Ether.
+- **get_balance_wei**: Retrieve the balance of NFTs for a given address in Wei.
+- **get_gas_price_wei**: Fetch the current gas price in Wei.
+- **get_gas_price_gwei**: Fetch the current gas price in Gwei.
+- **transfer_nft**: Transfer an NFT from the wallet to another address.
+
 #### Built-in OpenSea Interface
 ![OpenSea Support](https://img.shields.io/badge/OpenSea-%232081E2.svg?style=for-the-badge&logo=opensea&logoColor=white)
 
@@ -107,6 +117,65 @@ print(f'Tokens Balance: {tokens_balance}')
 is_approved_erc1155 = erc1155_nft.is_approved_for_all_erc1155(wallet_address, '0xOperatorAddress')
 print(f'Is Approved For All (ERC1155): {is_approved_erc1155}')
 ```
+
+### Interacting with a Wallet | NFTPy.NFTWallet
+#### Sending a Transaction with Private Key
+Creating an instance of `NFTWallet` requires either a private key for full access or just an address for read-only access. You can also specify multiple chains to connect to different networks simultaneously.
+
+```python
+from nftpy import *
+
+# Initialize the wallet with a private key and specify chains
+wallet = NFTWallet(private_key="your_private_key", chains=[Chains.ETH_SEPOLIA])
+
+# Get the balance of the wallet in Ether
+print(wallet.get_balance()) 
+# Output: {"Balances": {'Sepolia Testnet': Decimal('1.234567890123456789')}}
+
+# Get the balance of the wallet in Wei
+print(wallet.get_balance_wei()) 
+# Output: {"Balances": {'Sepolia Testnet': 1234567890123456789}}
+
+# Get the current gas price in Wei
+print(wallet.get_gas_price_wei()) 
+# Output: {'Sepolia Testnet': 30000000000}
+
+# Get the current gas price in Gwei
+print(wallet.get_gas_price_gwei()) 
+# Output: {'Sepolia Testnet': Decimal('30')}
+
+# Transfer an NFT to another wallet
+to_wallet = "0xb1234567890abcdef1234567890abcdef1234567"
+contract = "0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef"
+gas_price = wallet.get_gas_price_gwei()["Sepolia Testnet"]
+gas_limit = 70000   # Disclaimer! Gas Limit set for Sepolia, WILL fail on other networks
+
+# Transfer the NFT and get the transaction hash and explorer URL
+print(wallet.transfer_nft(to=to_wallet, contract_address=contract, amount=1, gas_limit=gas_limit,
+                          gas_price_gwei=gas_price, abi=ABI.OPENSEA_ERC1155, token_id=1))
+# Output: {'transaction_hash': '0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef', 'explorer_url': 'https://sepolia.etherscan.io/tx/0xabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef'}
+```
+#### Read-Only Wallets
+When using a read-only address (i.e., only providing an address and not a private key), you can still interact with the blockchain to query information, but you will not be able to perform transactions. This is useful for monitoring wallets and retrieving data without the need for sensitive credentials.
+```python
+from nftpy import *
+
+# Initialize the wallet with an address and specify chains
+readonly_wallet = NFTWallet(address="0xYourReadOnlyWalletAddress", chains=[Chains.ETH_SEPOLIA])
+
+# Get the balance of the wallet in Ether
+print(readonly_wallet.get_balance()) 
+# Output: {"Balances": {'Sepolia Testnet': Decimal('0.123456789012345678')}}
+
+# Get the balance of the wallet in Wei
+print(readonly_wallet.get_balance_wei()) 
+# Output: {"Balances": {'Sepolia Testnet': 123456789012345678}}
+
+# Get the current gas price in Wei
+print(readonly_wallet.get_gas_price_wei()) 
+# Output: {'Sepolia Testnet': 20000000000}
+```
+
 ### Interacting with OpenSea API | NFTPy.OpenSea
 We will first start by creating our class with the following arguments:
 - api_key: Your OpenSea API key.
