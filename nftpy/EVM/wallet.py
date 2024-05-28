@@ -182,3 +182,18 @@ class NFTWallet:
             except TransactionNotFound:
                 pass
             time.sleep(1)
+
+    def get_transaction_count(self, chain: Chains = None) -> dict:
+        counts = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                count = conn.eth.get_transaction_count(self._address)
+                counts[chain.name] = count
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                count = conn.eth.get_transaction_count(self._address)
+                counts[chain.name] = count
+        return counts
