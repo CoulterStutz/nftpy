@@ -3,6 +3,7 @@ from .abi import ABI
 from .chains import Chains
 from ..errors import *
 
+
 class NFTWallet:
     def __init__(self, private_key: str = None, address: str = None, chains: list[Chains] = None, rpc_url: str = None):
         if not private_key and not address:
@@ -45,20 +46,20 @@ class NFTWallet:
         return connections
 
     def get_balance(self, chain: Chains = None) -> dict:
-        balances = {}
+        balances = {"Balances": {}}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 balance = conn.eth.get_balance(self._address)
-                balances[chain.name] = Web3.from_wei(balance, 'ether')
+                balances["Balances"][chain.name] = Web3.from_wei(balance, 'ether')
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 symbol = chain.name if chain else "Balance"
                 balance = conn.eth.get_balance(self._address)
-                balances[symbol] = Web3.from_wei(balance, 'ether')
-        return {"Balances": balances}
+                balances["Balances"][symbol] = Web3.from_wei(balance, 'ether')
+        return balances
 
     def get_gas_price(self, chain: Chains = None) -> dict:
         gas_prices = {}
@@ -75,7 +76,7 @@ class NFTWallet:
                 gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
         return gas_prices
 
-    def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price_gwei: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
+    def transfer_nft(self, to: str, contract_address: str, token_id: int, amount: int, gas_price_gwei: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
         if not self._private_key:
             raise WalletReadOnlyError()
         if chain is None and not self.chains:
@@ -95,7 +96,7 @@ class NFTWallet:
             'value': 0,
             'gas': gas_limit,
             'gasPrice': Web3.to_wei(gas_price_gwei, 'gwei'),
-            'data': contract.functions.safeTransferFrom(self._address, to, amount, b'').build_transaction({
+            'data': contract.functions.safeTransferFrom(self._address, to, token_id, amount, b'').build_transaction({
                 'gas': gas_limit,
                 'gasPrice': Web3.to_wei(gas_price_gwei, 'gwei')
             })['data'],
