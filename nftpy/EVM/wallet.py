@@ -1,3 +1,5 @@
+import time
+
 from web3 import Web3
 from .abi import ABI
 from .chains import Chains
@@ -177,3 +179,14 @@ class NFTWallet:
                 raise TransactionBalanceError()
             else:
                 raise e
+
+    def wait_until_transaction_processes(self, tx_hash: str, chain: Chains) -> bool:
+        conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+        if not conn.is_connected():
+            raise InvalidRPCURL(chain.rpc_url, chain.name)
+
+        while True:
+            receipt = conn.eth.get_transaction_receipt(tx_hash)
+            if receipt is not None and receipt.status == 1:
+                return True
+            time.sleep(1)
