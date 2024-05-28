@@ -135,7 +135,7 @@ class NFTWallet:
 
         contract = conn.eth.contract(address=contract_address, abi=contract_abi)
 
-        nonce = conn.eth.getTransactionCount(self._address)
+        nonce = conn.eth.get_transaction_count(self._address)
         tx = {
             'nonce': nonce,
             'to': contract_address,
@@ -147,22 +147,6 @@ class NFTWallet:
                 'gasPrice': gas_price
             })['data'],
         }
-
-        signed_tx = conn.eth.account.sign_transaction(tx, private_key=self._private_key)
-
-        try:
-            tx_hash = conn.eth.send_raw_transaction(signed_tx.rawTransaction)
-            return {
-                'transaction_hash': tx_hash.hex(),
-                'explorer_url': f"{chain.explorer_url}/tx/{tx_hash.hex()}"
-            }
-        except ValueError as e:
-            if 'gas' in str(e):
-                raise TransactionGasError()
-            elif 'balance' in str(e):
-                raise TransactionBalanceError()
-            else:
-                raise e
 
         signed_tx = conn.eth.account.sign_transaction(tx, private_key=self._private_key)
 
