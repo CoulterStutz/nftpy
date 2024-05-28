@@ -213,3 +213,33 @@ class NFTWallet:
                 estimates[chain.name] = estimate
         return estimates
 
+    def is_synced(self, chain: Chains = None) -> dict:
+        sync_status = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                synced = not conn.eth.syncing
+                sync_status[chain.name] = synced
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                synced = not conn.eth.syncing
+                sync_status[chain.name] = synced
+        return sync_status
+
+    def get_latest_block(self, chain: Chains = None) -> dict:
+        blocks = {}
+        if chain:
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if conn.is_connected():
+                block = conn.eth.get_block('latest')
+                blocks[chain.name] = block
+            else:
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+        else:
+            for chain, conn in self._connections:
+                block = conn.eth.get_block('latest')
+                blocks[chain.name] = block
+        return blocks
+
