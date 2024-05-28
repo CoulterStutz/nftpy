@@ -90,32 +90,61 @@ class NFTWallet:
                 gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
         return gas_prices
 
-    def transfer_nft(self, to: str, contract_address: str, token_id: int, amount: int, gas_price_gwei: int, gas_limit: int, abi: ABI, chain: Chains = None) -> dict:
+    def transfer_nft(self, to: str, contract_address: str, amount: int, gas_price_gwei: int = None,
+                     gas_price_wei: int = None, gas_limit: int, abi: ABI = None, abi_str: str = None,
+                     chain: Chains = None, token_id: int = None) -> dict:
         if not self._private_key:
             raise WalletReadOnlyError()
         if chain is None and not self.chains:
             raise MissingChainError()
         chain = chain or self.chains[0]
 
+        if gas_price_gwei is None and gas_price_wei is None:
+            raise ValueError("Either gas_price_gwei or gas_price_wei must be provided.")
+
+        gas_price = gas_price_wei if gas_price_wei is not None else Web3.to_wei(gas_price_gwei, 'gwei')
+
         conn = Web3(Web3.HTTPProvider(chain.rpc_url))
         if not conn.is_connected():
             raise InvalidRPCURL(chain.rpc_url, chain.name)
 
-        contract = conn.eth.contract(address=contract_address, abi=abi.value)
+        if abi is not None:
+            contract_abi = abi.value
+        elif abi_str is not None:
+            contract_abi = abi_str
+        else:
+            raise ValueError("Either abi or abi_str must be provided.")
 
-        nonce = conn.eth.get_transaction_count(self._address)
+        contract = conn.eth.contract(address=contract_address, abi=contract_abi)
+
+        nonce = conn.eth.getTransactionCount(self._address)
         tx = {
             'nonce': nonce,
             'to': contract_address,
             'value': 0,
             'gas': gas_limit,
-            'gasPrice': Web3.to_wei(gas_price_gwei, 'gwei'),
+            'gasPrice': gas_price,
             'data': contract.functions.safeTransferFrom(self._address, to, token_id, amount, b'').build_transaction({
                 'gas': gas_limit,
-                'gasPrice': Web3.to_wei(gas_price_gwei, 'gwei')
+                'gasPrice': gas_price
             })['data'],
-            'chainId': chain.chain_id
         }
+
+        signed_tx = conn.eth.account.sign_transaction(tx, private_key=self._private_key)
+
+        try:
+            tx_hash = conn.eth.send_raw_transaction(signed_tx.rawTransaction)
+            return {
+                'transaction_hash': tx_hash.hex(),
+                'explorer_url': f"{chain.explorer_url}/tx/{tx_hash.hex()}"
+            }
+        except ValueError as e:
+            if 'gas' in str(e):
+                raise TransactionGasError()
+            elif 'balance' in str(e):
+                raise TransactionBalanceError()
+            else:
+                raise e
 
         signed_tx = conn.eth.account.sign_transaction(tx, private_key=self._private_key)
 
