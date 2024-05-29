@@ -2,7 +2,6 @@ import json
 import requests
 from .chains import Chains
 from .abi import ABI
-from enum import Enum
 from web3 import Web3
 from ..errors import *
 
