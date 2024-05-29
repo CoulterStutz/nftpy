@@ -127,6 +127,24 @@ class Chains(Enum):
     "rpc_url": "https://api.avax-test.network/ext/bc/C/rpc",
     "explorer_url": "https://testnet.snowtrace.io"
     }
+    FANTOM_TESTNET = {
+    "chain_id": 4002,
+    "name": "Fantom Testnet",
+    "rpc_url": "https://rpc.testnet.fantom.network",
+    "explorer_url": "https://testnet.ftmscan.com"
+    }
+    ALFAJORES = {
+    "chain_id": 44787,
+    "name": "Celo Alfajores Testnet",
+    "rpc_url": "https://alfajores-forno.celo-testnet.org",
+    "explorer_url": "https://alfajores-blockscout.celo-testnet.org"
+    }
+    CRONOS_TESTNET = {
+    "chain_id": 338,
+    "name": "Cronos Testnet",
+    "rpc_url": "https://evm-t3.cronos.org",
+    "explorer_url": "https://testnet.cronoscan.com"
+    }
 
     def __init__(self, params):
         self.chain_id = params["chain_id"]
