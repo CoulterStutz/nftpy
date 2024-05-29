@@ -4,6 +4,19 @@
 
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
 
+### Changes in 1.1.4
+###### Added EVM Chain Support for these testnets:
+- Holesky Testnet (ETH)
+- BSC Testnet (BSC)
+- Mumbai Testnet (MATIC)
+- Goerli Testnet (ARB)
+- Goerli Testnet (OPTIMISM)
+- Fuji Testnet (AVAX)
+- Fantom Testnet (FTM)
+- Alfajores Testnet (CELO)
+- Baklava Testnet (CELO)
+- Cronos Testnet (CRONOS)
+
 ## Features
 
 #### EVM Interaction with NFT Tokens
@@ -258,18 +271,6 @@ print(opensea.get_nft('0xYourContractAddress', '1'))  # Get details of a specifi
 print(opensea.list_events_by_nft('0xYourContractAddress', '1'))  # List events related to a specific NFT
 print(opensea.list_nfts_by_account('0xYourWalletAddress'))  # List NFTs owned by an account
 ```
-
-# Changes in 1.1.4
-### Added EVM Chain Support for these test nets
-- Holesky Testnet (ETH)
-- BSC Testnet (BSC)
-- Mumbai Testnet (MATIC)
-- Goreli (ARB)
-- Goreli (OPTIMISM)
-- Fuji Testnet (AVAX)
-- Fantom Testnet 
-- Alfajores Testnet (CELO)
-- Cronos Testnet (CHRONOS)
 
 # Coming Soon
 ## Chain Integration
