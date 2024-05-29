@@ -115,6 +115,12 @@ class Chains(Enum):
     "rpc_url": "https://goerli-rollup.arbitrum.io/rpc",
     "explorer_url": "https://goerli.arbiscan.io"
     }
+    OPTIMISM_GOERLI = {
+    "chain_id": 420,
+    "name": "Optimism Goerli",
+    "rpc_url": "https://goerli.optimism.io",
+    "explorer_url": "https://goerli-explorer.optimism.io"
+    }
 
     def __init__(self, params):
         self.chain_id = params["chain_id"]
