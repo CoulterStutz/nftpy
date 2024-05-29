@@ -98,52 +98,52 @@ class Chains(Enum):
         "explorer_url": "https://holesky.etherscan.io"
     }
     BSC_TESTNET = {
-    "chain_id": 97,
-    "name": "BSC Testnet",
-    "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
-    "explorer_url": "https://testnet.bscscan.com"
+        "chain_id": 97,
+        "name": "BSC Testnet",
+        "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        "explorer_url": "https://testnet.bscscan.com"
     }
-    MUMBAI = {
-    "chain_id": 80001,
-    "name": "Polygon Mumbai Testnet",
-    "rpc_url": "https://rpc-mumbai.maticvigil.com/",
-    "explorer_url": "https://mumbai.polygonscan.com"
+    POLYGON_MUMBAI = {
+        "chain_id": 80001,
+        "name": "Polygon Mumbai Testnet",
+        "rpc_url": "https://rpc-mumbai.maticvigil.com/",
+        "explorer_url": "https://mumbai.polygonscan.com"
     }
     ARBITRUM_GOERLI = {
-    "chain_id": 421613,
-    "name": "Arbitrum Goerli",
-    "rpc_url": "https://goerli-rollup.arbitrum.io/rpc",
-    "explorer_url": "https://goerli.arbiscan.io"
+        "chain_id": 421613,
+        "name": "Arbitrum Goerli",
+        "rpc_url": "https://goerli-rollup.arbitrum.io/rpc",
+        "explorer_url": "https://goerli.arbiscan.io"
     }
     OPTIMISM_GOERLI = {
-    "chain_id": 420,
-    "name": "Optimism Goerli",
-    "rpc_url": "https://goerli.optimism.io",
-    "explorer_url": "https://goerli-explorer.optimism.io"
+        "chain_id": 420,
+        "name": "Optimism Goerli",
+        "rpc_url": "https://goerli.optimism.io",
+        "explorer_url": "https://goerli-explorer.optimism.io"
     }
-    FUJI = {
-    "chain_id": 43113,
-    "name": "Avalanche Fuji Testnet",
-    "rpc_url": "https://api.avax-test.network/ext/bc/C/rpc",
-    "explorer_url": "https://testnet.snowtrace.io"
+    AVALANCHE_FUJI = {
+        "chain_id": 43113,
+        "name": "Avalanche Fuji Testnet",
+        "rpc_url": "https://api.avax-test.network/ext/bc/C/rpc",
+        "explorer_url": "https://testnet.snowtrace.io"
     }
     FANTOM_TESTNET = {
-    "chain_id": 4002,
-    "name": "Fantom Testnet",
-    "rpc_url": "https://rpc.testnet.fantom.network",
-    "explorer_url": "https://testnet.ftmscan.com"
+        "chain_id": 4002,
+        "name": "Fantom Testnet",
+        "rpc_url": "https://rpc.testnet.fantom.network",
+        "explorer_url": "https://testnet.ftmscan.com"
     }
-    ALFAJORES = {
-    "chain_id": 44787,
-    "name": "Celo Alfajores Testnet",
-    "rpc_url": "https://alfajores-forno.celo-testnet.org",
-    "explorer_url": "https://alfajores-blockscout.celo-testnet.org"
+    CELO_ALFAJORES = {
+        "chain_id": 44787,
+        "name": "Celo Alfajores Testnet",
+        "rpc_url": "https://alfajores-forno.celo-testnet.org",
+        "explorer_url": "https://alfajores-blockscout.celo-testnet.org"
     }
     CRONOS_TESTNET = {
-    "chain_id": 338,
-    "name": "Cronos Testnet",
-    "rpc_url": "https://evm-t3.cronos.org",
-    "explorer_url": "https://testnet.cronoscan.com"
+        "chain_id": 338,
+        "name": "Cronos Testnet",
+        "rpc_url": "https://evm-t3.cronos.org",
+        "explorer_url": "https://testnet.cronoscan.com"
     }
 
     def __init__(self, params):
