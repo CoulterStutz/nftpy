@@ -91,6 +91,12 @@ class Chains(Enum):
         "rpc_url": "https://rpc.sepolia.org",
         "explorer_url": "https://sepolia.etherscan.io"
     }
+    HOLESKY = {
+        "chain_id": 17000,
+        "name": "Holešky Testnet",
+        "rpc_url": "https://rpc.holesky.eth",
+        "explorer_url": "https://holesky.etherscan.io"
+    }
 
     def __init__(self, params):
         self.chain_id = params["chain_id"]
