@@ -121,6 +121,12 @@ class Chains(Enum):
     "rpc_url": "https://goerli.optimism.io",
     "explorer_url": "https://goerli-explorer.optimism.io"
     }
+    FUJI = {
+    "chain_id": 43113,
+    "name": "Avalanche Fuji Testnet",
+    "rpc_url": "https://api.avax-test.network/ext/bc/C/rpc",
+    "explorer_url": "https://testnet.snowtrace.io"
+    }
 
     def __init__(self, params):
         self.chain_id = params["chain_id"]
