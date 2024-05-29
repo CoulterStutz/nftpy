@@ -85,66 +85,136 @@ class Chains(Enum):
         "rpc_url": "https://mainnet.base.org",
         "explorer_url": "https://basescan.org"
     }
-    ETH_SEPOLIA = {
-        "chain_id": 11155111,
-        "name": "Sepolia Testnet",
-        "rpc_url": "https://rpc.sepolia.org",
-        "explorer_url": "https://sepolia.etherscan.io"
-    }
-    HOLESKY = {
-        "chain_id": 17000,
-        "name": "Holešky Testnet",
-        "rpc_url": "https://rpc.holesky.eth",
-        "explorer_url": "https://holesky.etherscan.io"
-    }
-    BSC_TESTNET = {
-        "chain_id": 97,
-        "name": "BSC Testnet",
-        "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
-        "explorer_url": "https://testnet.bscscan.com"
-    }
-    POLYGON_MUMBAI = {
-        "chain_id": 80001,
-        "name": "Polygon Mumbai Testnet",
-        "rpc_url": "https://rpc-mumbai.maticvigil.com/",
-        "explorer_url": "https://mumbai.polygonscan.com"
-    }
-    ARBITRUM_GOERLI = {
-        "chain_id": 421613,
-        "name": "Arbitrum Goerli",
-        "rpc_url": "https://goerli-rollup.arbitrum.io/rpc",
-        "explorer_url": "https://goerli.arbiscan.io"
-    }
-    OPTIMISM_GOERLI = {
-        "chain_id": 420,
-        "name": "Optimism Goerli",
-        "rpc_url": "https://goerli.optimism.io",
-        "explorer_url": "https://goerli-explorer.optimism.io"
-    }
-    AVALANCHE_FUJI = {
-        "chain_id": 43113,
-        "name": "Avalanche Fuji Testnet",
-        "rpc_url": "https://api.avax-test.network/ext/bc/C/rpc",
-        "explorer_url": "https://testnet.snowtrace.io"
-    }
-    FANTOM_TESTNET = {
-        "chain_id": 4002,
-        "name": "Fantom Testnet",
-        "rpc_url": "https://rpc.testnet.fantom.network",
-        "explorer_url": "https://testnet.ftmscan.com"
-    }
-    CELO_ALFAJORES = {
-        "chain_id": 44787,
-        "name": "Celo Alfajores Testnet",
-        "rpc_url": "https://alfajores-forno.celo-testnet.org",
-        "explorer_url": "https://alfajores-blockscout.celo-testnet.org"
-    }
-    CRONOS_TESTNET = {
-        "chain_id": 338,
-        "name": "Cronos Testnet",
-        "rpc_url": "https://evm-t3.cronos.org",
-        "explorer_url": "https://testnet.cronoscan.com"
-    }
+    # ETH TESTNETS
+
+ETH_SEPOLIA = {
+    "chain_id": 11155111,
+    "name": "Sepolia Testnet",
+    "rpc_url": "https://rpc.sepolia.org",
+    "explorer_url": "https://sepolia.etherscan.io"
+}
+
+ETH_HOLESKY = {
+    "chain_id": 17000,
+    "name": "Holešky Testnet",
+    "rpc_url": "https://rpc.holesky.eth",
+    "explorer_url": "https://holesky.etherscan.io"
+}
+
+ETH_GOERLI = {
+    "chain_id": 5,
+    "name": "Goerli Testnet",
+    "rpc_url": "https://goerli.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+    "explorer_url": "https://goerli.etherscan.io"
+}
+
+
+# BSC TESTNETS
+
+BSC_TESTNET = {
+    "chain_id": 97,
+    "name": "BSC Testnet",
+    "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+    "explorer_url": "https://testnet.bscscan.com"
+}
+
+
+# POLYGON TESTNETS
+
+POLYGON_MUMBAI = {
+    "chain_id": 80001,
+    "name": "Polygon Mumbai Testnet",
+    "rpc_url": "https://rpc-mumbai.maticvigil.com/",
+    "explorer_url": "https://mumbai.polygonscan.com"
+}
+
+POLYGON_AMOY = {
+    "chain_id": 80002,
+    "name": "Polygon Amoy Testnet",
+    "rpc_url": "https://rpc-amoy.polygon.technology",
+    "explorer_url": "https://oklink.com/amoy"
+}
+
+POLYGON_CARDONA = {
+    "chain_id": 2442,
+    "name": "Polygon zkEVM Cardona Testnet",
+    "rpc_url": "https://rpc.cardona.zkevm-rpc.com",
+    "explorer_url": "https://cardona-zkevm.polygonscan.com"
+}
+
+
+# AVALANCHE TESTNETS
+
+AVALANCHE_FUJI = {
+    "chain_id": 43113,
+    "name": "Avalanche Fuji Testnet",
+    "rpc_url": "https://api.avax-test.network/ext/bc/C/rpc",
+    "explorer_url": "https://testnet.snowtrace.io"
+}
+
+
+# FANTOM TESTNETS
+
+FANTOM_TESTNET = {
+    "chain_id": 4002,
+    "name": "Fantom Testnet",
+    "rpc_url": "https://rpc.testnet.fantom.network",
+    "explorer_url": "https://testnet.ftmscan.com"
+}
+
+
+# ARBITRUM TESTNETS
+
+ARBITRUM_GOERLI = {
+    "chain_id": 421613,
+    "name": "Arbitrum Goerli",
+    "rpc_url": "https://goerli-rollup.arbitrum.io/rpc",
+    "explorer_url": "https://goerli.arbiscan.io"
+}
+
+ARBITRUM_RINKEBY = {
+    "chain_id": 421611,
+    "name": "Arbitrum Rinkeby",
+    "rpc_url": "https://rinkeby.arbitrum.io/rpc",
+    "explorer_url": "https://rinkeby-explorer.arbitrum.io"
+}
+
+
+# OPTIMISM TESTNETS
+
+OPTIMISM_GOERLI = {
+    "chain_id": 420,
+    "name": "Optimism Goerli",
+    "rpc_url": "https://goerli.optimism.io",
+    "explorer_url": "https://goerli-explorer.optimism.io"
+}
+
+
+# CELO TESTNETS
+
+CELO_ALFAJORES = {
+    "chain_id": 44787,
+    "name": "Celo Alfajores Testnet",
+    "rpc_url": "https://alfajores-forno.celo-testnet.org",
+    "explorer_url": "https://alfajores-blockscout.celo-testnet.org"
+}
+
+CELO_BAKLAVA = {
+    "chain_id": 62320,
+    "name": "Celo Baklava Testnet",
+    "rpc_url": "https://baklava-forno.celo-testnet.org",
+    "explorer_url": "https://baklava-blockscout.celo-testnet.org"
+}
+
+
+# CRONOS TESTNETS
+
+CRONOS_TESTNET = {
+    "chain_id": 338,
+    "name": "Cronos Testnet",
+    "rpc_url": "https://evm-t3.cronos.org",
+    "explorer_url": "https://testnet.cronoscan.com"
+}
 
     def __init__(self, params):
         self.chain_id = params["chain_id"]
