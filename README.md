@@ -1,5 +1,5 @@
 # NFTPy
-[![PyPi](https://img.shields.io/badge/PyPi-1.1.2-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
+[![PyPi](https://img.shields.io/badge/PyPi-1.1.3-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
 [![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
 
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
@@ -53,6 +53,27 @@ NFTPy includes a built-in interface for interacting with OpenSea via an API key.
 - **get_traits**: Get traits of a specific collection.
 - **get_all_listings_on_collection**: Get all listings of a specific collection.
 
+#### Custom Chain Support
+NFTPy allows the creation of custom chains with specific chain IDs, RPC URLs, explorer URLs, and names. This feature enhances flexibility by enabling the addition of blockchain networks that are not predefined in the library.
+
+**Creating a Custom Chain:**
+```python
+from NFTPy.EVM import Chains
+
+# Create a custom chain
+custom_chain = Chains.custom_chain(
+    chain_id=999,
+    rpc_url="https://custom-rpc-url.com",
+    explorer_url="https://custom-explorer.com",
+    name="Custom Blockchain"
+)
+
+# Access custom chain attributes
+print(custom_chain.chain_id)       # Outputs: 999
+print(custom_chain.rpc_url)        # Outputs: https://custom-rpc-url.com
+print(custom_chain.explorer_url)   # Outputs: https://custom-explorer.com
+print(custom_chain.name)           # Outputs: Custom Blockchain
+```
 
 # Example Usage
 ### Interacting on-chain with a collection | NFTPy.EVM.NFT
