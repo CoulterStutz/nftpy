@@ -1,5 +1,5 @@
 # NFTPy
-[![PyPi](https://img.shields.io/badge/PyPi-1.1.3-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
+[![PyPi](https://img.shields.io/badge/PyPi-1.1.4-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
 [![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
 
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
@@ -258,6 +258,18 @@ print(opensea.get_nft('0xYourContractAddress', '1'))  # Get details of a specifi
 print(opensea.list_events_by_nft('0xYourContractAddress', '1'))  # List events related to a specific NFT
 print(opensea.list_nfts_by_account('0xYourWalletAddress'))  # List NFTs owned by an account
 ```
+
+# Changes in 1.1.4
+### Added EVM Chain Support for these test nets
+- Holesky Testnet (ETH)
+- BSC Testnet (BSC)
+- Mumbai Testnet (MATIC)
+- Goreli (ARB)
+- Goreli (OPTIMISM)
+- Fuji Testnet (AVAX)
+- Fantom Testnet 
+- Alfajores Testnet (CELO)
+- Cronos Testnet (CHRONOS)
 
 # Coming Soon
 ## Chain Integration
