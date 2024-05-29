@@ -97,6 +97,24 @@ class Chains(Enum):
         "rpc_url": "https://rpc.holesky.eth",
         "explorer_url": "https://holesky.etherscan.io"
     }
+    BSC_TESTNET = {
+    "chain_id": 97,
+    "name": "BSC Testnet",
+    "rpc_url": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+    "explorer_url": "https://testnet.bscscan.com"
+    }
+    MUMBAI = {
+    "chain_id": 80001,
+    "name": "Polygon Mumbai Testnet",
+    "rpc_url": "https://rpc-mumbai.maticvigil.com/",
+    "explorer_url": "https://mumbai.polygonscan.com"
+    }
+    ARBITRUM_GOERLI = {
+    "chain_id": 421613,
+    "name": "Arbitrum Goerli",
+    "rpc_url": "https://goerli-rollup.arbitrum.io/rpc",
+    "explorer_url": "https://goerli.arbiscan.io"
+    }
 
     def __init__(self, params):
         self.chain_id = params["chain_id"]
