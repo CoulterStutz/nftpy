@@ -1,29 +1,10 @@
 # nftpy
-[![PyPi](https://img.shields.io/badge/PyPi-1.1.4-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
+[![PyPi](https://img.shields.io/badge/PyPi-1.1.5-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 [![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
 
-### Changes in 1.1.4
-###### Added EVM Chain Support for these testnets:
-- Holesky Testnet (ETH)
-- BSC Testnet (BSC)
-- Mumbai Testnet (MATIC)
-- Goerli Testnet (ARB)
-- Goerli Testnet (OPTIMISM)
-- Fuji Testnet (AVAX)
-- Fantom Testnet (FTM)
-- Alfajores Testnet (CELO)
-- Baklava Testnet (CELO)
-- Cronos Testnet (CRONOS)
-
-###### Fixed Custom Chain Assignment
-- Custom Chains are now assigned in a class not the Chains:Enum class. 
-- NFTWallet and  other EVM instances now no longer require a block explorer argument for custom chains.
-
-###### Optimizations
-- Wallet now returns using the chain symbol instead of the chain name
-- Wallet now uses threading to connect to multiple chains
+### Changes in 1.1.5
 
 ## Features
 
