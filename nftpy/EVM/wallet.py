@@ -261,7 +261,7 @@ class NFTWallet:
                 pass
             time.sleep(1)
 
-    def get_transaction_count(self, chain = None) -> dict:
+    def get_transaction_count(self, chain=None) -> dict:
         """
         Get the number of transactions sent from the address.
 
@@ -269,20 +269,20 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the transaction count from.
 
         Returns:
-            dict: A dictionary with the chain name as key and the transaction count as value.
+            dict: A dictionary with the chain symbol as key and the transaction count as value.
         """
         counts = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 count = conn.eth.get_transaction_count(self._address)
-                counts[chain.name] = count
+                counts[chain.symbol] = count
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 count = conn.eth.get_transaction_count(self._address)
-                counts[chain.name] = count
+                counts[chain.symbol] = count
         return counts
 
     def estimate_gas(self, to: str, value: int, data: bytes = b'', chain = None) -> dict:
