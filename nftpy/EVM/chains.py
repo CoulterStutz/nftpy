@@ -1,11 +1,13 @@
 from enum import Enum
 
-class CustomChain:
-    def __init__(self, name:str, chain_id:int, rpc_url:str, explorer_url:str=None):
+class Chain:
+    def __init__(self, name:str, chain_id:int, rpc_url:str, symbol:str="ETH", explorer_url:str=None, testnet:bool=False):
         self.name = name
+        self.symbol = symbol
         self.chain_id = chain_id
         self.rpc_url = rpc_url
         self.explorer_url = explorer_url
+        self.testnet = testnet
 
 class Chains(Enum):
     ETH = {
