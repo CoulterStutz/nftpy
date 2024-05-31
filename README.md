@@ -21,6 +21,10 @@ A Python package designed to facilitate the integration and adoption of NFT (ERC
 - Custom Chains are now assigned in a class not the Chains:Enum class. 
 - NFTWallet and  other EVM instances now no longer require a block explorer argument for custom chains.
 
+###### Optimizations
+- Wallet now returns using the chain symbol instead of the chain name
+- Wallet now uses threading to connect to multiple chains
+
 ## Features
 
 #### EVM Interaction with NFT Tokens
