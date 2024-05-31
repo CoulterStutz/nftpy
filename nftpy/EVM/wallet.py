@@ -131,7 +131,7 @@ class NFTWallet:
                 gas_prices[chain.symbol] = gas_price
         return gas_prices
 
-    def get_gas_price_gwei(self, chain = None) -> dict:
+    def get_gas_price_gwei(self, chain=None) -> dict:
         """
         Get the current gas price in Gwei.
 
@@ -139,21 +139,20 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the gas price from.
 
         Returns:
-            dict: A dictionary with the chain name as key and the gas price as value.
+            dict: A dictionary with the chain symbol as key and the gas price as value.
         """
-
         gas_prices = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 gas_price = conn.eth.gas_price
-                gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
+                gas_prices[chain.symbol] = Web3.from_wei(gas_price, 'gwei')
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 gas_price = conn.eth.gas_price
-                gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
+                gas_prices[chain.symbol] = Web3.from_wei(gas_price, 'gwei')
         return gas_prices
 
     def transfer_nft(self, to: str, contract_address: str, amount: int, gas_limit: int, gas_price_gwei: int = None,
