@@ -226,4 +226,3 @@ class Chains(Enum):
     @property
     def explorer_url(self):
         return self.value["explorer_url"]
-
