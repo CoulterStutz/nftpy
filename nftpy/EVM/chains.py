@@ -1,13 +1,12 @@
 from enum import Enum
 
 class Chain:
-    def __init__(self, name:str, chain_id:int, rpc_url:str, symbol:str="ETH", explorer_url:str=None, testnet:bool=False):
+    def __init__(self, name:str, chain_id:int, rpc_url:str, symbol:str="ETH", explorer_url:str=None):
         self.name = name
         self.symbol = symbol
         self.chain_id = chain_id
         self.rpc_url = rpc_url
         self.explorer_url = explorer_url
-        self.testnet = testnet
 
 class Chains(Enum):
     ETH = {
@@ -219,3 +218,7 @@ class Chains(Enum):
     @property
     def explorer_url(self):
         return self.value["explorer_url"]
+
+    @property
+    def symbol(self):
+        return self.value["symbol"]
