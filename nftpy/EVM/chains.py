@@ -125,7 +125,7 @@ class Chains(Enum):
     POLYGON_MUMBAI = {
         "chain_id": 80001,
         "name": "Polygon Mumbai Testnet",
-        "rpc_url": "https://rpc-mumbai.maticvigil.com/",
+        "rpc_url": "https://polygon-mumbai.api.onfinality.io/public",
         "explorer_url": "https://mumbai.polygonscan.com"
     }
 
@@ -163,18 +163,11 @@ class Chains(Enum):
 
     # ARBITRUM TESTNETS
 
-    ARBITRUM_GOERLI = {
-        "chain_id": 421613,
-        "name": "Arbitrum Goerli",
-        "rpc_url": "https://goerli-rollup.arbitrum.io/rpc",
-        "explorer_url": "https://goerli.arbiscan.io"
-    }
-
-    ARBITRUM_RINKEBY = {
+    ARBITRUM_NOVA = {
         "chain_id": 421611,
-        "name": "Arbitrum Rinkeby",
-        "rpc_url": "https://rinkeby.arbitrum.io/rpc",
-        "explorer_url": "https://rinkeby-explorer.arbitrum.io"
+        "name": "Arbitrum Nova",
+        "rpc_url": "https://nova.arbitrum.io/rpc",
+        "explorer_url": "https://nova.arbiscan.io"
     }
 
     # OPTIMISM TESTNETS
@@ -182,7 +175,7 @@ class Chains(Enum):
     OPTIMISM_GOERLI = {
         "chain_id": 420,
         "name": "Optimism Goerli",
-        "rpc_url": "https://goerli.optimism.io",
+        "rpc_url": "https://optimism-goerli.public.blastapi.io",
         "explorer_url": "https://goerli-explorer.optimism.io"
     }
 
