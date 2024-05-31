@@ -1,8 +1,7 @@
 import time
-
+from threading import Thread
 from web3 import Web3
 from web3.exceptions import TransactionNotFound
-
 from .abi import ABI
 from .chains import Chains
 from ..errors import *
@@ -17,7 +16,7 @@ class NFTWallet:
         chains (list[Chains], optional): A list of blockchain networks to connect to.
         rpc_url (str, optional): Custom RPC URL to connect to.
     """
-    def __init__(self, private_key: str = None, address: str = None, chains: list[Chains] = None, rpc_url: str = None):
+    def __init__(self, private_key: str = None, address: str = None, chains: list = None, rpc_url: str = None):
         if not private_key and not address:
             raise NoCredentialsProvidedError()
         self._private_key = private_key
@@ -31,33 +30,42 @@ class NFTWallet:
         return account.address
 
     def _connect_to_chains(self):
+        def connect(chain, connections):
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if not conn.is_connected():
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+            connections.append((chain, conn))
+
         connections = []
+        threads = []
+
         if not self.chains and not self._rpc_url:
             for chain in Chains:
-                conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-                if not conn.is_connected():
-                    raise InvalidRPCURL(chain.rpc_url, chain.name)
-                connections.append((chain, conn))
+                thread = Thread(target=connect, args=(chain, connections))
+                threads.append(thread)
+                thread.start()
         elif self.chains and not self._rpc_url:
             for chain in self.chains:
-                conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-                if not conn.is_connected():
-                    raise InvalidRPCURL(chain.rpc_url, chain.name)
-                connections.append((chain, conn))
+                thread = Thread(target=connect, args=(chain, connections))
+                threads.append(thread)
+                thread.start()
         elif self.chains and self._rpc_url:
             for chain in self.chains:
-                conn = Web3(Web3.HTTPProvider(self._rpc_url))
-                if not conn.is_connected():
-                    raise InvalidRPCURL(self._rpc_url, chain.name)
-                connections.append((chain, conn))
+                thread = Thread(target=connect, args=(chain, connections))
+                threads.append(thread)
+                thread.start()
         elif not self.chains and self._rpc_url:
             conn = Web3(Web3.HTTPProvider(self._rpc_url))
             if not conn.is_connected():
                 raise InvalidRPCURL(self._rpc_url)
             connections.append((None, conn))
+
+        for thread in threads:
+            thread.join()
+
         return connections
 
-    def get_balance_wei(self, chain: Chains = None) -> dict:
+    def get_balance_wei(self, chain=None) -> dict:
         """
         Get the balance of the wallet in Wei.
 
@@ -65,24 +73,24 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the balance from if not defined in wallet
 
         Returns:
-            dict: A dictionary with the chain name as key and the balance as value.
+            dict: A dictionary with the chain symbol as key and the balance as value.
         """
         balances = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 balance = conn.eth.get_balance(self._address)
-                balances[chain.name] = balance
+                balances[chain.symbol] = balance
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
-                symbol = chain.name if chain else "Balance"
+                symbol = chain.symbol if chain else "Balance"
                 balance = conn.eth.get_balance(self._address)
                 balances[symbol] = balance
         return balances
 
-    def get_balance(self, chain: Chains = None) -> dict:
+    def get_balance(self, chain=None) -> dict:
         """
         Get the balance of the wallet in Ether.
 
@@ -90,24 +98,24 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the balance from if not defined in wallet
 
         Returns:
-            dict: A dictionary with the chain name as key and the balance as value.
+            dict: A dictionary with the chain symbol as key and the balance as value.
         """
         balances = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 balance = conn.eth.get_balance(self._address)
-                balances[chain.name] = Web3.from_wei(balance, 'ether')
+                balances[chain.symbol] = Web3.from_wei(balance, 'ether')
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
-                symbol = chain.name if chain else "Balance"
+                symbol = chain.symbol if chain else "Balance"
                 balance = conn.eth.get_balance(self._address)
                 balances[symbol] = Web3.from_wei(balance, 'ether')
         return {"Balances": balances}
 
-    def get_gas_price_wei(self, chain: Chains = None) -> dict:
+    def get_gas_price_wei(self, chain=None) -> dict:
         """
         Get the current gas price in Wei.
 
@@ -115,23 +123,23 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the gas price from.
 
         Returns:
-            dict: A dictionary with the chain name as key and the gas price as value.
+            dict: A dictionary with the chain symbol as key and the gas price as value.
         """
         gas_prices = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 gas_price = conn.eth.gas_price
-                gas_prices[chain.name] = gas_price
+                gas_prices[chain.symbol] = gas_price
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 gas_price = conn.eth.gas_price
-                gas_prices[chain.name] = gas_price
+                gas_prices[chain.symbol] = gas_price
         return gas_prices
 
-    def get_gas_price_gwei(self, chain: Chains = None) -> dict:
+    def get_gas_price_gwei(self, chain=None) -> dict:
         """
         Get the current gas price in Gwei.
 
@@ -139,26 +147,25 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the gas price from.
 
         Returns:
-            dict: A dictionary with the chain name as key and the gas price as value.
+            dict: A dictionary with the chain symbol as key and the gas price as value.
         """
-
         gas_prices = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 gas_price = conn.eth.gas_price
-                gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
+                gas_prices[chain.symbol] = Web3.from_wei(gas_price, 'gwei')
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 gas_price = conn.eth.gas_price
-                gas_prices[chain.name] = Web3.from_wei(gas_price, 'gwei')
+                gas_prices[chain.symbol] = Web3.from_wei(gas_price, 'gwei')
         return gas_prices
 
     def transfer_nft(self, to: str, contract_address: str, amount: int, gas_limit: int, gas_price_gwei: int = None,
                      gas_price_wei: int = None, abi: ABI = None, abi_str: str = None,
-                     chain: Chains = None, token_id: int = None) -> dict:
+                     chain = None, token_id: int = None) -> dict:
         """
         Transfer an NFT to another wallet.
 
@@ -218,10 +225,15 @@ class NFTWallet:
 
         try:
             tx_hash = conn.eth.send_raw_transaction(signed_tx.rawTransaction)
-            return {
-                'transaction_hash': tx_hash.hex(),
-                'explorer_url': f"{chain.explorer_url}/tx/{tx_hash.hex()}"
-            }
+            if chain.explorer_url != None:
+                return {
+                    'transaction_hash': tx_hash.hex(),
+                    'explorer_url': f"{chain.explorer_url}/tx/{tx_hash.hex()}"
+                }
+            else:
+                return {
+                    'transaction_hash': tx_hash.hex(),
+                }
         except ValueError as e:
             if 'gas' in str(e):
                 raise TransactionGasError()
@@ -230,7 +242,7 @@ class NFTWallet:
             else:
                 raise e
 
-    def wait_until_transaction_processes(self, tx_hash, chain: Chains) -> bool:
+    def wait_until_transaction_processes(self, tx_hash, chain) -> bool:
         """
         Wait until a transaction is processed.
 
@@ -257,7 +269,7 @@ class NFTWallet:
                 pass
             time.sleep(1)
 
-    def get_transaction_count(self, chain: Chains = None) -> dict:
+    def get_transaction_count(self, chain=None) -> dict:
         """
         Get the number of transactions sent from the address.
 
@@ -265,23 +277,23 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the transaction count from.
 
         Returns:
-            dict: A dictionary with the chain name as key and the transaction count as value.
+            dict: A dictionary with the chain symbol as key and the transaction count as value.
         """
         counts = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 count = conn.eth.get_transaction_count(self._address)
-                counts[chain.name] = count
+                counts[chain.symbol] = count
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 count = conn.eth.get_transaction_count(self._address)
-                counts[chain.name] = count
+                counts[chain.symbol] = count
         return counts
 
-    def estimate_gas(self, to: str, value: int, data: bytes = b'', chain: Chains = None) -> dict:
+    def estimate_gas(self, to: str, value: int, data: bytes = b'', chain=None) -> dict:
         """
         Estimate the gas required for a transaction.
 
@@ -292,23 +304,23 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to estimate the gas on.
 
         Returns:
-            dict: A dictionary with the chain name as key and the gas estimate as value.
+            dict: A dictionary with the chain symbol as key and the gas estimate as value.
         """
         estimates = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 estimate = conn.eth.estimate_gas({'to': to, 'value': value, 'data': data})
-                estimates[chain.name] = estimate
+                estimates[chain.symbol] = estimate
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 estimate = conn.eth.estimate_gas({'to': to, 'value': value, 'data': data})
-                estimates[chain.name] = estimate
+                estimates[chain.symbol] = estimate
         return estimates
 
-    def is_synced(self, chain: Chains = None) -> dict:
+    def is_synced(self, chain=None) -> dict:
         """
         Check if the blockchain is synced for RPC debugging!
 
@@ -316,23 +328,23 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to check the sync status on.
 
         Returns:
-            dict: A dictionary with the chain name as key and the sync status as value.
+            dict: A dictionary with the chain symbol as key and the sync status as value.
         """
         sync_status = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 synced = not conn.eth.syncing
-                sync_status[chain.name] = synced
+                sync_status[chain.symbol] = synced
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 synced = not conn.eth.syncing
-                sync_status[chain.name] = synced
+                sync_status[chain.symbol] = synced
         return sync_status
 
-    def get_latest_block(self, chain: Chains = None) -> dict:
+    def get_latest_block(self, chain=None) -> dict:
         """
         Get the latest block details.
 
@@ -340,18 +352,18 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the latest block from.
 
         Returns:
-            dict: A dictionary with the chain name as key and the latest block details as value.
+            dict: A dictionary with the chain symbol as key and the latest block details as value.
         """
         blocks = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 block = conn.eth.get_block('latest')
-                blocks[chain.name] = block
+                blocks[chain.symbol] = block
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 block = conn.eth.get_block('latest')
-                blocks[chain.name] = block
+                blocks[chain.symbol] = block
         return blocks

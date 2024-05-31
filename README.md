@@ -1,15 +1,36 @@
-# NFTPy
-[![PyPi](https://img.shields.io/badge/PyPi-1.1.3-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
-[![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/NFTPy/)](https://pypi.org/project/NFTPy/)
+# nftpy
+[![PyPi](https://img.shields.io/badge/PyPi-1.1.4-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
+[![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
+
+### Changes in 1.1.4
+###### Added EVM Chain Support for these testnets:
+- Holesky Testnet (ETH)
+- BSC Testnet (BSC)
+- Mumbai Testnet (MATIC)
+- Goerli Testnet (ARB)
+- Goerli Testnet (OPTIMISM)
+- Fuji Testnet (AVAX)
+- Fantom Testnet (FTM)
+- Alfajores Testnet (CELO)
+- Baklava Testnet (CELO)
+- Cronos Testnet (CRONOS)
+
+###### Fixed Custom Chain Assignment
+- Custom Chains are now assigned in a class not the Chains:Enum class. 
+- NFTWallet and  other EVM instances now no longer require a block explorer argument for custom chains.
+
+###### Optimizations
+- Wallet now returns using the chain symbol instead of the chain name
+- Wallet now uses threading to connect to multiple chains
 
 ## Features
 
 #### EVM Interaction with NFT Tokens
 ![Ethereum](https://img.shields.io/badge/Ethereum%20Based%20Networks-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white)
 
-NFTPy enables interaction with the Ethereum Virtual Machine (EVM) through RPC to retrieve contract details and token holders. It provides a direct communication pathway between the client and the blockchain. Currently, transactional methods are not supported but will be implemented in future updates. The following methods are available:
+nftpy enables interaction with the Ethereum Virtual Machine (EVM) through RPC to retrieve contract details and token holders. It provides a direct communication pathway between the client and the blockchain. Currently, transactional methods are not supported but will be implemented in future updates. The following methods are available:
 
 - **get_balance**: Retrieve the balance of NFTs for a given address.
 - **get_token_uri**: Fetch the metadata URI of a specific token.
@@ -22,7 +43,7 @@ NFTPy enables interaction with the Ethereum Virtual Machine (EVM) through RPC to
 - **is_approved_for_all_erc1155**: Check if an address is approved for all tokens owned by another address (ERC1155).
 
 #### EVM Wallet Interaction
-NFTPy includes comprehensive features for interacting with Ethereum wallets, including querying balances, fetching gas prices, and transferring NFTs. The wallet interface supports both read-only and transactional operations.
+nftpy includes comprehensive features for interacting with Ethereum wallets, including querying balances, fetching gas prices, and transferring NFTs. The wallet interface supports both read-only and transactional operations.
 
 **Wallet Features:**
 - **get_balance**: Retrieve the balance of NFTs for a given address in Ether.
@@ -39,7 +60,7 @@ NFTPy includes comprehensive features for interacting with Ethereum wallets, inc
 #### Built-in OpenSea Interface
 ![OpenSea Support](https://img.shields.io/badge/OpenSea-%232081E2.svg?style=for-the-badge&logo=opensea&logoColor=white)
 
-NFTPy includes a built-in interface for interacting with OpenSea via an API key. This allows for in-package queries to OpenSea, enabling access to pricing information and other OpenSea-specific data. The OpenSea interface can be configured to focus on a single collection or query multiple collections. The available methods include:
+nftpy includes a built-in interface for interacting with OpenSea via an API key. This allows for in-package queries to OpenSea, enabling access to pricing information and other OpenSea-specific data. The OpenSea interface can be configured to focus on a single collection or query multiple collections. The available methods include:
 
 - **get_collection_stats**: Obtain statistics for a collection.
 - **list_events_by_nft**: List events related to a specific NFT.
@@ -54,30 +75,25 @@ NFTPy includes a built-in interface for interacting with OpenSea via an API key.
 - **get_all_listings_on_collection**: Get all listings of a specific collection.
 
 #### Custom Chain Support
-NFTPy allows the creation of custom chains with specific chain IDs, RPC URLs, explorer URLs, and names. This feature enhances flexibility by enabling the addition of blockchain networks that are not predefined in the library.
+nftpy allows the creation of custom chains with specific chain IDs, RPC URLs, explorer URLs, and names. This feature enhances flexibility by enabling the addition of blockchain networks that are not predefined in the library.
 
 **Creating a Custom Chain:**
 ```python
-from NFTPy.EVM import Chains
+from nftpy.EVM import Chain
 
-# Create a custom chain
-custom_chain = Chains.custom_chain(
-    chain_id=999,
-    rpc_url="https://custom-rpc-url.com",
-    explorer_url="https://custom-explorer.com",
-    name="Custom Blockchain"
+custom_chain = Chain(
+        name = "Ethereum",
+        symbol = "ETH",
+        chain_id = 1,
+        rpc_url = "https://eth.llamarpc.com",
+        explorer_url = "https://etherscan.io",
+        testnet = False
 )
-
-# Access custom chain attributes
-print(custom_chain.chain_id)       # Outputs: 999
-print(custom_chain.rpc_url)        # Outputs: https://custom-rpc-url.com
-print(custom_chain.explorer_url)   # Outputs: https://custom-explorer.com
-print(custom_chain.name)           # Outputs: Custom Blockchain
 ```
 
 # Example Usage
-### Interacting on-chain with a collection | NFTPy.EVM.NFT
-Using NFTPy.EVM.NFT we are going to be querying the Pixelmon NFT collection on Ethereum mainnet!
+### Interacting on-chain with a collection | nftpy.EVM.NFT
+Using nftpy.EVM.NFT we are going to be querying the Pixelmon NFT collection on Ethereum mainnet!
 We will first start off by creating our class. We are going to define our class with three arguments:
 - contract_address: The address of the contract you are trying to query.
 - abi: The ABI of the contract you are trying to query. The EVM.ABI class provides presets for our ABI. You can also paste an ABI into the field.
@@ -85,7 +101,7 @@ We will first start off by creating our class. We are going to define our class 
 - rpc_url: If you do not want to use a preset and instead want to use a custom RPC, define it using this field.
 
 ```python
-import NFTPy.EVM as EVM
+import nftpy.EVM as EVM
 Pixelmon = EVM.NFT("0x32973908FaeE0Bf825A343000fE412ebE56F802A", abi=EVM.ABI.ERC721, network=EVM.Chains.ETH)
 #                   Contract Address                                ABI              Network To Query (Ethereum)
 ```
@@ -144,7 +160,7 @@ is_approved_erc1155 = erc1155_nft.is_approved_for_all_erc1155(wallet_address, '0
 print(f'Is Approved For All (ERC1155): {is_approved_erc1155}')
 ```
 
-### Interacting with a Wallet | NFTPy.NFTWallet
+### Interacting with a Wallet | nftpy.NFTWallet
 
 Creating an instance of `NFTWallet` requires either a private key for full access or just an address for read-only access. You can also specify multiple chains to connect to different networks simultaneously.
 
@@ -211,15 +227,15 @@ print(readonly_wallet.get_gas_price_wei())
 # Output: {'Sepolia Testnet': 20000000000}
 ```
 
-### Interacting with OpenSea API | NFTPy.OpenSea
+### Interacting with OpenSea API | nftpy.OpenSea
 We will first start by creating our class with the following arguments:
 - api_key: Your OpenSea API key.
 - chain: The blockchain network (e.g., Ethereum, Polygon).
 - collection_slug: The slug of the collection you want to query (the last part of the url when browsing the collection on opensea) This assigns the interface to a specific collection. If you are using the interface to view multiple collections then you should leave this blank
 
-**Please Note**: When defining the chain, it should be done with NFTPy.OpenSea.Chain as the api requires a special format for chain definition
+**Please Note**: When defining the chain, it should be done with nftpy.OpenSea.Chain as the api requires a special format for chain definition
 ```python
-from NFTPy import OpenSea, OpenSeaChain
+from nftpy import OpenSea, OpenSeaChain
 opensea = OpenSea(api_key='your-opensea-api-key', chain=OpenSeaChain.POLYGON, collection_slug='your-collection-slug')
 ```
 If we want to query the stats of the NFT collection we can run the following command. If you did not define a collection slug when initializing the interface you will need to define it inside this function
@@ -258,18 +274,6 @@ print(opensea.get_nft('0xYourContractAddress', '1'))  # Get details of a specifi
 print(opensea.list_events_by_nft('0xYourContractAddress', '1'))  # List events related to a specific NFT
 print(opensea.list_nfts_by_account('0xYourWalletAddress'))  # List NFTs owned by an account
 ```
-
-# Changes in 1.1.4
-### Added EVM Chain Support for these test nets
-- Holesky Testnet (ETH)
-- BSC Testnet (BSC)
-- Mumbai Testnet (MATIC)
-- Goreli (ARB)
-- Goreli (OPTIMISM)
-- Fuji Testnet (AVAX)
-- Fantom Testnet 
-- Alfajores Testnet (CELO)
-- Cronos Testnet (CHRONOS)
 
 # Coming Soon
 ## Chain Integration

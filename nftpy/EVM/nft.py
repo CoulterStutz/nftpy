@@ -2,13 +2,12 @@ import json
 import requests
 from .chains import Chains
 from .abi import ABI
-from enum import Enum
 from web3 import Web3
 from ..errors import *
 
 
 class NFT:
-    def __init__(self, contract_address: str, network: Chains = Chains.ETH, rpc_url: str = None, abi: ABI = ABI.ERC721):
+    def __init__(self, contract_address: str, network=Chains.ETH, rpc_url: str = None, abi: ABI = ABI.ERC721):
         """
         Creates an Object Interface for interaction with a contract on chain
 
