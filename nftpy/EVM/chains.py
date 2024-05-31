@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class Chains(Enum):
     ETH = {
         "chain_id": 1,
@@ -86,6 +85,7 @@ class Chains(Enum):
         "rpc_url": "https://mainnet.base.org",
         "explorer_url": "https://basescan.org"
     }
+
     # ETH TESTNETS
 
     ETH_SEPOLIA = {
@@ -208,33 +208,3 @@ class Chains(Enum):
         "rpc_url": "https://evm-t3.cronos.org",
         "explorer_url": "https://testnet.cronoscan.com"
     }
-
-
-    def __init__(self, params):
-        self.chain_id = params["chain_id"]
-        self.rpc_url = params["rpc_url"]
-        self.explorer_url = params["explorer_url"]
-        self.name = params["name"]
-
-    @classmethod
-    def custom_chain(cls, chain_id: int, rpc_url: str, explorer_url: str, name: str) -> Enum:
-        """
-        Create a custom chain with the specified chain ID, RPC URL, explorer URL, and name.
-
-        Args:
-            chain_id (int): The chain ID for the custom chain.
-            rpc_url (str): The RPC URL for the custom chain.
-            explorer_url (str): The explorer URL for the custom chain.
-            name (str): The name of the custom chain.
-
-        Returns:
-            Enum: An instance of the Chains enum with the custom chain.
-        """
-        custom_params = {
-            "chain_id": chain_id,
-            "rpc_url": rpc_url,
-            "explorer_url": explorer_url,
-            "name": name
-        }
-        custom_chain = cls(custom_params)
-        return custom_chain
