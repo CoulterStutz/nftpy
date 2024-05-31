@@ -72,7 +72,7 @@ class NFTWallet:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 balance = conn.eth.get_balance(self._address)
-                balances[chain.name] = balance
+                balances[chain.symbol] = balance
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
