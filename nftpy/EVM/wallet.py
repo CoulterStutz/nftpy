@@ -1,8 +1,7 @@
 import time
-
+from threading import Thread
 from web3 import Web3
 from web3.exceptions import TransactionNotFound
-
 from .abi import ABI
 from .chains import Chains
 from ..errors import *
@@ -31,30 +30,39 @@ class NFTWallet:
         return account.address
 
     def _connect_to_chains(self):
+        def connect(chain, connections):
+            conn = Web3(Web3.HTTPProvider(chain.rpc_url))
+            if not conn.is_connected():
+                raise InvalidRPCURL(chain.rpc_url, chain.name)
+            connections.append((chain, conn))
+
         connections = []
+        threads = []
+
         if not self.chains and not self._rpc_url:
             for chain in Chains:
-                conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-                if not conn.is_connected():
-                    raise InvalidRPCURL(chain.rpc_url, chain.name)
-                connections.append((chain, conn))
+                thread = Thread(target=connect, args=(chain, connections))
+                threads.append(thread)
+                thread.start()
         elif self.chains and not self._rpc_url:
             for chain in self.chains:
-                conn = Web3(Web3.HTTPProvider(chain.rpc_url))
-                if not conn.is_connected():
-                    raise InvalidRPCURL(chain.rpc_url, chain.name)
-                connections.append((chain, conn))
+                thread = Thread(target=connect, args=(chain, connections))
+                threads.append(thread)
+                thread.start()
         elif self.chains and self._rpc_url:
             for chain in self.chains:
-                conn = Web3(Web3.HTTPProvider(self._rpc_url))
-                if not conn.is_connected():
-                    raise InvalidRPCURL(self._rpc_url, chain.name)
-                connections.append((chain, conn))
+                thread = Thread(target=connect, args=(chain, connections))
+                threads.append(thread)
+                thread.start()
         elif not self.chains and self._rpc_url:
             conn = Web3(Web3.HTTPProvider(self._rpc_url))
             if not conn.is_connected():
                 raise InvalidRPCURL(self._rpc_url)
             connections.append((None, conn))
+
+        for thread in threads:
+            thread.join()
+
         return connections
 
     def get_balance_wei(self, chain=None) -> dict:
