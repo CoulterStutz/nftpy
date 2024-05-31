@@ -285,7 +285,7 @@ class NFTWallet:
                 counts[chain.symbol] = count
         return counts
 
-    def estimate_gas(self, to: str, value: int, data: bytes = b'', chain = None) -> dict:
+    def estimate_gas(self, to: str, value: int, data: bytes = b'', chain=None) -> dict:
         """
         Estimate the gas required for a transaction.
 
@@ -296,23 +296,23 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to estimate the gas on.
 
         Returns:
-            dict: A dictionary with the chain name as key and the gas estimate as value.
+            dict: A dictionary with the chain symbol as key and the gas estimate as value.
         """
         estimates = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 estimate = conn.eth.estimate_gas({'to': to, 'value': value, 'data': data})
-                estimates[chain.name] = estimate
+                estimates[chain.symbol] = estimate
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 estimate = conn.eth.estimate_gas({'to': to, 'value': value, 'data': data})
-                estimates[chain.name] = estimate
+                estimates[chain.symbol] = estimate
         return estimates
 
-    def is_synced(self, chain = None) -> dict:
+    def is_synced(self, chain=None) -> dict:
         """
         Check if the blockchain is synced for RPC debugging!
 
@@ -320,23 +320,23 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to check the sync status on.
 
         Returns:
-            dict: A dictionary with the chain name as key and the sync status as value.
+            dict: A dictionary with the chain symbol as key and the sync status as value.
         """
         sync_status = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 synced = not conn.eth.syncing
-                sync_status[chain.name] = synced
+                sync_status[chain.symbol] = synced
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 synced = not conn.eth.syncing
-                sync_status[chain.name] = synced
+                sync_status[chain.symbol] = synced
         return sync_status
 
-    def get_latest_block(self, chain = None) -> dict:
+    def get_latest_block(self, chain=None) -> dict:
         """
         Get the latest block details.
 
@@ -344,18 +344,18 @@ class NFTWallet:
             chain (Chains, optional): The specific chain to get the latest block from.
 
         Returns:
-            dict: A dictionary with the chain name as key and the latest block details as value.
+            dict: A dictionary with the chain symbol as key and the latest block details as value.
         """
         blocks = {}
         if chain:
             conn = Web3(Web3.HTTPProvider(chain.rpc_url))
             if conn.is_connected():
                 block = conn.eth.get_block('latest')
-                blocks[chain.name] = block
+                blocks[chain.symbol] = block
             else:
                 raise InvalidRPCURL(chain.rpc_url, chain.name)
         else:
             for chain, conn in self._connections:
                 block = conn.eth.get_block('latest')
-                blocks[chain.name] = block
+                blocks[chain.symbol] = block
         return blocks
