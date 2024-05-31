@@ -17,6 +17,10 @@ A Python package designed to facilitate the integration and adoption of NFT (ERC
 - Baklava Testnet (CELO)
 - Cronos Testnet (CRONOS)
 
+###### Fixed Custom Chain Assignment
+- Custom Chains are now assigned in a class not the Chains:Enum class. 
+- NFTWallet and  other EVM instances now no longer require a block explorer argument for custom chains.
+
 ## Features
 
 #### EVM Interaction with NFT Tokens
@@ -71,21 +75,16 @@ NFTPy allows the creation of custom chains with specific chain IDs, RPC URLs, ex
 
 **Creating a Custom Chain:**
 ```python
-from NFTPy.EVM import Chains
+from NFTPy.EVM import Chain
 
-# Create a custom chain
-custom_chain = Chains.custom_chain(
-    chain_id=999,
-    rpc_url="https://custom-rpc-url.com",
-    explorer_url="https://custom-explorer.com",
-    name="Custom Blockchain"
+custom_chain = Chain(
+        name = "Ethereum",
+        symbol = "ETH",
+        chain_id = 1,
+        rpc_url = "https://eth.llamarpc.com",
+        explorer_url = "https://etherscan.io",
+        testnet = False
 )
-
-# Access custom chain attributes
-print(custom_chain.chain_id)       # Outputs: 999
-print(custom_chain.rpc_url)        # Outputs: https://custom-rpc-url.com
-print(custom_chain.explorer_url)   # Outputs: https://custom-explorer.com
-print(custom_chain.name)           # Outputs: Custom Blockchain
 ```
 
 # Example Usage
