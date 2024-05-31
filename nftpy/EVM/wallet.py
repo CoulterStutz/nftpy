@@ -17,7 +17,7 @@ class NFTWallet:
         chains (list[Chains], optional): A list of blockchain networks to connect to.
         rpc_url (str, optional): Custom RPC URL to connect to.
     """
-    def __init__(self, private_key: str = None, address: str = None, chains: list[Chains] = None, rpc_url: str = None):
+    def __init__(self, private_key: str = None, address: str = None, chains: list = None, rpc_url: str = None):
         if not private_key and not address:
             raise NoCredentialsProvidedError()
         self._private_key = private_key
@@ -57,7 +57,7 @@ class NFTWallet:
             connections.append((None, conn))
         return connections
 
-    def get_balance_wei(self, chain: Chains = None) -> dict:
+    def get_balance_wei(self, chain = None) -> dict:
         """
         Get the balance of the wallet in Wei.
 
@@ -82,7 +82,7 @@ class NFTWallet:
                 balances[symbol] = balance
         return balances
 
-    def get_balance(self, chain: Chains = None) -> dict:
+    def get_balance(self, chain = None) -> dict:
         """
         Get the balance of the wallet in Ether.
 
@@ -107,7 +107,7 @@ class NFTWallet:
                 balances[symbol] = Web3.from_wei(balance, 'ether')
         return {"Balances": balances}
 
-    def get_gas_price_wei(self, chain: Chains = None) -> dict:
+    def get_gas_price_wei(self, chain = None) -> dict:
         """
         Get the current gas price in Wei.
 
@@ -131,7 +131,7 @@ class NFTWallet:
                 gas_prices[chain.name] = gas_price
         return gas_prices
 
-    def get_gas_price_gwei(self, chain: Chains = None) -> dict:
+    def get_gas_price_gwei(self, chain = None) -> dict:
         """
         Get the current gas price in Gwei.
 
@@ -158,7 +158,7 @@ class NFTWallet:
 
     def transfer_nft(self, to: str, contract_address: str, amount: int, gas_limit: int, gas_price_gwei: int = None,
                      gas_price_wei: int = None, abi: ABI = None, abi_str: str = None,
-                     chain: Chains = None, token_id: int = None) -> dict:
+                     chain = None, token_id: int = None) -> dict:
         """
         Transfer an NFT to another wallet.
 
@@ -230,7 +230,7 @@ class NFTWallet:
             else:
                 raise e
 
-    def wait_until_transaction_processes(self, tx_hash, chain: Chains) -> bool:
+    def wait_until_transaction_processes(self, tx_hash, chain) -> bool:
         """
         Wait until a transaction is processed.
 
@@ -257,7 +257,7 @@ class NFTWallet:
                 pass
             time.sleep(1)
 
-    def get_transaction_count(self, chain: Chains = None) -> dict:
+    def get_transaction_count(self, chain = None) -> dict:
         """
         Get the number of transactions sent from the address.
 
@@ -281,7 +281,7 @@ class NFTWallet:
                 counts[chain.name] = count
         return counts
 
-    def estimate_gas(self, to: str, value: int, data: bytes = b'', chain: Chains = None) -> dict:
+    def estimate_gas(self, to: str, value: int, data: bytes = b'', chain = None) -> dict:
         """
         Estimate the gas required for a transaction.
 
@@ -308,7 +308,7 @@ class NFTWallet:
                 estimates[chain.name] = estimate
         return estimates
 
-    def is_synced(self, chain: Chains = None) -> dict:
+    def is_synced(self, chain = None) -> dict:
         """
         Check if the blockchain is synced for RPC debugging!
 
@@ -332,7 +332,7 @@ class NFTWallet:
                 sync_status[chain.name] = synced
         return sync_status
 
-    def get_latest_block(self, chain: Chains = None) -> dict:
+    def get_latest_block(self, chain = None) -> dict:
         """
         Get the latest block details.
 
