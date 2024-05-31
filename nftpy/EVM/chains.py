@@ -105,15 +105,8 @@ class Chains(Enum):
     ETH_HOLESKY = {
         "chain_id": 17000,
         "name": "Holešky Testnet",
-        "rpc_url": "https://rpc.holesky.eth",
-        "explorer_url": "https://holesky.etherscan.io"
-    }
-
-    ETH_GOERLI = {
-        "chain_id": 5,
-        "name": "Goerli Testnet",
-        "rpc_url": "https://goerli.infura.io/v3/YOUR_INFURA_PROJECT_ID",
-        "explorer_url": "https://goerli.etherscan.io"
+        "rpc_url": "https://ethereum-holesky.publicnode.com",
+        "explorer_url": "https://holesky.beaconcha.in"
     }
 
     # BSC TESTNETS
@@ -215,3 +208,20 @@ class Chains(Enum):
         "rpc_url": "https://evm-t3.cronos.org",
         "explorer_url": "https://testnet.cronoscan.com"
     }
+
+    @property
+    def chain_id(self):
+        return self.value["chain_id"]
+
+    @property
+    def name(self):
+        return self.value["name"]
+
+    @property
+    def rpc_url(self):
+        return self.value["rpc_url"]
+
+    @property
+    def explorer_url(self):
+        return self.value["explorer_url"]
+
