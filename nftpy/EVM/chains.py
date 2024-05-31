@@ -1,5 +1,12 @@
 from enum import Enum
 
+class CustomChain:
+    def __init__(self, name:str, chain_id:int, rpc_url:str, explorer_url:str):
+        self.name = name
+        self.chain_id = chain_id
+        self.rpc_url = rpc_url
+        self.explorer_url = explorer_url
+
 class Chains(Enum):
     ETH = {
         "chain_id": 1,
