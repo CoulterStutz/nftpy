@@ -218,10 +218,15 @@ class NFTWallet:
 
         try:
             tx_hash = conn.eth.send_raw_transaction(signed_tx.rawTransaction)
-            return {
-                'transaction_hash': tx_hash.hex(),
-                'explorer_url': f"{chain.explorer_url}/tx/{tx_hash.hex()}"
-            }
+            if chain.explorer_url != None:
+                return {
+                    'transaction_hash': tx_hash.hex(),
+                    'explorer_url': f"{chain.explorer_url}/tx/{tx_hash.hex()}"
+                }
+            else:
+                return {
+                    'transaction_hash': tx_hash.hex(),
+                }
         except ValueError as e:
             if 'gas' in str(e):
                 raise TransactionGasError()
