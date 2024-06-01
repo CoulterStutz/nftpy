@@ -1,14 +1,35 @@
 # nftpy
-[![PyPi](https://img.shields.io/badge/PyPi-1.1.5B-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
+[![PyPi](https://img.shields.io/badge/PyPi-1.2.0-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 [![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
 
-### Changes in 1.1.5
-#### Threaded NFTWallet class for fast chain querying!
-If you are querying to multiple chains at once, fear no more as processing times are slashed for multichain querying!
-#### Adjusted to support Python ^3.9
-NFTPy has been adjusted to support earlier versions of python. Python 3.9-3.12 will now be supported!
+### Changes in 1.2
+#### NFT Exchanges added
+- Rarible | 1.2.0
+  - Support for Eth
+  - Support for Polygon interactions
+- Mintable | 1.2.1
+  - Support for Eth
+  - Support for Polygon interactions
+- Foundation | 1.2.2
+  - Support for Eth
+  - Support for Polygon interactions
+- LooksRare | 1.2.3
+  - Support for Eth interactions
+- X2Y2 | 1.2.4
+  - Support for Eth interactions
+- SuperRare | 1.2.5
+  - Support for Eth interactions
+- Treasureland | 1.2.7
+  - Support for Eth
+  - Support for BSC interactions
+- Decentraland | 1.2.8
+  - Support for Eth interactions
+- Zapper | 1.2.9
+  - Support for Eth
+  - Support for Polygon interactions
+
 
 ## Features
 
@@ -261,7 +282,26 @@ print(opensea.list_nfts_by_account('0xYourWalletAddress'))  # List NFTs owned by
 ```
 
 # Coming Soon
-## Chain Integration
-- ![Solana](https://img.shields.io/badge/Solana-00FF94?style=for-the-badge&logo=Solana&logoColor=white)
-- ![Tron](https://img.shields.io/badge/Tron-FF0600?style=for-the-badge&logo=Tron&logoColor=white)
-- ![Tezos](https://img.shields.io/badge/Tezos-2C7DF7?style=for-the-badge&logo=Tezos&logoColor=white)
+
+## Marketplace Integration
+![Rarible](https://img.shields.io/badge/Rarible-000000?style=for-the-badge&logo=Rarible&logoColor=white)
+![Mintable](https://img.shields.io/badge/Mintable-00BFFF?style=for-the-badge&logo=Mintable&logoColor=white)
+![Foundation](https://img.shields.io/badge/Foundation-000000?style=for-the-badge&logo=Foundation&logoColor=white)
+![LooksRare](https://img.shields.io/badge/LooksRare-000000?style=for-the-badge&logo=LooksRare&logoColor=white)
+![X2Y2](https://img.shields.io/badge/X2Y2-000000?style=for-the-badge&logo=X2Y2&logoColor=white)
+![SuperRare](https://img.shields.io/badge/SuperRare-000000?style=for-the-badge&logo=SuperRare&logoColor=white)
+![Treasureland](https://img.shields.io/badge/Treasureland-FF9800?style=for-the-badge&logo=Treasureland&logoColor=white)
+![Decentraland](https://img.shields.io/badge/Decentraland-F15A24?style=for-the-badge&logo=Decentraland&logoColor=white)
+![Zapper](https://img.shields.io/badge/Zapper-6741FF?style=for-the-badge&logo=Zapper&logoColor=white)
+![BakerySwap](https://img.shields.io/badge/BakerySwap-FDBE34?style=for-the-badge&logo=BakerySwap&logoColor=white)
+![AirNFTs](https://img.shields.io/badge/AirNFTs-00A3FF?style=for-the-badge&logo=AirNFTs&logoColor=white)
+![PancakeSwap](https://img.shields.io/badge/PancakeSwap-7FCBE6?style=for-the-badge&logo=PancakeSwap&logoColor=white)
+![Binance NFT](https://img.shields.io/badge/Binance%20NFT-F0B90B?style=for-the-badge&logo=Binance&logoColor=white)
+![NFTb](https://img.shields.io/badge/NFTb-0000FF?style=for-the-badge&logo=NFTb&logoColor=white)
+![DODO](https://img.shields.io/badge/DODO-FFFF00?style=for-the-badge&logo=DODO&logoColor=black)
+
+
+## Chain Integration | Coming in 2.0
+![Solana](https://img.shields.io/badge/Solana-00FF94?style=for-the-badge&logo=Solana&logoColor=white)
+![Tron](https://img.shields.io/badge/Tron-FF0600?style=for-the-badge&logo=Tron&logoColor=white)
+![Tezos](https://img.shields.io/badge/Tezos-2C7DF7?style=for-the-badge&logo=Tezos&logoColor=white)
