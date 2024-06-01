@@ -1,12 +1,9 @@
 name: CI Pipeline
 
 on:
-  push:
-    paths:
-      - nftpy/nftpy/EVM/chains.py
   pull_request:
-    paths:
-      - nftpy/nftpy/EVM/chains.py
+    branches:
+      - main
 
 jobs:
   lint:
