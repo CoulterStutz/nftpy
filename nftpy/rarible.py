@@ -195,3 +195,35 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_ownerships_by_item(item_id: str):
+        """
+        Get ownerships for a specific item.
+
+        Args:
+            item_id (str): The ID of the item.
+
+        Returns:
+            dict: Ownerships of the specified item.
+        """
+        url = f"https://api.rarible.org/v0.1/ownerships/byItem"
+        params = {"itemId": item_id}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_collections_with_owned_items(owner: str):
+        """
+        Get collections with items owned by a specific owner.
+
+        Args:
+            owner (str): The address of the owner.
+
+        Returns:
+            dict: Collections with items owned by the specified owner.
+        """
+        url = f"https://api.rarible.org/v0.1/ownerships/collectionsWithOwnedItems"
+        params = {"owner": owner}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
