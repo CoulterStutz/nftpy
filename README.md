@@ -7,8 +7,8 @@ A Python package designed to facilitate the integration and adoption of NFT (ERC
 ### Changes in 1.1.5
 #### Threaded NFTWallet class for fast chain querying!
 If you are querying to multiple chains at once, fear no more as processing times are slashed for multichain querying!
-#### Adjusted to support Python ^3.8
-NFTPy has been adjusted to support earlier versions of python. Python 3.8-3.12 will now be supported!
+#### Adjusted to support Python ^3.9
+NFTPy has been adjusted to support earlier versions of python. Python 3.9-3.12 will now be supported!
 
 ## Features
 
