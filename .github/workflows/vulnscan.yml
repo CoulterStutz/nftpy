@@ -1,0 +1,30 @@
+name: Dependency Scanning
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly scan
+  workflow_dispatch:
+
+jobs:
+  dependency-vulnerability-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
+          poetry install
+
+      - name: Run dependency scan
+        uses: google/oss-fuzz/actions@master
+        with:
+          action: python
