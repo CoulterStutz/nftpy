@@ -104,3 +104,47 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+    def query_traits(collection: str):
+        """
+        Query traits of items in a specific collection.
+
+        Args:
+            collection (str): The ID of the collection.
+
+        Returns:
+            dict: Traits of items in the specified collection.
+        """
+        url = f"https://api.rarible.org/v0.1/items/traits"
+        params = {"collection": collection}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_lazy_item_by_id(item_id: str):
+        """
+        Get a lazy item by item ID.
+
+        Args:
+            item_id (str): The ID of the item.
+
+        Returns:
+            dict: Details of the lazy item.
+        """
+        url = f"https://api.rarible.org/v0.1/items/{item_id}/lazy"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    def burn_lazy_item(item_id: str):
+        """
+        Burn a lazy item by item ID.
+
+        Args:
+            item_id (str): The ID of the lazy item to burn.
+
+        Returns:
+            dict: Result of the burn operation.
+        """
+        url = f"https://api.rarible.org/v0.1/items/{item_id}/lazy/burn"
+        response = requests.post(url)
+        response.raise_for_status()
+        return response.json()
