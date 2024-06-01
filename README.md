@@ -5,7 +5,8 @@
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
 
 ### Changes in 1.1.5
-
+#### Threaded NFTWallet class for fast chain querying!
+If you are querying to multiple chains at once, fear no more as processing times are slashed for multichain querying!
 ## Features
 
 #### EVM Interaction with NFT Tokens
