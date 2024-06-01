@@ -72,3 +72,35 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_items_by_creator(creator: str):
+        """
+        Get items created by a specific creator.
+
+        Args:
+            creator (str): The address of the creator.
+
+        Returns:
+            dict: Items created by the specified creator.
+        """
+        url = f"https://api.rarible.org/v0.1/items/byCreator"
+        params = {"creator": creator}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_items_by_collection(collection: str):
+        """
+        Get items in a specific collection.
+
+        Args:
+            collection (str): The ID of the collection.
+
+        Returns:
+            dict: Items in the specified collection.
+        """
+        url = f"https://api.rarible.org/v0.1/items/byCollection"
+        params = {"collection": collection}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
