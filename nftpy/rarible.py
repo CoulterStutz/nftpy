@@ -227,3 +227,51 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    import requests
+
+    def get_order_by_id(order_id: str):
+        """
+        Get order details by order ID.
+
+        Args:
+            order_id (str): The ID of the order.
+
+        Returns:
+            dict: Details of the order.
+        """
+        url = f"https://api.rarible.org/v0.1/orders/{order_id}"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def get_order_by_id(order_id: str):
+        """
+        Get order details by order ID.
+
+        Args:
+            order_id (str): The ID of the order.
+
+        Returns:
+            dict: Details of the order.
+        """
+        url = f"https://api.rarible.org/v0.1/orders/{order_id}"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def get_validated_order_by_id(order_id: str):
+        """
+        Get validated order details by order ID.
+
+        Args:
+            order_id (str): The ID of the validated order.
+
+        Returns:
+            dict: Details of the validated order.
+        """
+        url = f"https://api.rarible.org/v0.1/orders/{order_id}/validated"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
