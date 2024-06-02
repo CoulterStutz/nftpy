@@ -323,3 +323,19 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_order_floor_bids_by_collection(self, collection: str):
+        """
+        Get order floor bids by collection.
+
+        Args:
+            collection (str): The ID of the collection.
+
+        Returns:
+            dict: Details of the floor bids for the specified collection.
+        """
+        url = f"{self.base_url}/orders/bids/floorByCollection"
+        params = {"collection": collection}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
