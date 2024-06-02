@@ -307,3 +307,19 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_order_bids_by_item(self, item_id: str):
+        """
+        Get order bids by item.
+
+        Args:
+            item_id (str): The ID of the item.
+
+        Returns:
+            dict: Details of the order bids for the specified item.
+        """
+        url = f"{self.base_url}/orders/bids/byItem"
+        params = {"itemId": item_id}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
