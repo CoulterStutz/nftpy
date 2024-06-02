@@ -339,3 +339,33 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_amm_order_trade_info(self, order_id: str):
+        """
+        Get AMM order trade information by order ID.
+
+        Args:
+            order_id (str): The ID of the order.
+
+        Returns:
+            dict: Trade information of the specified AMM order.
+        """
+        url = f"{self.base_url}/orders/amm/tradeInfo/{order_id}"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def get_order_fees(self, order_id: str):
+        """
+        Get fees for a specific order.
+
+        Args:
+            order_id (str): The ID of the order.
+
+        Returns:
+            dict: Fee details of the specified order.
+        """
+        url = f"{self.base_url}/orders/{order_id}/fees"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
