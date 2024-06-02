@@ -227,3 +227,83 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_orders_by_ids(self, order_ids: list):
+        url = f"{self.base_url}/orders/byIds"
+        params = {"ids": ",".join(order_ids)}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_orders_all(self):
+        url = f"{self.base_url}/orders/all"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def get_all_sync(self):
+        url = f"{self.base_url}/orders/all/sync"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def get_sell_orders_by_maker(self, maker: str):
+        url = f"{self.base_url}/orders/sell/byMaker"
+        params = {"maker": maker}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_sell_orders_by_item(self, item_id: str):
+        url = f"{self.base_url}/orders/sell/byItem"
+        params = {"itemId": item_id}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_sell_orders(self, status: str = None, maker: str = None, collection: str = None, token: str = None,
+                        origin: str = None):
+        """
+        Get sell orders with optional filters.
+
+        Args:
+            status (str, optional): The status of the orders to filter by.
+            maker (str, optional): The address of the maker to filter by.
+            collection (str, optional): The collection to filter by.
+            token (str, optional): The token address to filter by.
+            origin (str, optional): The origin address to filter by.
+
+        Returns:
+            dict: Details of the sell orders.
+        """
+        url = f"{self.base_url}/orders/sell"
+        params = {}
+        if status:
+            params["status"] = status
+        if maker:
+            params["maker"] = maker
+        if collection:
+            params["collection"] = collection
+        if token:
+            params["token"] = token
+        if origin:
+            params["origin"] = origin
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_order_bids_by_maker(self, maker: str):
+        """
+        Get order bids by maker.
+
+        Args:
+            maker (str): The address of the maker.
+
+        Returns:
+            dict: Details of the order bids by the specified maker.
+        """
+        url = f"{self.base_url}/orders/bids/byMaker"
+        params = {"maker": maker}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
