@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nftpy"
-version = "1.2.0"
+version = "1.2.0.post1"
 description = "A NFT specific Python library for easy NFT integration in Python"
 authors = ["CoulterStutz <coultercash@gmail.com>"]
 readme = "README.md"
@@ -12,6 +12,7 @@ repository = "https://github.com/coulterstutz/nftpy"
 python = "^3.9"
 web3 = "^6.2.0"
 requests = "^2.28.1"
+setuptools = "^70.0.0"
 
 [tool.poetry.group.dev.dependencies]
 twine = "^5.1.0"
