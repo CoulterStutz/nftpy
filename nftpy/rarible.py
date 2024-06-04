@@ -402,3 +402,17 @@ class Rarible:
         response.raise_for_status()
         return response.json()
 
+    def refresh_collection_items_meta(self, collection_id: str):
+        """
+        Refresh metadata for all items within a collection.
+
+        Args:
+            collection_id (str): The ID of the collection.
+
+        Returns:
+            dict: Result of the refresh operation.
+        """
+        url = f"{self.base_url}/collections/{collection_id}/refresh"
+        response = requests.post(url)
+        response.raise_for_status()
+        return response.json()
