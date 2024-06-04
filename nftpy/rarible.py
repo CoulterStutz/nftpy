@@ -458,3 +458,21 @@ class Rarible:
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
+
+    def get_collection_ranking_by_volume(self, period: str = "DAY", size: int = 10):
+        """
+        Get collection ranking by trading volume.
+
+        Args:
+            period (str, optional): The period to filter by (DAY, WEEK, MONTH, etc.). Default is "DAY".
+            size (int, optional): The number of collections to retrieve. Default is 10.
+
+        Returns:
+            dict: Ranking of collections by volume.
+        """
+        url = f"{self.base_url}/nft/collections/ranking/volume"
+        params = {"period": period, "size": size}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
