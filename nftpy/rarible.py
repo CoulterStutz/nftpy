@@ -509,3 +509,19 @@ class Rarible:
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
+
+    def get_sellers(self, size: int = 10):
+        """
+        Get top sellers.
+
+        Args:
+            size (int, optional): Number of top sellers to retrieve. Default is 10.
+
+        Returns:
+            dict: List of top sellers.
+        """
+        url = f"{self.base_url}/nft/sellers"
+        params = {"size": size}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
