@@ -526,6 +526,22 @@ class Rarible:
         response.raise_for_status()
         return response.json()
 
+    def get_buyers(self, size: int = 10):
+        """
+        Get top buyers.
+
+        Args:
+            size (int, optional): Number of top buyers to retrieve. Default is 10.
+
+        Returns:
+            dict: List of top buyers.
+        """
+        url = f"{self.base_url}/nft/buyers"
+        params = {"size": size}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
     def get_gmv(self, period: str = "DAY"):
         """
         Get gross merchandise volume data.
