@@ -83,6 +83,23 @@ nftpy includes a built-in interface for interacting with OpenSea via an API key.
 - *get_balance*: Check the balance of the wallet.
 - *get_nfts*: Retrieve all NFTs owned by the wallet.
 
+#### Built-in Rarible Interface
+![Rarible Support](https://img.shields.io/badge/Rarible-000000?style=for-the-badge&logo=Rarible&logoColor=white)
+
+nftpy includes a comprehensive interface for interacting with Rarible via an API key. This allows for in-package queries to Rarible, enabling access to NFT information, market data, and more. The available methods include:
+
+**Rarible Class:**
+- *get_item_by_id*: Fetch details of a specific item by its ID.
+- *get_items_by_ids*: Fetch details of multiple items by their IDs.
+- *get_item_royalties_by_id*: Retrieve royalty information for a specific item by its ID.
+- *get_items_by_owner*: Fetch items owned by a specific address.
+- *validate_signature*: Validate a signature for a given data set.
+- *get_signature_input*: Get input data required for generating a signature.
+- *encode_data*: Encode data for the Rarible protocol.
+- *get_usd_rate*: Get the USD exchange rate for a specific currency.
+- *get_all_currencies*: Fetch all supported currencies.
+- *get_user_balance*: Retrieve the balance of a specific user in a specified currency.
+
 
 #### Custom Chain Support
 nftpy allows the creation of custom chains with specific chain IDs, RPC URLs, explorer URLs, and names. This feature enhances flexibility by enabling the addition of blockchain networks that are not predefined in the library.
