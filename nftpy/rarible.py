@@ -446,3 +446,15 @@ class Rarible:
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
+
+    def get_all_collections(self):
+        """
+        Get a list of all collections.
+
+        Returns:
+            dict: All collections.
+        """
+        url = f"{self.base_url}/collections"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
