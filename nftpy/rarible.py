@@ -476,3 +476,21 @@ class Rarible:
         response.raise_for_status()
         return response.json()
 
+    def get_transactions(self, start_date: str = None, end_date: str = None, cursor: str = None, limit: int = 100):
+        """
+        Get a list of transactions with optional filters.
+
+        Args:
+            start_date (str, optional): The start date for filtering transactions.
+            end_date (str, optional): The end date for filtering transactions.
+            cursor (str, optional): Cursor for pagination.
+            limit (int, optional): Number of transactions to retrieve. Default is 100.
+
+        Returns:
+            dict: List of transactions.
+        """
+        url = f"{self.base_url}/nft/transactions"
+        params = {"startDate": start_date, "endDate": end_date, "cursor": cursor, "limit": limit}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
