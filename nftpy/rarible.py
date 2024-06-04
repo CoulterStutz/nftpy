@@ -648,3 +648,18 @@ class Rarible:
         response = requests.post(url, json=data)
         response.raise_for_status()
         return response.json()
+
+    def get_usd_rate(self, currency: str):
+        """
+        Get the exchange rate between a specified currency and USD.
+
+        Args:
+            currency (str): The currency to get the exchange rate for.
+
+        Returns:
+            dict: The exchange rate information.
+        """
+        url = f"{self.base_url}/rates/{currency}/usd"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
