@@ -1,5 +1,5 @@
 # nftpy
-[![PyPi](https://img.shields.io/badge/PyPi-1.2.0b-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
+[![PyPi](https://img.shields.io/badge/PyPi-1.2.0-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 [![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
@@ -68,17 +68,38 @@ nftpy includes comprehensive features for interacting with Ethereum wallets, inc
 
 nftpy includes a built-in interface for interacting with OpenSea via an API key. This allows for in-package queries to OpenSea, enabling access to pricing information and other OpenSea-specific data. The OpenSea interface can be configured to focus on a single collection or query multiple collections. The available methods include:
 
-- **get_collection_stats**: Obtain statistics for a collection.
-- **list_events_by_nft**: List events related to a specific NFT.
-- **get_collection**: Fetch details of a specific collection.
-- **get_contract**: Retrieve details of a specific contract.
-- **get_nft**: Get details of a specific NFT.
-- **list_nfts_by_account**: List NFTs owned by a specific account.
-- **list_nfts_by_collection**: List NFTs in a specific collection.
-- **list_nfts_by_contract**: List NFTs under a specific contract.
-- **get_payment_token**: Get details of a specific payment token.
-- **get_traits**: Get traits of a specific collection.
-- **get_all_listings_on_collection**: Get all listings of a specific collection.
+**OpenSea Class:**
+- *get_collection_stats*: Obtain statistics for a collection.
+- *get_collection*: Fetch details of a specific collection.
+- *get_nft*: Get details of a specific NFT.
+- *list_events_by_nft*: List events related to a specific NFT.
+- *list_nfts_by_account*: List NFTs owned by a specific account.
+
+**OpenSeaCollection Class:**
+- *get_collection_details*: Fetch details of a specific collection.
+- *get_nfts*: List NFTs in a specific collection.
+
+**OpenSeaWallet Class:**
+- *get_balance*: Check the balance of the wallet.
+- *get_nfts*: Retrieve all NFTs owned by the wallet.
+
+#### Built-in Rarible Interface
+![Rarible Support](https://img.shields.io/badge/Rarible-000000?style=for-the-badge&logo=Rarible&logoColor=white)
+
+nftpy includes a comprehensive interface for interacting with Rarible via an API key. This allows for in-package queries to Rarible, enabling access to NFT information, market data, and more. The available methods include:
+
+**Rarible Class:**
+- *get_item_by_id*: Fetch details of a specific item by its ID.
+- *get_items_by_ids*: Fetch details of multiple items by their IDs.
+- *get_item_royalties_by_id*: Retrieve royalty information for a specific item by its ID.
+- *get_items_by_owner*: Fetch items owned by a specific address.
+- *validate_signature*: Validate a signature for a given data set.
+- *get_signature_input*: Get input data required for generating a signature.
+- *encode_data*: Encode data for the Rarible protocol.
+- *get_usd_rate*: Get the USD exchange rate for a specific currency.
+- *get_all_currencies*: Fetch all supported currencies.
+- *get_user_balance*: Retrieve the balance of a specific user in a specified currency.
+
 
 #### Custom Chain Support
 nftpy allows the creation of custom chains with specific chain IDs, RPC URLs, explorer URLs, and names. This feature enhances flexibility by enabling the addition of blockchain networks that are not predefined in the library.
@@ -234,20 +255,26 @@ print(readonly_wallet.get_gas_price_wei())
 ```
 
 ### Interacting with OpenSea API | nftpy.OpenSea
-We will first start by creating our class with the following arguments:
-- api_key: Your OpenSea API key.
-- chain: The blockchain network (e.g., Ethereum, Polygon).
-- collection_slug: The slug of the collection you want to query (the last part of the url when browsing the collection on opensea) This assigns the interface to a specific collection. If you are using the interface to view multiple collections then you should leave this blank
 
-**Please Note**: When defining the chain, it should be done with nftpy.OpenSea.Chain as the api requires a special format for chain definition
+We will first start by creating our class with the following arguments:
+- *api_key*: Your OpenSea API key.
+- *chain*: The blockchain network (e.g., Ethereum, Polygon).
+
+**Please Note**: When defining the chain, it should be done with ```nftpy.OpenSea.OpenSeaChain``` as the API requires a special format for chain definition.
+
 ```python
 from nftpy import OpenSea, OpenSeaChain
-opensea = OpenSea(api_key='your-opensea-api-key', chain=OpenSeaChain.POLYGON, collection_slug='your-collection-slug')
+opensea = OpenSea(api_key='your-opensea-api-key', chain=OpenSeaChain.POLYGON)
 ```
-If we want to query the stats of the NFT collection we can run the following command. If you did not define a collection slug when initializing the interface you will need to define it inside this function
+
+#### Fetching Collection Statistics
+
+To query the stats of an NFT collection, use the following method:
+
 ```python
-opensea.get_collection_stats()
+opensea.get_collection_stats('your-collection-slug')
 ```
+
 After running that, we should see an output resembling this:
 ```json
 {
@@ -268,23 +295,162 @@ After running that, we should see an output resembling this:
   }
 }
 ```
-We can do a lot more with this. For example:
-- Fetching details of a collection
-- Getting details of a specific NFT
-- Listing events related to a specific NFT
-- Listing NFTs owned by an account
+
+#### Fetching Collection Details
+
+To fetch details of a collection, use the following method:
 
 ```python
-print(opensea.get_collection('your-collection-slug'))  # Fetch details of a collection
-print(opensea.get_nft('0xYourContractAddress', '1'))  # Get details of a specific NFT
-print(opensea.list_events_by_nft('0xYourContractAddress', '1'))  # List events related to a specific NFT
-print(opensea.list_nfts_by_account('0xYourWalletAddress'))  # List NFTs owned by an account
+opensea.get_collection('your-collection-slug')
 ```
 
+#### Fetching NFT Details
+
+To get details of a specific NFT, use the following method:
+```python
+opensea.get_nft('0xYourContractAddress', '1')
+```
+#### Listing Events by NFT
+
+To list events related to a specific NFT, use the following method:
+
+```python
+opensea.list_events_by_nft('0xYourContractAddress', '1')
+```
+
+#### Listing NFTs by Account
+
+To list NFTs owned by a specific account, use the following method:
+
+```python
+opensea.list_nfts_by_account('0xYourWalletAddress')
+```
+
+#### Managing Collections
+
+To manage a collection, create an instance of the *OpenSeaCollection* class:
+
+```python
+from nftpy import OpenSeaCollection
+
+collection = OpenSeaCollection(collection_name='your-collection-name', api_key='your-api-key')
+```
+
+#### Getting Collection Details
+
+To get details of a specific collection, use the following method:
+```python
+details = collection.get_collection_details()
+```
+#### Listing NFTs in a Collection
+
+To list all NFTs within a collection, use the following method:
+```python
+nfts = collection.get_nfts()
+```
+### Managing Wallets
+
+To manage a wallet, create an instance of the *OpenSeaWallet* class:
+
+```python
+from nftpy import OpenSeaWallet
+wallet = OpenSeaWallet(address='your-wallet-address', api_key='your-api-key')
+```
+#### Checking Wallet Balance
+
+To check the balance of the wallet, use the following method:
+
+```python
+balance = wallet.get_balance()
+```
+#### Fetching Wallet NFTs
+
+To retrieve all NFTs owned by the wallet, use the following method:
+```python
+nfts = wallet.get_nfts()
+```
+### Interacting with Rarible API | nftpy.Rarible
+
+We will first start by creating our class with the following arguments:
+- *api_key*: Your Rarible API key.
+- *chain*: The blockchain network (e.g., Ethereum, Polygon).
+
+**Please Note**: When defining the chain, it should be done with *nftpy.Rarible.RaribleChain* as the API requires a special format for chain definition.
+```python
+from nftpy import Rarible, RaribleChain
+rarible = Rarible(api_key='your-rarible-api-key', chain=RaribleChain.ETHEREUM)
+```
+#### Fetching Item by ID
+
+To fetch details of a specific item by its ID, use the following method:
+```python
+rarible.get_item_by_id('item_id')
+```
+#### Fetching Items by IDs
+
+To fetch details of multiple items by their IDs, use the following method:
+```python
+rarible.get_items_by_ids(['item_id1', 'item_id2'])
+```
+#### Fetching Item Royalties by ID
+
+To retrieve royalty information for a specific item by its ID, use the following method:
+```python
+rarible.get_item_royalties_by_id('item_id')
+```
+#### Fetching Items by Owner
+
+To fetch items owned by a specific address, use the following method:
+
+```python
+rarible.get_items_by_owner('owner_address')
+```
+#### Validating Signature
+
+To validate a signature for a given data set, use the following method:
+
+```python
+rarible.validate_signature(data={'your': 'data'})
+```
+
+#### Getting Signature Input
+
+To get input data required for generating a signature, use the following method:
+
+```python
+rarible.get_signature_input(data={'your': 'data'})
+```
+
+#### Encoding Data
+
+To encode data for the Rarible protocol, use the following method:
+
+```python
+rarible.encode_data(data={'your': 'data'})
+```
+
+#### Getting USD Exchange Rate
+
+To get the USD exchange rate for a specific currency, use the following method:
+
+```python
+rarible.get_usd_rate('currency')
+```
+#### Fetching All Currencies
+
+To fetch all supported currencies, use the following method:
+```python
+rarible.get_all_currencies()
+```
+#### Fetching User Balance
+
+To retrieve the balance of a specific user in a specified currency, use the following method:
+```python
+rarible.get_user_balance('user_address', 'currency')
+```
 # Coming Soon
 
 ## Marketplace Integration
-![Rarible](https://img.shields.io/badge/Rarible-000000?style=for-the-badge&logo=Rarible&logoColor=white)
 ![Mintable](https://img.shields.io/badge/Mintable-00BFFF?style=for-the-badge&logo=Mintable&logoColor=white)
 ![Foundation](https://img.shields.io/badge/Foundation-000000?style=for-the-badge&logo=Foundation&logoColor=white)
 ![LooksRare](https://img.shields.io/badge/LooksRare-000000?style=for-the-badge&logo=LooksRare&logoColor=white)
