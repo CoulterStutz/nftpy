@@ -8,7 +8,7 @@ class RaribleCollection:
         self._api_key = api_key
         self._collection_id = collection_id
         self._chain = chain
-        self._api = Rarible(chain=chain)
+        self._api = Rarible(api_key=api_key, chain=chain)
 
     def get_items_by_collection(self):
         """

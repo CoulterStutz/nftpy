@@ -9,7 +9,7 @@ class RaribleWallet:
         self._api_key = api_key
         self._wallet = wallet
         self._chain = chain
-        self._api = Rarible(chain=chain)
+        self._api = Rarible(api_key=api_key, chain=chain)
 
     def get_owned_items(self):
         """

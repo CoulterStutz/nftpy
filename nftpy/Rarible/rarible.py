@@ -1,15 +1,21 @@
 from enum import Enum
 import requests
 
-
 class RaribleChain(Enum):
     ETHEREUM = "ETHEREUM"
     POLYGON = "POLYGON"
 
 class Rarible:
-    def __init__(self, chain: RaribleChain):
+    def __init__(self, api_key: str, chain: RaribleChain):
+        self.api_key = api_key
         self.chain = chain
         self.base_url = "https://api.rarible.org/v0.1"
+
+    def _get_headers(self):
+        return {
+            "Accept": "application/json",
+            "X-API-KEY": self.api_key
+        }
 
     def get_item_by_id(self, item_id: str):
         """
@@ -22,7 +28,7 @@ class Rarible:
             dict: Details of the item.
         """
         url = f"{self.base_url}/items/{item_id}"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -38,7 +44,7 @@ class Rarible:
         """
         url = f"{self.base_url}/items/byIds"
         params = {"ids": ",".join(item_ids)}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -53,7 +59,7 @@ class Rarible:
             dict: Royalties information of the item.
         """
         url = f"{self.base_url}/items/{item_id}/royalties"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -69,7 +75,7 @@ class Rarible:
         """
         url = f"{self.base_url}/items/byOwner"
         params = {"owner": owner}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -83,9 +89,9 @@ class Rarible:
         Returns:
             dict: Items created by the specified creator.
         """
-        url = f"https://api.rarible.org/v0.1/items/byCreator"
+        url = f"{self.base_url}/items/byCreator"
         params = {"creator": creator}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -99,11 +105,12 @@ class Rarible:
         Returns:
             dict: Items in the specified collection.
         """
-        url = f"https://api.rarible.org/v0.1/items/byCollection"
+        url = f"{self.base_url}/items/byCollection"
         params = {"collection": collection}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
+
     def query_traits(self, collection: str):
         """
         Query traits of items in a specific collection.
@@ -114,9 +121,9 @@ class Rarible:
         Returns:
             dict: Traits of items in the specified collection.
         """
-        url = f"https://api.rarible.org/v0.1/items/traits"
+        url = f"{self.base_url}/items/traits"
         params = {"collection": collection}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -130,10 +137,11 @@ class Rarible:
         Returns:
             dict: Details of the lazy item.
         """
-        url = f"https://api.rarible.org/v0.1/items/{item_id}/lazy"
-        response = requests.get(url)
+        url = f"{self.base_url}/items/{item_id}/lazy"
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
+
     def burn_lazy_item(self, item_id: str):
         """
         Burn a lazy item by item ID.
@@ -144,8 +152,8 @@ class Rarible:
         Returns:
             dict: Result of the burn operation.
         """
-        url = f"https://api.rarible.org/v0.1/items/{item_id}/lazy/burn"
-        response = requests.post(url)
+        url = f"{self.base_url}/items/{item_id}/lazy/burn"
+        response = requests.post(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -159,8 +167,8 @@ class Rarible:
         Returns:
             dict: Details of the ownership.
         """
-        url = f"https://api.rarible.org/v0.1/ownerships/{ownership_id}"
-        response = requests.get(url)
+        url = f"{self.base_url}/ownerships/{ownership_id}"
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -174,9 +182,9 @@ class Rarible:
         Returns:
             dict: Details of the ownerships.
         """
-        url = f"https://api.rarible.org/v0.1/ownerships/byIds"
+        url = f"{self.base_url}/ownerships/byIds"
         params = {"ids": ",".join(ownership_ids)}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -190,9 +198,9 @@ class Rarible:
         Returns:
             dict: Ownerships in the specified collection.
         """
-        url = f"https://api.rarible.org/v0.1/ownerships/byCollection"
+        url = f"{self.base_url}/ownerships/byCollection"
         params = {"collection": collection}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -206,9 +214,9 @@ class Rarible:
         Returns:
             dict: Ownerships of the specified item.
         """
-        url = f"https://api.rarible.org/v0.1/ownerships/byItem"
+        url = f"{self.base_url}/ownerships/byItem"
         params = {"itemId": item_id}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -222,42 +230,81 @@ class Rarible:
         Returns:
             dict: Collections with items owned by the specified owner.
         """
-        url = f"https://api.rarible.org/v0.1/ownerships/collectionsWithOwnedItems"
+        url = f"{self.base_url}/ownerships/collectionsWithOwnedItems"
         params = {"owner": owner}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
     def get_orders_by_ids(self, order_ids: list):
+        """
+        Get details of orders by their IDs.
+
+        Args:
+            order_ids (list): A list of order IDs.
+
+        Returns:
+            dict: Details of the orders.
+        """
         url = f"{self.base_url}/orders/byIds"
         params = {"ids": ",".join(order_ids)}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
     def get_orders_all(self):
+        """
+        Get details of all orders.
+
+        Returns:
+            dict: Details of all orders.
+        """
         url = f"{self.base_url}/orders/all"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
     def get_all_sync(self):
+        """
+        Get details of all orders with sync.
+
+        Returns:
+            dict: Details of all synced orders.
+        """
         url = f"{self.base_url}/orders/all/sync"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
     def get_sell_orders_by_maker(self, maker: str):
+        """
+        Get sell orders by maker.
+
+        Args:
+            maker (str): The address of the maker.
+
+        Returns:
+            dict: Details of the sell orders by the specified maker.
+        """
         url = f"{self.base_url}/orders/sell/byMaker"
         params = {"maker": maker}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
     def get_sell_orders_by_item(self, item_id: str):
+        """
+        Get sell orders by item.
+
+        Args:
+            item_id (str): The ID of the item.
+
+        Returns:
+            dict: Details of the sell orders for the specified item.
+        """
         url = f"{self.base_url}/orders/sell/byItem"
         params = {"itemId": item_id}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -288,7 +335,7 @@ class Rarible:
             params["token"] = token
         if origin:
             params["origin"] = origin
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -304,7 +351,7 @@ class Rarible:
         """
         url = f"{self.base_url}/orders/bids/byMaker"
         params = {"maker": maker}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -320,7 +367,7 @@ class Rarible:
         """
         url = f"{self.base_url}/orders/bids/byItem"
         params = {"itemId": item_id}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -336,7 +383,7 @@ class Rarible:
         """
         url = f"{self.base_url}/orders/bids/floorByCollection"
         params = {"collection": collection}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -351,7 +398,7 @@ class Rarible:
             dict: Trade information of the specified AMM order.
         """
         url = f"{self.base_url}/orders/amm/tradeInfo/{order_id}"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -366,7 +413,7 @@ class Rarible:
             dict: Fee details of the specified order.
         """
         url = f"{self.base_url}/orders/{order_id}/fees"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -381,7 +428,7 @@ class Rarible:
             dict: Details of the collection.
         """
         url = f"{self.base_url}/collections/{collection_id}"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -398,7 +445,7 @@ class Rarible:
         """
         url = f"{self.base_url}/collections/{collection_id}/generateTokenId"
         params = {"minter": minter}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -413,7 +460,7 @@ class Rarible:
             dict: Result of the refresh operation.
         """
         url = f"{self.base_url}/collections/{collection_id}/refresh"
-        response = requests.post(url)
+        response = requests.post(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -428,7 +475,7 @@ class Rarible:
             dict: Result of the reset operation.
         """
         url = f"{self.base_url}/collections/{collection_id}/reset"
-        response = requests.post(url)
+        response = requests.post(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -443,7 +490,7 @@ class Rarible:
             dict: Collections owned by the specified owner.
         """
         url = f"{self.base_url}/collections/owner/{owner}"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -455,7 +502,7 @@ class Rarible:
             dict: All collections.
         """
         url = f"{self.base_url}/collections"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -472,7 +519,7 @@ class Rarible:
         """
         url = f"{self.base_url}/nft/collections/ranking/volume"
         params = {"period": period, "size": size}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -491,7 +538,7 @@ class Rarible:
         """
         url = f"{self.base_url}/nft/transactions"
         params = {"startDate": start_date, "endDate": end_date, "cursor": cursor, "limit": limit}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -506,7 +553,7 @@ class Rarible:
             dict: Statistical data of the collection.
         """
         url = f"{self.base_url}/nft/collections/{collection_id}/stats"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -522,7 +569,7 @@ class Rarible:
         """
         url = f"{self.base_url}/nft/sellers"
         params = {"size": size}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -538,7 +585,7 @@ class Rarible:
         """
         url = f"{self.base_url}/nft/buyers"
         params = {"size": size}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -554,7 +601,7 @@ class Rarible:
         """
         url = f"{self.base_url}/nft/listed"
         params = {"period": period}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -570,7 +617,7 @@ class Rarible:
         """
         url = f"{self.base_url}/nft/gmv"
         params = {"period": period}
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=self._get_headers(), params=params)
         response.raise_for_status()
         return response.json()
 
@@ -585,7 +632,7 @@ class Rarible:
             dict: Floor price of the collection.
         """
         url = f"{self.base_url}/nft/collections/{collection_id}/floorPrice"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -600,7 +647,7 @@ class Rarible:
             dict: Information about the domain.
         """
         url = f"{self.base_url}/domains/{domain}"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -615,7 +662,7 @@ class Rarible:
             dict: Result of the validation.
         """
         url = f"{self.base_url}/signature/validate"
-        response = requests.post(url, json=data)
+        response = requests.post(url, headers=self._get_headers(), json=data)
         response.raise_for_status()
         return response.json()
 
@@ -630,7 +677,7 @@ class Rarible:
             dict: The input data used for the signature.
         """
         url = f"{self.base_url}/signature/input"
-        response = requests.post(url, json=data)
+        response = requests.post(url, headers=self._get_headers(), json=data)
         response.raise_for_status()
         return response.json()
 
@@ -645,7 +692,7 @@ class Rarible:
             dict: The encoded data.
         """
         url = f"{self.base_url}/encode"
-        response = requests.post(url, json=data)
+        response = requests.post(url, headers=self._get_headers(), json=data)
         response.raise_for_status()
         return response.json()
 
@@ -660,7 +707,7 @@ class Rarible:
             dict: The exchange rate information.
         """
         url = f"{self.base_url}/rates/{currency}/usd"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -672,7 +719,7 @@ class Rarible:
             dict: All supported currencies and their exchange rates.
         """
         url = f"{self.base_url}/currencies"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
 
@@ -688,6 +735,6 @@ class Rarible:
             dict: The user's balance.
         """
         url = f"{self.base_url}/balances/{user}/{currency}"
-        response = requests.get(url)
+        response = requests.get(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
