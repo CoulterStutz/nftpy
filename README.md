@@ -234,20 +234,26 @@ print(readonly_wallet.get_gas_price_wei())
 ```
 
 ### Interacting with OpenSea API | nftpy.OpenSea
-We will first start by creating our class with the following arguments:
-- api_key: Your OpenSea API key.
-- chain: The blockchain network (e.g., Ethereum, Polygon).
-- collection_slug: The slug of the collection you want to query (the last part of the url when browsing the collection on opensea) This assigns the interface to a specific collection. If you are using the interface to view multiple collections then you should leave this blank
 
-**Please Note**: When defining the chain, it should be done with nftpy.OpenSea.Chain as the api requires a special format for chain definition
+We will first start by creating our class with the following arguments:
+- *api_key*: Your OpenSea API key.
+- *chain*: The blockchain network (e.g., Ethereum, Polygon).
+
+**Please Note**: When defining the chain, it should be done with ```nftpy.OpenSea.OpenSeaChain``` as the API requires a special format for chain definition.
+
 ```python
 from nftpy import OpenSea, OpenSeaChain
-opensea = OpenSea(api_key='your-opensea-api-key', chain=OpenSeaChain.POLYGON, collection_slug='your-collection-slug')
+opensea = OpenSea(api_key='your-opensea-api-key', chain=OpenSeaChain.POLYGON)
 ```
-If we want to query the stats of the NFT collection we can run the following command. If you did not define a collection slug when initializing the interface you will need to define it inside this function
+
+#### Fetching Collection Statistics
+
+To query the stats of an NFT collection, use the following method:
+
 ```python
-opensea.get_collection_stats()
+opensea.get_collection_stats('your-collection-slug')
 ```
+
 After running that, we should see an output resembling this:
 ```json
 {
@@ -268,19 +274,80 @@ After running that, we should see an output resembling this:
   }
 }
 ```
-We can do a lot more with this. For example:
-- Fetching details of a collection
-- Getting details of a specific NFT
-- Listing events related to a specific NFT
-- Listing NFTs owned by an account
+
+#### Fetching Collection Details
+
+To fetch details of a collection, use the following method:
 
 ```python
-print(opensea.get_collection('your-collection-slug'))  # Fetch details of a collection
-print(opensea.get_nft('0xYourContractAddress', '1'))  # Get details of a specific NFT
-print(opensea.list_events_by_nft('0xYourContractAddress', '1'))  # List events related to a specific NFT
-print(opensea.list_nfts_by_account('0xYourWalletAddress'))  # List NFTs owned by an account
+opensea.get_collection('your-collection-slug')
 ```
 
+#### Fetching NFT Details
+
+To get details of a specific NFT, use the following method:
+```python
+opensea.get_nft('0xYourContractAddress', '1')
+```
+#### Listing Events by NFT
+
+To list events related to a specific NFT, use the following method:
+
+```python
+opensea.list_events_by_nft('0xYourContractAddress', '1')
+```
+
+#### Listing NFTs by Account
+
+To list NFTs owned by a specific account, use the following method:
+
+```python
+opensea.list_nfts_by_account('0xYourWalletAddress')
+```
+
+#### Managing Collections
+
+To manage a collection, create an instance of the *OpenSeaCollection* class:
+
+```python
+from nftpy import OpenSeaCollection
+
+collection = OpenSeaCollection(collection_name='your-collection-name', api_key='your-api-key')
+```
+
+#### Getting Collection Details
+
+To get details of a specific collection, use the following method:
+```python
+details = collection.get_collection_details()
+```
+#### Listing NFTs in a Collection
+
+To list all NFTs within a collection, use the following method:
+```python
+nfts = collection.get_nfts()
+```
+### Managing Wallets
+
+To manage a wallet, create an instance of the *OpenSeaWallet* class:
+
+```python
+from nftpy import OpenSeaWallet
+wallet = OpenSeaWallet(address='your-wallet-address', api_key='your-api-key')
+```
+#### Checking Wallet Balance
+
+To check the balance of the wallet, use the following method:
+
+```python
+balance = wallet.get_balance()
+```
+#### Fetching Wallet NFTs
+
+To retrieve all NFTs owned by the wallet, use the following method:
+```python
+nfts = wallet.get_nfts()
+```
 # Coming Soon
 
 ## Marketplace Integration
