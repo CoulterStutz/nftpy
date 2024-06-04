@@ -385,3 +385,20 @@ class Rarible:
         response.raise_for_status()
         return response.json()
 
+    def generate_token_id(self, collection_id: str, minter: str):
+        """
+        Generate a unique token ID for a new item in a collection.
+
+        Args:
+            collection_id (str): The ID of the collection.
+            minter (str): The address of the minter.
+
+        Returns:
+            dict: The generated token ID.
+        """
+        url = f"{self.base_url}/collections/{collection_id}/generateTokenId"
+        params = {"minter": minter}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
