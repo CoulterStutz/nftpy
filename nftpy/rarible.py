@@ -525,3 +525,19 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_gmv(self, period: str = "DAY"):
+        """
+        Get gross merchandise volume data.
+
+        Args:
+            period (str, optional): The period to filter by (DAY, WEEK, MONTH, etc.). Default is "DAY".
+
+        Returns:
+            dict: Gross merchandise volume data.
+        """
+        url = f"{self.base_url}/nft/gmv"
+        params = {"period": period}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
