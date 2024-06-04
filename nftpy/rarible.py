@@ -431,3 +431,18 @@ class Rarible:
         response = requests.post(url)
         response.raise_for_status()
         return response.json()
+
+    def get_collections_by_owner(self, owner: str):
+        """
+        Get collections owned by a specific owner.
+
+        Args:
+            owner (str): The address of the owner.
+
+        Returns:
+            dict: Collections owned by the specified owner.
+        """
+        url = f"{self.base_url}/collections/owner/{owner}"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
