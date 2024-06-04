@@ -1,6 +1,5 @@
 from enum import Enum
 import requests
-
 from ..errors import MissingItemIdError, MissingChainError, APIRequestFailedError, MissingCollectionIdError
 
 class RaribleChain(Enum):
