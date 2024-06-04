@@ -588,3 +588,63 @@ class Rarible:
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
+
+    def get_domain_info(self, domain: str):
+        """
+        Get information about a specific domain.
+
+        Args:
+            domain (str): The domain to lookup.
+
+        Returns:
+            dict: Information about the domain.
+        """
+        url = f"{self.base_url}/domains/{domain}"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def validate_signature(self, data: dict):
+        """
+        Validate a provided signature.
+
+        Args:
+            data (dict): The data containing the signature and related information.
+
+        Returns:
+            dict: Result of the validation.
+        """
+        url = f"{self.base_url}/signature/validate"
+        response = requests.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
+    def get_signature_input(self, data: dict):
+        """
+        Get input data used to create a signature.
+
+        Args:
+            data (dict): The data containing the signature and related information.
+
+        Returns:
+            dict: The input data used for the signature.
+        """
+        url = f"{self.base_url}/signature/input"
+        response = requests.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
+    def encode_data(self, data: dict):
+        """
+        Encode data for use in blockchain transactions.
+
+        Args:
+            data (dict): The data to encode.
+
+        Returns:
+            dict: The encoded data.
+        """
+        url = f"{self.base_url}/encode"
+        response = requests.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
