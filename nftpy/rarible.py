@@ -675,3 +675,19 @@ class Rarible:
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
+
+    def get_user_balance(self, user: str, currency: str):
+        """
+        Get the balance of a specific user for a given currency.
+
+        Args:
+            user (str): The user to get the balance for.
+            currency (str): The currency to get the balance in.
+
+        Returns:
+            dict: The user's balance.
+        """
+        url = f"{self.base_url}/balances/{user}/{currency}"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
