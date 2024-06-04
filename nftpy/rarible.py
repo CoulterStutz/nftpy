@@ -369,3 +369,19 @@ class Rarible:
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
+
+    def get_collection_by_id(self, collection_id: str):
+        """
+        Get collection details by collection ID.
+
+        Args:
+            collection_id (str): The ID of the collection.
+
+        Returns:
+            dict: Details of the collection.
+        """
+        url = f"{self.base_url}/collections/{collection_id}"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
