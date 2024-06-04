@@ -696,8 +696,92 @@ class Collection:
     """
     A class built for collection specific interactions.
     """
-    def __init__(self, api_key, collection_id, chain:RaribleChain=RaribleChain.ETHEREUM):
+    def __init__(self, api_key, collection_id, chain: RaribleChain = RaribleChain.ETHEREUM):
         self.api_key = api_key
         self.collection_id = collection_id
         self.chain = chain
-        self.api = Rarible(api_key=self.api_key, chain=chain)
+        self.api = Rarible(chain=chain)
+
+    def get_items_by_collection(self):
+        """
+        Get items in the specific collection.
+
+        Returns:
+            dict: Items in the specified collection.
+        """
+        return self.api.get_items_by_collection(self.collection_id)
+
+    def query_traits(self):
+        """
+        Query traits of items in the specific collection.
+
+        Returns:
+            dict: Traits of items in the specified collection.
+        """
+        return self.api.query_traits(self.collection_id)
+
+    def get_ownerships_by_collection(self):
+        """
+        Get ownerships in the specific collection.
+
+        Returns:
+            dict: Ownerships in the specified collection.
+        """
+        return self.api.get_ownerships_by_collection(self.collection_id)
+
+    def get_collection_by_id(self):
+        """
+        Get details of the specific collection.
+
+        Returns:
+            dict: Details of the collection.
+        """
+        return self.api.get_collection_by_id(self.collection_id)
+
+    def generate_token_id(self, minter: str):
+        """
+        Generate a unique token ID for a new item in the collection.
+
+        Args:
+            minter (str): The address of the minter.
+
+        Returns:
+            dict: The generated token ID.
+        """
+        return self.api.generate_token_id(self.collection_id, minter)
+
+    def refresh_collection_items_meta(self):
+        """
+        Refresh metadata for all items within the collection.
+
+        Returns:
+            dict: Result of the refresh operation.
+        """
+        return self.api.refresh_collection_items_meta(self.collection_id)
+
+    def reset_collection_meta(self):
+        """
+        Reset metadata for the specific collection.
+
+        Returns:
+            dict: Result of the reset operation.
+        """
+        return self.api.reset_collection_meta(self.collection_id)
+
+    def get_collection_stats(self):
+        """
+        Get statistical data for the specific collection.
+
+        Returns:
+            dict: Statistical data of the collection.
+        """
+        return self.api.get_collection_stats(self.collection_id)
+
+    def get_floor_price(self):
+        """
+        Get the floor price for the collection.
+
+        Returns:
+            dict: Floor price of the collection.
+        """
+        return self.api.get_floor_price(self.collection_id)
