@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 setup(
     name="nftpy",
     version="1.2.0post1",
-    author="CoulterStutz",
+    author="Coulter Stutz",
     author_email="coultercash@gmail.com",
     description="A NFT specific Python library for easy NFT integration in Python",
     long_description=long_description,
