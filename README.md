@@ -68,17 +68,21 @@ nftpy includes comprehensive features for interacting with Ethereum wallets, inc
 
 nftpy includes a built-in interface for interacting with OpenSea via an API key. This allows for in-package queries to OpenSea, enabling access to pricing information and other OpenSea-specific data. The OpenSea interface can be configured to focus on a single collection or query multiple collections. The available methods include:
 
-- **get_collection_stats**: Obtain statistics for a collection.
-- **list_events_by_nft**: List events related to a specific NFT.
-- **get_collection**: Fetch details of a specific collection.
-- **get_contract**: Retrieve details of a specific contract.
-- **get_nft**: Get details of a specific NFT.
-- **list_nfts_by_account**: List NFTs owned by a specific account.
-- **list_nfts_by_collection**: List NFTs in a specific collection.
-- **list_nfts_by_contract**: List NFTs under a specific contract.
-- **get_payment_token**: Get details of a specific payment token.
-- **get_traits**: Get traits of a specific collection.
-- **get_all_listings_on_collection**: Get all listings of a specific collection.
+**OpenSea Class:**
+- *get_collection_stats*: Obtain statistics for a collection.
+- *get_collection*: Fetch details of a specific collection.
+- *get_nft*: Get details of a specific NFT.
+- *list_events_by_nft*: List events related to a specific NFT.
+- *list_nfts_by_account*: List NFTs owned by a specific account.
+
+**OpenSeaCollection Class:**
+- *get_collection_details*: Fetch details of a specific collection.
+- *get_nfts*: List NFTs in a specific collection.
+
+**OpenSeaWallet Class:**
+- *get_balance*: Check the balance of the wallet.
+- *get_nfts*: Retrieve all NFTs owned by the wallet.
+
 
 #### Custom Chain Support
 nftpy allows the creation of custom chains with specific chain IDs, RPC URLs, explorer URLs, and names. This feature enhances flexibility by enabling the addition of blockchain networks that are not predefined in the library.
@@ -348,10 +352,88 @@ To retrieve all NFTs owned by the wallet, use the following method:
 ```python
 nfts = wallet.get_nfts()
 ```
+### Interacting with Rarible API | nftpy.Rarible
+
+We will first start by creating our class with the following arguments:
+- *api_key*: Your Rarible API key.
+- *chain*: The blockchain network (e.g., Ethereum, Polygon).
+
+**Please Note**: When defining the chain, it should be done with *nftpy.Rarible.RaribleChain* as the API requires a special format for chain definition.
+```python
+from nftpy import Rarible, RaribleChain
+rarible = Rarible(api_key='your-rarible-api-key', chain=RaribleChain.ETHEREUM)
+```
+#### Fetching Item by ID
+
+To fetch details of a specific item by its ID, use the following method:
+```python
+rarible.get_item_by_id('item_id')
+```
+#### Fetching Items by IDs
+
+To fetch details of multiple items by their IDs, use the following method:
+```python
+rarible.get_items_by_ids(['item_id1', 'item_id2'])
+```
+#### Fetching Item Royalties by ID
+
+To retrieve royalty information for a specific item by its ID, use the following method:
+```python
+rarible.get_item_royalties_by_id('item_id')
+```
+#### Fetching Items by Owner
+
+To fetch items owned by a specific address, use the following method:
+
+```python
+rarible.get_items_by_owner('owner_address')
+```
+#### Validating Signature
+
+To validate a signature for a given data set, use the following method:
+
+```python
+rarible.validate_signature(data={'your': 'data'})
+```
+
+#### Getting Signature Input
+
+To get input data required for generating a signature, use the following method:
+
+```python
+rarible.get_signature_input(data={'your': 'data'})
+```
+
+#### Encoding Data
+
+To encode data for the Rarible protocol, use the following method:
+
+```python
+rarible.encode_data(data={'your': 'data'})
+```
+
+#### Getting USD Exchange Rate
+
+To get the USD exchange rate for a specific currency, use the following method:
+
+```python
+rarible.get_usd_rate('currency')
+```
+#### Fetching All Currencies
+
+To fetch all supported currencies, use the following method:
+```python
+rarible.get_all_currencies()
+```
+#### Fetching User Balance
+
+To retrieve the balance of a specific user in a specified currency, use the following method:
+```python
+rarible.get_user_balance('user_address', 'currency')
+```
 # Coming Soon
 
 ## Marketplace Integration
-![Rarible](https://img.shields.io/badge/Rarible-000000?style=for-the-badge&logo=Rarible&logoColor=white)
 ![Mintable](https://img.shields.io/badge/Mintable-00BFFF?style=for-the-badge&logo=Mintable&logoColor=white)
 ![Foundation](https://img.shields.io/badge/Foundation-000000?style=for-the-badge&logo=Foundation&logoColor=white)
 ![LooksRare](https://img.shields.io/badge/LooksRare-000000?style=for-the-badge&logo=LooksRare&logoColor=white)
