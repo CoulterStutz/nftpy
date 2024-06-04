@@ -691,3 +691,13 @@ class Rarible:
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
+
+class Collection:
+    """
+    A class built for collection specific interactions.
+    """
+    def __init__(self, api_key, collection_id, chain:RaribleChain=RaribleChain.ETHEREUM):
+        self.api_key = api_key
+        self.collection_id = collection_id
+        self.chain = chain
+        self.api = Rarible(api_key=self.api_key, chain=chain)
