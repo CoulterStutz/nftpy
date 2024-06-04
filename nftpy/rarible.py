@@ -416,3 +416,18 @@ class Rarible:
         response = requests.post(url)
         response.raise_for_status()
         return response.json()
+
+    def reset_collection_meta(self, collection_id: str):
+        """
+        Reset metadata for a specific collection.
+
+        Args:
+            collection_id (str): The ID of the collection.
+
+        Returns:
+            dict: Result of the reset operation.
+        """
+        url = f"{self.base_url}/collections/{collection_id}/reset"
+        response = requests.post(url)
+        response.raise_for_status()
+        return response.json()
