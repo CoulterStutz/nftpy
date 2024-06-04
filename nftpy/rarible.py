@@ -541,3 +541,18 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_floor_price(self, collection_id: str):
+        """
+        Get the floor price for a collection.
+
+        Args:
+            collection_id (str): The ID of the collection.
+
+        Returns:
+            dict: Floor price of the collection.
+        """
+        url = f"{self.base_url}/nft/collections/{collection_id}/floorPrice"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
