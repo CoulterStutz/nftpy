@@ -31,7 +31,6 @@ class TransactionBalanceError(NFTException):
 
 class WalletReadOnlyError(NFTException):
     """Raised when a transaction fails due to insufficient balance."""
-
     def __init__(self):
         self.message = "Transaction failed due to insufficient balance."
         super().__init__(self.message)
@@ -39,7 +38,7 @@ class WalletReadOnlyError(NFTException):
 class NoCredentialsProvidedError(NFTException):
     """Raised when neither private_key nor address is provided."""
     def __init__(self):
-        self.message = "Either private_key or address must be provided. Using address will grant you with a read only interface. Transactions can be made by supplying a private key"
+        self.message = "Either private_key or address must be provided. Using address will grant you with a read-only interface. Transactions can be made by supplying a private key."
         super().__init__(self.message)
 
 class OpenSeaException(Exception):
@@ -59,6 +58,28 @@ class MissingChainError(OpenSeaException):
         super().__init__(self.message)
 
 class APIRequestFailedError(OpenSeaException):
+    """Raised when an API request fails."""
+    def __init__(self, status_code):
+        self.message = f"API request failed with status code {status_code}."
+        super().__init__(self.message)
+
+class RaribleException(Exception):
+    """Base class for exceptions in Rarible class."""
+    pass
+
+class MissingCollectionIdError(RaribleException):
+    """Raised when a collection ID is required but not provided."""
+    def __init__(self):
+        self.message = "Collection ID must be provided."
+        super().__init__(self.message)
+
+class MissingItemIdError(RaribleException):
+    """Raised when an item ID is required but not provided."""
+    def __init__(self):
+        self.message = "Item ID must be provided."
+        super().__init__(self.message)
+
+class APIRequestFailedError(RaribleException):
     """Raised when an API request fails."""
     def __init__(self, status_code):
         self.message = f"API request failed with status code {status_code}."
