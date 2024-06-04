@@ -692,7 +692,7 @@ class Rarible:
         response.raise_for_status()
         return response.json()
 
-class Collection:
+class RaribleCollection:
     """
     A class built for collection specific interactions.
     """
