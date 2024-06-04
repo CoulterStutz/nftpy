@@ -1,6 +1,9 @@
+from .rarible import Rarible, RaribleChain
+
+
 class RaribleWallet:
     """
-    A class built for wallet specific interactions.
+    A class built for wallet specific interactions on Rareable.
     """
     def __init__(self, api_key, wallet: str, chain: RaribleChain = RaribleChain.ETHEREUM):
         self._api_key = api_key

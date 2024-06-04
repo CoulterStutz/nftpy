@@ -1,3 +1,5 @@
+from .rarible import Rarible, RaribleChain
+
 class RaribleCollection:
     """
     A class built for collection specific interactions.
