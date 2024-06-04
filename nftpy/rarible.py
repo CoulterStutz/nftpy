@@ -791,19 +791,19 @@ class RaribleWallet:
     A class built for wallet specific interactions.
     """
     def __init__(self, api_key, wallet: str, chain: RaribleChain = RaribleChain.ETHEREUM):
-        self.api_key = api_key
-        self.wallet = wallet
-        self.chain = chain
-        self.api = Rarible(chain=chain)
+        self._api_key = api_key
+        self._wallet = wallet
+        self._chain = chain
+        self._api = Rarible(chain=chain)
 
-    def get_items_by_owner(self):
+    def get_owned_items(self):
         """
         Get items owned by the wallet owner.
 
         Returns:
             dict: Items owned by the specified owner.
         """
-        return self.api.get_items_by_owner(self._wallet)
+        return self._api.get_items_by_owner(self._wallet)
 
     def get_collections_with_owned_items(self):
         """
@@ -812,7 +812,7 @@ class RaribleWallet:
         Returns:
             dict: Collections with items owned by the specified owner.
         """
-        return self.api.get_collections_with_owned_items(self._wallet)
+        return self._api.get_collections_with_owned_items(self._wallet)
 
     def get_user_balance(self, currency: str):
         """
@@ -824,4 +824,22 @@ class RaribleWallet:
         Returns:
             dict: The user's balance.
         """
-        return self.api.get_user_balance(self._wallet, currency)
+        return self._api.get_user_balance(self._wallet, currency)
+
+    def get_wallet(self):
+        """
+        Get the wallet address.
+
+        Returns:
+            str: The wallet address.
+        """
+        return self._wallet
+
+    def get_chain(self):
+        """
+        Get the blockchain network.
+
+        Returns:
+            RaribleChain: The blockchain network.
+        """
+        return self._chain
