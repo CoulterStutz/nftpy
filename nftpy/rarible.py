@@ -494,3 +494,18 @@ class Rarible:
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
+
+    def get_collection_stats(self, collection_id: str):
+        """
+        Get statistical data for a specific collection.
+
+        Args:
+            collection_id (str): The ID of the collection.
+
+        Returns:
+            dict: Statistical data of the collection.
+        """
+        url = f"{self.base_url}/nft/collections/{collection_id}/stats"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
