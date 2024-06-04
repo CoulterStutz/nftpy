@@ -1,6 +1,6 @@
 import requests
 from enum import Enum
-from .errors import APIRequestFailedError, MissingChainError, MissingSlugError
+from ..errors import APIRequestFailedError, MissingChainError, MissingSlugError
 
 
 class OpenSeaChain(Enum):
@@ -23,21 +23,19 @@ class OpenSea:
     Args:
         api_key (str): The API key for accessing OpenSea.
         chain (OpenSeaChain, optional): The blockchain network to interact with.
-        collection_slug (str, optional): The slug of the collection to focus on.
     """
 
-    def __init__(self, api_key: str, chain: OpenSeaChain = None, collection_slug: str = None):
+    def __init__(self, api_key: str, chain: OpenSeaChain = None):
         self.api_key = api_key
         self.chain = chain
-        self.collection_slug = collection_slug
         self.base_url = "https://api.opensea.io/api/v2"
 
-    def get_collection_stats(self, collection_slug: str = None):
+    def get_collection_stats(self, collection_slug: str):
         """
         Get statistics for a collection.
 
         Args:
-            collection_slug (str, optional): The slug of the collection.
+            collection_slug (str): The slug of the collection.
 
         Returns:
             dict: A dictionary containing collection statistics.
@@ -46,7 +44,6 @@ class OpenSea:
             MissingSlugError: If no collection slug is provided.
             APIRequestFailedError: If the API request fails.
         """
-        collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
             raise MissingSlugError()
         url = f"{self.base_url}/collection/{collection_slug}/stats"
@@ -108,12 +105,12 @@ class OpenSea:
         else:
             raise APIRequestFailedError(response.status_code)
 
-    def get_collection(self, collection_slug: str = None):
+    def get_collection(self, collection_slug: str):
         """
         Get details of a collection.
 
         Args:
-            collection_slug (str, optional): The slug of the collection.
+            collection_slug (str): The slug of the collection.
 
         Returns:
             dict: A dictionary containing collection details.
@@ -122,7 +119,6 @@ class OpenSea:
             MissingSlugError: If no collection slug is provided.
             APIRequestFailedError: If the API request fails.
         """
-        collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
             raise MissingSlugError()
         url = f"{self.base_url}/collection/{collection_slug}"
@@ -230,13 +226,13 @@ class OpenSea:
         else:
             raise APIRequestFailedError(response.status_code)
 
-    def list_nfts_by_collection(self, collection_slug: str = None, chain: OpenSeaChain = None, cursor: str = None,
+    def list_nfts_by_collection(self, collection_slug: str, chain: OpenSeaChain = None, cursor: str = None,
                                 limit: int = 50):
         """
         List NFTs in a specific collection.
 
         Args:
-            collection_slug (str, optional): The slug of the collection.
+            collection_slug (str): The slug of the collection.
             chain (OpenSeaChain, optional): The blockchain network.
             cursor (str, optional): Cursor for pagination.
             limit (int, optional): Number of results to return (default is 50).
@@ -249,10 +245,9 @@ class OpenSea:
             MissingChainError: If no chain is provided.
             APIRequestFailedError: If the API request fails.
         """
-        collection_slug = collection_slug or self.collection_slug
-        chain = chain or self.chain
         if collection_slug is None:
             raise MissingSlugError()
+        chain = chain or self.chain
         if chain is None:
             raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/collection/{collection_slug}/nfts"
@@ -335,12 +330,12 @@ class OpenSea:
         else:
             raise APIRequestFailedError(response.status_code)
 
-    def get_traits(self, collection_slug: str = None):
+    def get_traits(self, collection_slug: str):
         """
         Get traits of a specific collection.
 
         Args:
-            collection_slug (str, optional): The slug of the collection.
+            collection_slug (str): The slug of the collection.
 
         Returns:
             dict: A dictionary containing collection traits.
@@ -349,7 +344,6 @@ class OpenSea:
             MissingSlugError: If no collection slug is provided.
             APIRequestFailedError: If the API request fails.
         """
-        collection_slug = collection_slug or self.collection_slug
         if collection_slug is None:
             raise MissingSlugError()
         url = f"{self.base_url}/collection/{collection_slug}/traits"
@@ -363,13 +357,13 @@ class OpenSea:
         else:
             raise APIRequestFailedError(response.status_code)
 
-    def get_all_listings_on_collection(self, collection_slug: str = None, chain: OpenSeaChain = None,
+    def get_all_listings_on_collection(self, collection_slug: str, chain: OpenSeaChain = None,
                                        cursor: str = None, limit: int = 50):
         """
         Get all listings of a specific collection.
 
         Args:
-            collection_slug (str, optional): The slug of the collection.
+            collection_slug (str): The slug of the collection.
             chain (OpenSeaChain, optional): The blockchain network.
             cursor (str, optional): Cursor for pagination.
             limit (int, optional): Number of results to return (default is 50).
@@ -382,10 +376,9 @@ class OpenSea:
             MissingChainError: If no chain is provided.
             APIRequestFailedError: If the API request fails.
         """
-        collection_slug = collection_slug or self.collection_slug
-        chain = chain or self.chain
         if collection_slug is None:
             raise MissingSlugError()
+        chain = chain or self.chain
         if chain is None:
             raise MissingChainError()
         url = f"{self.base_url}/chain/{chain.value}/collection/{collection_slug}/listings"
