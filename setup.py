@@ -1,18 +1,12 @@
 import os
 from setuptools import setup, find_packages
 
-def get_version():
-    version = {}
-    with open(os.path.join("nftpy", "__init__.py")) as fp:
-        exec(fp.read(), version)
-    return version.get('__version__', '0.0.1')
-
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
     name="nftpy",
-    version=get_version(),
+    version="1.2.0.post4",
     author="CoulterStutz",
     author_email="coultercash@gmail.com",
     description="A NFT specific Python library for easy NFT integration in Python",
