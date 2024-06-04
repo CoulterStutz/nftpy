@@ -1,6 +1,6 @@
 import requests
 from enum import Enum
-from .errors import APIRequestFailedError, MissingChainError, MissingSlugError
+from ..errors import APIRequestFailedError, MissingChainError, MissingSlugError
 
 
 class OpenSeaChain(Enum):
