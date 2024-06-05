@@ -5,6 +5,6 @@ from .Mintable import Mintable, MintableChain
 __all__ = ["EVM", "OpenSea", "Rarible", "Mintable"]
 
 __name__ = "nftpy"
-__version__ = '1.2.1'
+__version__ = '1.2.2a'
 __author__ = 'Coulter C. Stutz'
 __email__ = 'coulterstutz@gmail.com'
