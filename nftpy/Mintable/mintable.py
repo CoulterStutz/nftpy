@@ -24,3 +24,10 @@ class Mintable:
         response = requests.get(url, headers=headers, params=query_params)
         response.raise_for_status()
         return response.json()
+
+    def fetch_single_nft_for_sale(self, nft_id):
+        url = f"{self.base_url}/marketplace/{nft_id}"
+        headers = self._get_headers()
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
