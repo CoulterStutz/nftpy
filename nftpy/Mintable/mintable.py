@@ -31,3 +31,17 @@ class Mintable:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         return response.json()
+
+    def fetch_auctions_ending_soon(self, query_params=None):
+        url = f"{self.base_url}/marketplace/auctions/ending-soon"
+        headers = self._get_headers()
+        response = requests.get(url, headers=headers, params=query_params)
+        response.raise_for_status()
+        return response.json()
+
+    def fetch_hot_auctions(self, query_params=None):
+        url = f"{self.base_url}/marketplace/auctions/hot"
+        headers = self._get_headers()
+        response = requests.get(url, headers=headers, params=query_params)
+        response.raise_for_status()
+        return response.json()
