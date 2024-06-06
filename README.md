@@ -1,6 +1,6 @@
 # nftpy
 [![PyPi](https://img.shields.io/badge/PyPi-1.2.1-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
-[![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
+[![Python](https://img.shields.io/badge/Python-3.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/nftpy?label=PyPI%20Downloads)
 ![License](https://img.shields.io/github/license/CoulterStutz/nftpy?label=License&color=brightgreen)
 
@@ -13,11 +13,8 @@ A Python package designed to facilitate the integration and adoption of NFT (ERC
   - Support for Polygon interactions
 - Mintable | 1.2.1
   - Support for Eth
-  - Support for Polygon interactions
-- Foundation | 1.2.2
-  - Support for Eth
-  - Support for Polygon interactions
-- LooksRare | 1.2.3
+  - Support for Polygon interactions
+- LooksRare | 1.2.2
   - Support for Eth interactions
 - X2Y2 | 1.2.4
   - Support for Eth interactions
