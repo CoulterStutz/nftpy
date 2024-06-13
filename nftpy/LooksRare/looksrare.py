@@ -36,29 +36,6 @@ class LooksRareAPI:
 
         return response.json()
 
-    def post_example_function(self, data: dict):
-        if self._version == 1 and self._api_key is None:
-            raise APIKeyRequiredForPostError()
-
-        url = f"{self._chain.value}v1/somepostendpoint"
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "X-API-KEY": self._api_key
-        }
-
-        response = requests.post(url, headers=headers, json=data)
-
-        if response.status_code == 429:
-            raise RateLimitExceededError()
-        if response.status_code == 400:
-            raise InvalidLooksRareAPIRequest()
-
-        if not response.ok:
-            response.raise_for_status()
-
-        return response.json()
-
     def get_collection_by_address(self, address: str):
         url = f"{self._chain.value}v1/collections/{address}"
         headers = {"Accept": "application/json"}
