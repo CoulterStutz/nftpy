@@ -313,3 +313,73 @@ class LooksRareAPI:
                     f"average_6m={self.average_6m}, count_6m={self.count_6m}, change_6m={self.change_6m}, volume_1y={self.volume_1y}, "
                     f"average_1y={self.average_1y}, count_1y={self.count_1y}, change_1y={self.change_1y}, volume_all={self.volume_all}, "
                     f"average_all={self.average_all}, count_all={self.count_all})")
+
+    class _Order:
+        def __init__(self, order_id, maker, taker, strategy, currency, amount, price, nonce, start_time, end_time,
+                     status, signature, intermediary=None, order_type=None, salt=None, extra_params=None):
+            self.order_id = order_id
+            self.maker = maker
+            self.taker = taker
+            self.strategy = strategy
+            self.currency = currency
+            self.amount = amount
+            self.price = price
+            self.nonce = nonce
+            self.start_time = start_time
+            self.end_time = end_time
+            self.status = status
+            self.signature = signature
+            self.intermediary = intermediary
+            self.order_type = order_type
+            self.salt = salt
+            self.extra_params = extra_params
+
+        @classmethod
+        def from_dict(cls, data):
+            order_id = data.get('orderId')
+            maker = data.get('maker')
+            taker = data.get('taker')
+            strategy = data.get('strategy')
+            currency = data.get('currency')
+            amount = data.get('amount')
+            price = data.get('price')
+            nonce = data.get('nonce')
+            start_time = data.get('startTime')
+            end_time = data.get('endTime')
+            status = data.get('status')
+            signature = data.get('signature')
+            intermediary = data.get('intermediary')
+            order_type = data.get('type')
+            salt = data.get('salt')
+            extra_params = data.get('extraParams')
+            return cls(order_id, maker, taker, strategy, currency, amount, price, nonce, start_time, end_time, status,
+                       signature, intermediary, order_type, salt, extra_params)
+
+        def __repr__(self):
+            return (
+                f"Order(order_id={self.order_id}, maker={self.maker}, taker={self.taker}, strategy={self.strategy}, "
+                f"currency={self.currency}, amount={self.amount}, price={self.price}, nonce={self.nonce}, "
+                f"start_time={self.start_time}, end_time={self.end_time}, status={self.status}, signature={self.signature}, "
+                f"intermediary={self.intermediary}, order_type={self.order_type}, salt={self.salt}, extra_params={self.extra_params})")
+
+    class _TokenAttribute:
+        def __init__(self, trait_type, value, display_type=None, count=None, floor_order=None):
+            self.trait_type = trait_type
+            self.value = value
+            self.display_type = display_type
+            self.count = count
+            self.floor_order = floor_order
+
+        @classmethod
+        def from_dict(cls, data):
+            trait_type = data.get('traitType')
+            value = data.get('value')
+            display_type = data.get('displayType')
+            count = data.get('count')
+            floor_order = data.get('floorOrder')
+            return cls(trait_type, value, display_type, count, floor_order)
+
+        def __repr__(self):
+            return (
+                f"TokenAttribute(trait_type={self.trait_type}, value={self.value}, display_type={self.display_type}, "
+                f"count={self.count}, floor_order={self.floor_order})")
