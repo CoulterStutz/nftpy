@@ -441,3 +441,19 @@ class LooksRareAPI:
             return (
                 f"TradingReward(proof={self.proof}, looks_total={self.looks_total}, looks_24h={self.looks_24h}, volume_total={self.volume_total}, "
                 f"volume_24h={self.volume_24h}, date={self.date})")
+
+    class _Reward:
+        def __init__(self, address, listing=None, trading=None):
+            self.address = address
+            self.listing = listing
+            self.trading = trading
+
+        @classmethod
+        def from_dict(cls, data):
+            address = data.get('address')
+            listing = _ListingReward.from_dict(data.get('listing')) if data.get('listing') else None
+            trading = _TradingReward.from_dict(data.get('trading')) if data.get('trading') else None
+            return cls(address, listing, trading)
+
+        def __repr__(self):
+            return (f"Reward(address={self.address}, listing={self.listing}, trading={self.trading})")
