@@ -1,5 +1,5 @@
 from enum import Enum
-from ..errors import APIKeyNotSpecifiedOnMainnetError, RateLimitExceededError
+from ..errors import APIKeyNotSpecifiedOnMainnetError, RateLimitExceededError, InvalidLooksRareAPIRequest
 from termcolor import colored
 import requests
 
@@ -7,13 +7,14 @@ class LooksRareChain(Enum):
     MAINNET = "https://api.looksrare.org/api/"
     SEPOLIA = "https://api-sepolia.looksrare.org/api/"
 
+
 class LooksRareAPI:
-    def __init__(self, chain:LooksRareChain, api_key:str=None, suppress_warnings:bool=False, version:int=2):
+    def __init__(self, chain: LooksRareChain, api_key: str = None, suppress_warnings: bool = False, version: int = 2):
         self._chain = chain
         self._api_key = api_key
         self._version = version
-        if self._chain == LooksRareChain.MAINNET:
-            if self._api_key is None and self._version == 2:
+        if self._chain == LooksRareChain.MAINNET and self._version == 2:
+            if self._api_key is None:
                 raise APIKeyNotSpecifiedOnMainnetError()
         elif self._chain == LooksRareChain.SEPOLIA:
             if self._api_key is not None and suppress_warnings is False:
@@ -27,6 +28,31 @@ class LooksRareAPI:
 
         if response.status_code == 429:
             raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        return response.json()
+
+    def post_example_function(self, data: dict):
+        if self._version == 1 and self._api_key is None:
+            raise APIKeyRequiredForPostError()
+
+        url = f"{self._chain.value}v1/somepostendpoint"
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "X-API-KEY": self._api_key
+        }
+
+        response = requests.post(url, headers=headers, json=data)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
 
         if not response.ok:
             response.raise_for_status()
@@ -41,6 +67,8 @@ class LooksRareAPI:
 
         if response.status_code == 429:
             raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
 
         if not response.ok:
             response.raise_for_status()
@@ -55,6 +83,24 @@ class LooksRareAPI:
 
         if response.status_code == 429:
             raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        return response.json()
+
+    def get_lre_eligible_collections(self):
+        url = f"{self._chain.value}v1/collections/lre-eligible"
+        headers = {"Accept": "application/json"}
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
 
         if not response.ok:
             response.raise_for_status()
