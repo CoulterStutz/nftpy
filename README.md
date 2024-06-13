@@ -1,5 +1,5 @@
 # nftpy
-[![PyPi](https://img.shields.io/badge/PyPi-1.2.2-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
+[![PyPi](https://img.shields.io/badge/PyPi-1.2.2a-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 [![Python](https://img.shields.io/badge/Python-3.7,%203.8,%203.9,%203.10,%203.11,%203.12-green?labelColor=026ab5&style=flat-square&logo=pypi&logoColor=ffffff&link=https://pypi.org/project/nftpy/)](https://pypi.org/project/nftpy/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/nftpy?label=PyPI%20Downloads)
 ![License](https://img.shields.io/github/license/CoulterStutz/nftpy?label=License&color=brightgreen)
@@ -14,13 +14,14 @@ A Python package designed to facilitate the integration and adoption of NFT (ERC
 - Mintable | 1.2.1
   - Support for Eth
   - Support for Polygon interactions
-- LooksRare | 1.2.2
+- Foundation | 1.2.3
+  - Support for Eth
+  - Support for Polygon interactions
+- X2Y2 | 1.2.4
   - Support for Eth interactions
-- X2Y2 | 1.2.3
+- SuperRare | 1.2.5
   - Support for Eth interactions
-- SuperRare | 1.2.4
-  - Support for Eth interactions
-- Treasureland | 1.2.5
+- Treasureland | 1.2.6
   - Support for Eth
   - Support for BSC interactions
 - Decentraland | 1.2.7
