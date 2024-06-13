@@ -417,3 +417,89 @@ class Token:
         return (f"Token(id={self.id}, collection_address={self.collection_address}, token_id={self.token_id}, token_uri={self.token_uri}, "
                 f"image_uri={self.image_uri}, is_explicit={self.is_explicit}, is_animated={self.is_animated}, flag={self.flag}, "
                 f"name={self.name}, description={self.description}, collection={self.collection}, attributes={self.attributes})")
+
+class ListingReward:
+    def __init__(self, proof, looks_total, looks_24h, date):
+        self.proof = proof
+        self.looks_total = looks_total
+        self.looks_24h = looks_24h
+        self.date = date
+
+    @classmethod
+    def from_dict(cls, data):
+        proof = data.get('proof')
+        looks_total = data.get('looksTotal')
+        looks_24h = data.get('looks24h')
+        date = data.get('date')
+        return cls(proof, looks_total, looks_24h, date)
+
+    def __repr__(self):
+        return (f"ListingReward(proof={self.proof}, looks_total={self.looks_total}, looks_24h={self.looks_24h}, date={self.date})")
+
+class TradingReward:
+    def __init__(self, proof, looks_total, looks_24h, volume_total, volume_24h, date):
+        self.proof = proof
+        self.looks_total = looks_total
+        self.looks_24h = looks_24h
+        self.volume_total = volume_total
+        self.volume_24h = volume_24h
+        self.date = date
+
+    @classmethod
+    def from_dict(cls, data):
+        proof = data.get('proof')
+        looks_total = data.get('looksTotal')
+        looks_24h = data.get('looks24h')
+        volume_total = data.get('volumeTotal')
+        volume_24h = data.get('volume24h')
+        date = data.get('date')
+        return cls(proof, looks_total, looks_24h, volume_total, volume_24h, date)
+
+    def __repr__(self):
+        return (f"TradingReward(proof={self.proof}, looks_total={self.looks_total}, looks_24h={self.looks_24h}, volume_total={self.volume_total}, "
+                f"volume_24h={self.volume_24h}, date={self.date})")
+
+class Reward:
+    def __init__(self, address, listing=None, trading=None):
+        self.address = address
+        self.listing = listing
+        self.trading = trading
+
+    @classmethod
+    def from_dict(cls, data):
+        address = data.get('address')
+        listing = ListingReward.from_dict(data.get('listing')) if data.get('listing') else None
+        trading = TradingReward.from_dict(data.get('trading')) if data.get('trading') else None
+        return cls(address, listing, trading)
+
+    def __repr__(self):
+        return (f"Reward(address={self.address}, listing={self.listing}, trading={self.trading})")
+
+class Event:
+    def __init__(self, id, from_address, to_address, event_type, hash, created_at, collection, token, order):
+        self.id = id
+        self.from_address = from_address
+        self.to_address = to_address
+        self.event_type = event_type
+        self.hash = hash
+        self.created_at = created_at
+        self.collection = collection
+        self.token = token
+        self.order = order
+
+    @classmethod
+    def from_dict(cls, data):
+        id = data.get('id')
+        from_address = data.get('from')
+        to_address = data.get('to')
+        event_type = data.get('type')
+        hash = data.get('hash')
+        created_at = data.get('createdAt')
+        collection = data.get('collection')
+        token = data.get('token')
+        order = data.get('order')
+        return cls(id, from_address, to_address, event_type, hash, created_at, collection, token, order)
+
+    def __repr__(self):
+        return (f"Event(id={self.id}, from_address={self.from_address}, to_address={self.to_address}, event_type={self.event_type}, "
+                f"hash={self.hash}, created_at={self.created_at}, collection={self.collection}, token={self.token}, order={self.order})")
