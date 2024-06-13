@@ -1,5 +1,6 @@
 from enum import Enum
-from ..errors import APIKeyNotSpecifiedOnMainnetError, RateLimitExceededError, InvalidLooksRareAPIRequest
+from ..errors import APIKeyNotSpecifiedOnMainnetError, RateLimitExceededError, InvalidLooksRareAPIRequest, \
+    APIKeyRequiredForPostError
 from termcolor import colored
 import requests
 
@@ -73,6 +74,45 @@ class LooksRareAPI:
         headers = {"Accept": "application/json"}
 
         response = requests.get(url, headers=headers)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        return response.json()
+
+    def get_collection_token(self, collection_address: str, token_id: str):
+        url = f"{self._chain.value}v1/collections/{collection_address}/tokens/{token_id}"
+        headers = {"Accept": "application/json"}
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        return response.json()
+
+    def refresh_token_metadata(self, collection_address: str, token_id: str):
+        if self._version == 1 and self._api_key is None:
+            raise APIKeyRequiredForPostError()
+
+        url = f"{self._chain.value}v1/tokens/refresh/{collection_address}/{token_id}"
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "X-API-KEY": self._api_key
+        }
+
+        response = requests.post(url, headers=headers)
 
         if response.status_code == 429:
             raise RateLimitExceededError()
