@@ -358,6 +358,29 @@ class Order:
                 f"currency={self.currency}, amount={self.amount}, price={self.price}, nonce={self.nonce}, "
                 f"start_time={self.start_time}, end_time={self.end_time}, status={self.status}, signature={self.signature}, "
                 f"intermediary={self.intermediary}, order_type={self.order_type}, salt={self.salt}, extra_params={self.extra_params})")
+
+class TokenAttribute:
+    def __init__(self, trait_type, value, display_type=None, count=None, floor_order=None):
+        self.trait_type = trait_type
+        self.value = value
+        self.display_type = display_type
+        self.count = count
+        self.floor_order = floor_order
+
+    @classmethod
+    def from_dict(cls, data):
+        trait_type = data.get('traitType')
+        value = data.get('value')
+        display_type = data.get('displayType')
+        count = data.get('count')
+        floor_order = data.get('floorOrder')
+        return cls(trait_type, value, display_type, count, floor_order)
+
+    def __repr__(self):
+        return (f"Attribute(trait_type={self.trait_type}, value={self.value}, display_type={self.display_type}, "
+                f"count={self.count}, floor_order={self.floor_order})")
+
+
 class Token:
     def __init__(self, id, collection_address, token_id, token_uri, image_uri, is_explicit, is_animated, flag, name,
                  description, collection, attributes):
@@ -387,7 +410,7 @@ class Token:
         name = data.get('name')
         description = data.get('description')
         collection = data.get('collection')
-        attributes = [Attribute.from_dict(attr) for attr in data.get('attributes', [])]
+        attributes = [TokenAttribute.from_dict(attr) for attr in data.get('attributes', [])]
         return cls(id, collection_address, token_id, token_uri, image_uri, is_explicit, is_animated, flag, name, description, collection, attributes)
 
     def __repr__(self):
