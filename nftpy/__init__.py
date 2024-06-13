@@ -6,6 +6,6 @@ from .LooksRare import LooksRareChain, LooksRareAPI
 __all__ = ["EVM", "OpenSea", "Rarible", "Mintable", "LooksRare"]
 
 __name__ = "nftpy"
-__version__ = '1.2.2a1'
+__version__ = '1.2.2a2'
 __author__ = 'Coulter C. Stutz'
 __email__ = 'coulterstutz@gmail.com'
