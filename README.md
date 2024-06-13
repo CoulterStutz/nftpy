@@ -6,8 +6,6 @@
 
 A Python package designed to facilitate the integration and adoption of NFT (ERC721, ERC1155) tokens in software applications.
 
-**In 1.2.2a1, output classes are integrated but all functions return raw**
-
 ### Changes in 1.2
 #### NFT Exchanges added
 - Rarible | 1.2.0
