@@ -1,6 +1,7 @@
 from enum import Enum
-from ..errors import APIKeyNotSpecifiedOnMainnetError
+from ..errors import APIKeyNotSpecifiedOnMainnetError, RateLimitExceededError
 from termcolor import colored
+import requests
 
 class LooksRareChain(Enum):
     MAINNET = "https://api.looksrare.org/api/"
@@ -18,3 +19,16 @@ class LooksRareAPI:
             if self._api_key is not None and suppress_warnings is False:
                 print(colored("[NFTPY]: Warning! API key isn't needed for the Sepolia Network!", 'yellow'))
 
+    def get_account_by_address(self, address: str):
+        url = f"{self._chain.value}v1/account/{address}"
+        headers = {"Accept": "application/json"}
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        return response.json()

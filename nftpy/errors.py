@@ -98,3 +98,8 @@ class RateLimitExceededError(LooksRareException):
     def __init__(self, message="LooksRare API Rate limit exceeded. Please try again later."):
         self.message = message
         super().__init__(self.message)
+
+class APIKeyRequiredForPostError(LooksRareException):
+    def __init__(self, message="LooksRare API key is required for POST requests on v1."):
+        self.message = message
+        super().__init__(self.message)
