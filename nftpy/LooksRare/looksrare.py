@@ -21,7 +21,7 @@ class LooksRareAPI:
             if self._api_key is not None and suppress_warnings is False:
                 print(colored("[NFTPY]: Warning! API key isn't needed for the Sepolia Network!", 'yellow'))
 
-    def get_account_by_address(self, address: str):
+    def get_account_by_address(self, address: str, return_raw_json: bool = False):
         url = f"{self._chain.value}v1/account/{address}"
         headers = {"Accept": "application/json"}
 
@@ -35,9 +35,11 @@ class LooksRareAPI:
         if not response.ok:
             response.raise_for_status()
 
-        return response.json()
+        if return_raw_json:
+            return response.json()
+        return self._Account.from_dict(response.json())
 
-    def get_collection_by_address(self, address: str):
+    def get_collection_by_address(self, address: str, return_raw_json: bool = False):
         url = f"{self._chain.value}v1/collections/{address}"
         headers = {"Accept": "application/json"}
 
@@ -51,9 +53,11 @@ class LooksRareAPI:
         if not response.ok:
             response.raise_for_status()
 
-        return response.json()
+        if return_raw_json:
+            return response.json()
+        return self._CollectionInformation.from_dict(response.json())
 
-    def get_collection_stats(self, address: str):
+    def get_collection_stats(self, address: str, return_raw_json: bool = False):
         url = f"{self._chain.value}v1/collections/stats?collection={address}"
         headers = {"Accept": "application/json"}
 
@@ -67,9 +71,11 @@ class LooksRareAPI:
         if not response.ok:
             response.raise_for_status()
 
-        return response.json()
+        if return_raw_json:
+            return response.json()
+        return self._CollectionStats.from_dict(response.json())
 
-    def get_lre_eligible_collections(self):
+    def get_lre_eligible_collections(self, return_raw_json: bool = False):
         url = f"{self._chain.value}v1/collections/lre-eligible"
         headers = {"Accept": "application/json"}
 
@@ -83,9 +89,11 @@ class LooksRareAPI:
         if not response.ok:
             response.raise_for_status()
 
-        return response.json()
+        if return_raw_json:
+            return response.json()
+        return [self._CollectionInformation.from_dict(item) for item in response.json()]
 
-    def get_collection_token(self, collection_address: str, token_id: str):
+    def get_collection_token(self, collection_address: str, token_id: str, return_raw_json: bool = False):
         url = f"{self._chain.value}v1/collections/{collection_address}/tokens/{token_id}"
         headers = {"Accept": "application/json"}
 
@@ -99,9 +107,11 @@ class LooksRareAPI:
         if not response.ok:
             response.raise_for_status()
 
-        return response.json()
+        if return_raw_json:
+            return response.json()
+        return self._Token.from_dict(response.json())
 
-    def refresh_token_metadata(self, collection_address: str, token_id: str):
+    def refresh_token_metadata(self, collection_address: str, token_id: str, return_raw_json: bool = False):
         if self._version == 1 and self._api_key is None:
             raise APIKeyRequiredForPostError()
 
@@ -113,6 +123,40 @@ class LooksRareAPI:
         }
 
         response = requests.post(url, headers=headers)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        return response.json()
+
+    def get_events(self, return_raw_json: bool = False):
+        url = f"{self._chain.value}v1/events"
+        headers = {"Accept": "application/json"}
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+        if response.status_code == 400:
+            raise InvalidLooksRareAPIRequest()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        if return_raw_json:
+            return response.json()
+        return [self._Event.from_dict(item) for item in response.json()]
+
+    def get_all_rewards(self, return_raw_json: bool = False):
+        url = f"{self._chain.value}v1/rewards"
+        headers = {"Accept": "application/json"}
+
+        response = requests.get(url, headers=headers)
 
         if response.status_code == 429:
             raise RateLimitExceededError()
