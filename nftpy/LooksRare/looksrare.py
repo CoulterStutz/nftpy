@@ -364,7 +364,7 @@ class LooksRareAPI:
 
     class _Token:
         def __init__(self, id, collection_address, token_id, token_uri, image_uri, is_explicit, is_animated, flag, name,
-                     description, collection, attributes):
+                     description, collection):
             self.id = id
             self.collection_address = collection_address
             self.token_id = token_id
@@ -376,7 +376,6 @@ class LooksRareAPI:
             self.name = name
             self.description = description
             self.collection = collection
-            self.attributes = attributes
 
         @classmethod
         def from_dict(cls, data):
@@ -391,12 +390,30 @@ class LooksRareAPI:
             name = data.get('name')
             description = data.get('description')
             collection = data.get('collection')
-            attributes = [_TokenAttribute.from_dict(attr) for attr in data.get('attributes', [])]
             return cls(id, collection_address, token_id, token_uri, image_uri, is_explicit, is_animated, flag, name,
-                       description, collection, attributes)
+                       description, collection)
 
         def __repr__(self):
             return (
                 f"Token(id={self.id}, collection_address={self.collection_address}, token_id={self.token_id}, token_uri={self.token_uri}, "
                 f"image_uri={self.image_uri}, is_explicit={self.is_explicit}, is_animated={self.is_animated}, flag={self.flag}, "
-                f"name={self.name}, description={self.description}, collection={self.collection}, attributes={self.attributes})")
+                f"name={self.name}, description={self.description}, collection={self.collection})")
+
+    class _ListingReward:
+        def __init__(self, proof, looks_total, looks_24h, date):
+            self.proof = proof
+            self.looks_total = looks_total
+            self.looks_24h = looks_24h
+            self.date = date
+
+        @classmethod
+        def from_dict(cls, data):
+            proof = data.get('proof')
+            looks_total = data.get('looksTotal')
+            looks_24h = data.get('looks24h')
+            date = data.get('date')
+            return cls(proof, looks_total, looks_24h, date)
+
+        def __repr__(self):
+            return (
+                f"ListingReward(proof={self.proof}, looks_total={self.looks_total}, looks_24h={self.looks_24h}, date={self.date})")
