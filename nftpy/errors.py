@@ -84,3 +84,27 @@ class APIRequestFailedError(RaribleException):
     def __init__(self, status_code):
         self.message = f"API request failed with status code {status_code}."
         super().__init__(self.message)
+
+class LooksRareException(Exception):
+    """Base class for exceptions in LooksRare class."""
+    pass
+
+class APIKeyNotSpecifiedOnMainnetError(LooksRareException):
+    def __init__(self):
+        self.message = "LooksRareAPI requires an API key for mainnet operation"
+        super().__init__(self.message)
+
+class RateLimitExceededError(LooksRareException):
+    def __init__(self, message="LooksRare API Rate limit exceeded. Please try again later."):
+        self.message = message
+        super().__init__(self.message)
+
+class APIKeyRequiredForPostError(LooksRareException):
+    def __init__(self, message="LooksRare API key is required for POST requests on v1."):
+        self.message = message
+        super().__init__(self.message)
+
+class InvalidLooksRareAPIRequest(LooksRareException):
+    def __init__(self, message="Invalid request to the LooksRare API."):
+        self.message = message
+        super().__init__(self.message)

@@ -10,7 +10,9 @@ class RaribleCollection:
         self._chain = chain
         self._api = Rarible(api_key=api_key, chain=chain)
 
-    def get_items_by_collection(self):
+        self.items = self.get_items_by_collection()
+
+    def get_items(self):
         """
         Get items in the specific collection.
 
