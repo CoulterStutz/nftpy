@@ -14,21 +14,19 @@ A Python package designed to facilitate the integration and adoption of NFT (ERC
 - Mintable | 1.2.1
   - Support for Eth
   - Support for Polygon interactions
-- Foundation | 1.2.2
+- Foundation | 1.2.3
   - Support for Eth
   - Support for Polygon interactions
-- LooksRare | 1.2.3
-  - Support for Eth interactions
 - X2Y2 | 1.2.4
   - Support for Eth interactions
 - SuperRare | 1.2.5
   - Support for Eth interactions
-- Treasureland | 1.2.7
+- Treasureland | 1.2.6
   - Support for Eth
   - Support for BSC interactions
-- Decentraland | 1.2.8
+- Decentraland | 1.2.7
   - Support for Eth interactions
-- Zapper | 1.2.9
+- Zapper | 1.2.8
   - Support for Eth
   - Support for Polygon interactions
 
