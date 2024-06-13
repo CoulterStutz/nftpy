@@ -32,3 +32,31 @@ class LooksRareAPI:
             response.raise_for_status()
 
         return response.json()
+
+    def get_collection_by_address(self, address: str):
+        url = f"{self._chain.value}v1/collections/{address}"
+        headers = {"Accept": "application/json"}
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        return response.json()
+
+    def get_collection_stats(self, address: str):
+        url = f"{self._chain.value}v1/collections/stats?collection={address}"
+        headers = {"Accept": "application/json"}
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 429:
+            raise RateLimitExceededError()
+
+        if not response.ok:
+            response.raise_for_status()
+
+        return response.json()
