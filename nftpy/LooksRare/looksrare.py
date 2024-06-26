@@ -13,8 +13,7 @@ class LooksRareAPI:
     def __init__(self, chain: LooksRareChain, api_key: str = None, suppress_warnings: bool = False, version: int = 2):
         self._chain = chain
         self._api_key = api_key
-        self._version = version
-        if self._chain == LooksRareChain.MAINNET and self._version == 2:
+        if self._chain == LooksRareChain.MAINNET:
             if self._api_key is None:
                 raise APIKeyNotSpecifiedOnMainnetError()
         elif self._chain == LooksRareChain.SEPOLIA:
@@ -112,7 +111,7 @@ class LooksRareAPI:
         return self._Token.from_dict(response.json())
 
     def refresh_token_metadata(self, collection_address: str, token_id: str, return_raw_json: bool = False):
-        if self._version == 1 and self._api_key is None:
+        if self._api_key is None:
             raise APIKeyRequiredForPostError()
 
         url = f"{self._chain.value}v1/tokens/refresh/{collection_address}/{token_id}"
